@@ -68,6 +68,16 @@ def telegram(method, payload):
 def send(chat_id, text):
     return telegram("sendMessage", {"chat_id": chat_id, "text": text[:3900], "disable_web_page_preview": True})
 
+def register_commands():
+    commands = [
+        {"command": "start", "description": "Benachrichtigungen aktivieren"},
+        {"command": "status", "description": "Bot-Status anzeigen"},
+        {"command": "stop", "description": "Benachrichtigungen pausieren"},
+        {"command": "help", "description": "Alle Befehle anzeigen"}
+    ]
+    telegram("setMyCommands", {"commands": commands})
+    log.info("Telegram commands registered")
+
 def handle_commands(state):
     offset = int(state.get("offset", 0))
     updates = telegram("getUpdates", {"offset": offset, "limit": 100, "timeout": 0, "allowed_updates": ["message"]})
@@ -93,6 +103,8 @@ def handle_commands(state):
             last = state.get("last_scan", "noch nicht")
             sent = int(state.get("alerts_sent", 0))
             send(chat_id, "Narrative Radar\nStatus: " + ("aktiv" if state.get("enabled", True) else "pausiert") + "\nLetzter Scan (UTC): " + last + "\nAlerts gesamt: " + str(sent) + "\nX-Datenquelle: " + ("aktiv" if X_TOKEN else "nicht konfiguriert") + "\nScans etwa alle 5 Minuten (GitHub Actions).")
+        elif command == "/help":
+            send(chat_id, "Narrative Radar\n/start - Alerts aktivieren\n/status - Status anzeigen\n/stop - Alerts pausieren\n/help - Befehle anzeigen\n\nAntworten erfolgen beim naechsten GitHub-Actions-Lauf.")
         else:
             state["enabled"] = True
             send(chat_id, "✅ Narrative Radar aktiviert!\n\nIch prüfe neue Solana-Token gegen öffentliche Trendsignale und sende passende Treffer.\n\n/status = Status\n/stop = Alerts pausieren\n/start = Aktivieren\n\nDie Antworten kommen beim nächsten GitHub-Actions-Lauf, nicht sofort. X-Suche braucht optional API-Zugang. Kein automatischer Handel.")
@@ -219,6 +231,7 @@ def alert_for(pair, trends):
 def run():
     if not TOKEN:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is required")
+    register_commands()
     state = load_state()
     handle_commands(state)
     owner = OWNER or str(state.get("owner", ""))
