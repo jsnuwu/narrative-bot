@@ -12,11 +12,11 @@ class TestNarrativeRadar(unittest.TestCase):
 
     def test_bluesky_signal_counting(self):
         posts = [
-            {"record": {"text": "#FrogArmy on Solana"}},
-            {"record": {"text": "Joining $FROGARMY right now"}},
-            {"record": {"text": "Another #FrogArmy update"}}
+            {"post": {"record": {"text": "#FrogArmy on Solana"}}},
+            {"post": {"record": {"text": "Crypto fans joining $FROGARMY right now"}}},
+            {"post": {"record": {"text": "Another memecoin #FrogArmy update"}}}
         ]
-        with patch.object(main, "get_json", return_value={"posts": posts}):
+        with patch.object(main, "get_json", return_value={"feed": posts}):
             result = main.bluesky_terms()
         self.assertGreaterEqual(result["frogarmy"], 3)
 
