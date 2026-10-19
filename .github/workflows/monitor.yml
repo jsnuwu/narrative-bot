@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: narrative-radar
@@ -46,3 +46,12 @@ jobs:
           MAX_TOKENS_PER_RUN: ${{ vars.MAX_TOKENS_PER_RUN || '75' }}
           MAX_ALERTS_PER_RUN: ${{ vars.MAX_ALERTS_PER_RUN || '5' }}
           DAILY_REPORT: ${{ vars.DAILY_REPORT || 'true' }}
+      - name: Publish public radar signal feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add signals/latest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update public narrative signals"
+            git push origin HEAD:main
+          fi
