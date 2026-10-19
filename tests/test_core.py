@@ -40,6 +40,111 @@ class TestNarrativeRadar(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(state["sources"]["Bluesky"]["terms"]["frogarmy"], 4)
 
+    def _momentum_pair(self):
+        return {
+            "chainId": "solana", "pairAddress": "pool-momentum",
+            "baseToken": {"address": "8CYyivwMZPg6Edaofxo3eHiveZkDrU6TtUDwtMjTpump",
+                          "name": "Example Rocket", "symbol": "ROCKET"},
+            "pairCreatedAt": int((time.time() - 7200) * 1000),
+            "liquidity": {"usd": 35000},
+            "volume": {"h1": 45000, "h24": 95000},
+            "txns": {"h1": {"buys": 120, "sells": 45}},
+            "priceChange": {"h1": 24, "m5": 4},
+            "url": "https://dexscreener.com/solana/pool-momentum",
+        }
+
+    def test_geckoterminal_free_new_pools(self):
+        mint = "8CYyivwMZPg6Edaofxo3eHiveZkDrU6TtUDwtMjTpump"
+        payload = {"data": [
+            {"relationships": {
+                "base_token": {"data": {"id": "solana_" + mint}},
+                "quote_token": {"data": {"id": "solana_" + main.SOL_MINT}},
+            }, "attributes": {"pool_created_at": "2026-10-19T10:00:00Z"}},
+            {"relationships": {
+                "base_token": {"data": {"id": "solana_" + main.SOL_MINT}},
+                "quote_token": {"data": {"id": "solana_" + mint}},
+            }, "attributes": {}},
+            {"relationships": {
+                "base_token": {"data": {"id": "solana_" + main.SOL_MINT}},
+                "quote_token": {"data": {"id": "solana_" + main.USDC_MINT}},
+            }, "attributes": {}}
+        ]}
+        with patch.object(main, "get_json", return_value=payload) as getter:
+            profiles = main.gecko_new_pool_profiles(pages=1)
+        self.assertEqual(len(profiles), 1)
+        self.assertEqual(profiles[0]["tokenAddress"], mint)
+        self.assertIn("/new_pools", getter.call_args.args[0])
+
+    def test_gecko_new_pools_have_priority_over_paid_boosts(self):
+        mint = "8CYyivwMZPg6Edaofxo3eHiveZkDrU6TtUDwtMjTpump"
+        def mocked_get(url, **kwargs):
+            return [{"chainId": "solana", "tokenAddress": "boosted-mint"}]
+        with patch.object(main, "get_json", side_effect=mocked_get), \
+                patch.object(main, "gecko_new_pool_profiles", return_value=[
+                    {"chainId": "solana", "tokenAddress": mint}]):
+            profiles = main.candidates()
+        self.assertEqual(profiles[0]["tokenAddress"], mint)
+        self.assertIn("boosted-mint", [p["tokenAddress"] for p in profiles])
+
+    def test_good_momentum_without_narrative_alert(self):
+        pair = self._momentum_pair()
+        result = main.momentum_for(pair)
+        self.assertIsNotNone(result)
+        self.assertIn("kein Narrative-Match", result["text"])
+        self.assertIn("Käufe/Verkäufe", result["text"])
+        with patch.object(main, "candidate_pairs", return_value=[pair]):
+            matches, watchlist, alerts, momentum = main.scan_candidates(
+                [], set(), profiles=[{"chainId": "solana", "tokenAddress": pair["baseToken"]["address"]}])
+        self.assertFalse(matches)
+        self.assertFalse(alerts)
+        self.assertEqual(len(momentum), 1)
+        self.assertEqual(len(watchlist), 1)
+
+    def test_momentum_rejects_thin_and_one_sided_activity(self):
+        pair = self._momentum_pair()
+        pair["liquidity"]["usd"] = 2000
+        self.assertIsNone(main.momentum_for(pair))
+        pair["liquidity"]["usd"] = 35000
+        pair["txns"]["h1"]["sells"] = 0
+        self.assertIsNone(main.momentum_for(pair))
+        pair["txns"]["h1"]["sells"] = 45
+        pair["priceChange"]["h1"] = 350
+        self.assertIsNone(main.momentum_for(pair))
+
+    def test_momentum_alert_dedup_and_daily_cap(self):
+        pair = self._momentum_pair()
+        state = {"owner": "987", "enabled": True}
+        with patch.object(main, "TOKEN", "test-token"), \
+                patch.object(main, "MOMENTUM_PER_DAY", 1), \
+                patch.object(main, "DAILY_REPORT", False), \
+                patch.object(main, "register_commands"), \
+                patch.object(main, "handle_commands"), \
+                patch.object(main, "load_state", return_value=state), \
+                patch.object(main, "save_state"), \
+                patch.object(main, "trend_signals", return_value=[]), \
+                patch.object(main, "candidates", return_value=[{"chainId": "solana",
+                                "tokenAddress": pair["baseToken"]["address"]}]), \
+                patch.object(main, "candidate_pairs", return_value=[pair]), \
+                patch.object(main, "publish_signals"), \
+                patch.object(main.time, "sleep"), \
+                patch.object(main, "send") as send:
+            main.run()
+            main.run()
+        self.assertEqual(send.call_count, 1)
+        self.assertEqual(state["momentum_alerts_sent"], 1)
+        self.assertEqual(state["momentum_sent_today"], 1)
+
+    def test_top_command_shows_momentum_or_watchlist(self):
+        state = {"owner": "987", "enabled": True, "last_momentum": [
+            {"symbol": "ROCKET", "score": 82, "mint": "abc",
+             "volume_1h_usd": 20000, "url": "https://dexscreener.com/solana/abc"}]}
+        update = {"update_id": 401, "message": {
+            "chat": {"id": 987, "type": "private"}, "text": "/top"}}
+        with patch.object(main, "telegram", return_value=[update]), \
+                patch.object(main, "send") as send, patch.object(main, "save_state"):
+            main.handle_commands(state)
+        self.assertIn("ROCKET", send.call_args.args[1])
+
     def test_new_pair_alert(self):
         pair = {
             "chainId": "solana",
@@ -86,7 +191,7 @@ class TestNarrativeRadar(unittest.TestCase):
             "volume": {"h24": 35000},
         }
         with patch.object(main, "candidate_pairs", return_value=[pair]):
-            matches, watchlist, alerts = main.scan_candidates(
+            matches, watchlist, alerts, momentum = main.scan_candidates(
                 [("frogarmy", 5, "Google News")], {"token-frog"},
                 profiles=[{"chainId": "solana", "tokenAddress": "token-frog"}])
         self.assertEqual(len(matches), 1)
@@ -101,7 +206,7 @@ class TestNarrativeRadar(unittest.TestCase):
                     "liquidity": {"usd": 25000}, "volume": {"h24": vol}}
         with patch.object(main, "candidate_pairs",
                           return_value=[pool("p1", 12000), pool("p2", 25000)]):
-            matched, watchlist, alerts = main.scan_candidates(
+            matched, watchlist, alerts, momentum = main.scan_candidates(
                 [("frogarmy", 5, "Reddit")], set(), profiles=[])
         self.assertEqual(len(matched), 1)
         self.assertEqual(len(watchlist), 1)
@@ -113,7 +218,8 @@ class TestNarrativeRadar(unittest.TestCase):
         with patch.object(main, "TOKEN", ""), patch.object(main, "load_state", return_value=saved_state), \
                 patch.object(main, "save_state") as saved, \
                 patch.object(main, "trend_signals", return_value=[]), \
-                patch.object(main, "scan_candidates", return_value=({}, {}, [])), \
+                patch.object(main, "scan_candidates", return_value=({}, {}, [], {})), \
+                patch.object(main, "candidates", return_value=[]), \
                 patch.object(main, "publish_signals") as publish, \
                 patch.object(main, "send") as sending:
             main.run()
