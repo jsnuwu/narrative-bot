@@ -1,0 +1,49 @@
+name: Narrative Radar Auto
+
+on:
+  schedule:
+    - cron: "3-59/5 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/scheduled.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: narrative-radar
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    environment: env
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/cache@v4
+        with:
+          path: .state
+          key: narrative-state-${{ github.run_id }}
+          restore-keys: |
+            narrative-state-
+      - run: pip install -r requirements.txt
+      - run: python main.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          ENABLE_X_API: ${{ vars.ENABLE_X_API || 'false' }}
+          X_REFRESH_HOURS: ${{ vars.X_REFRESH_HOURS || '6' }}
+          MIN_LIQUIDITY_USD: ${{ vars.MIN_LIQUIDITY_USD || '8000' }}
+          MIN_VOLUME_24H_USD: ${{ vars.MIN_VOLUME_24H_USD || '3000' }}
+          MAX_AGE_HOURS: ${{ vars.MAX_AGE_HOURS || '72' }}
+          MAX_TOKENS_PER_RUN: ${{ vars.MAX_TOKENS_PER_RUN || '75' }}
+          MAX_ALERTS_PER_RUN: ${{ vars.MAX_ALERTS_PER_RUN || '5' }}
+          DAILY_REPORT: ${{ vars.DAILY_REPORT || 'true' }}
