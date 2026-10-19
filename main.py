@@ -442,7 +442,70 @@ def watchlist_candidate(pair):
     }
 
 
-def publish_signals(trends, matched, watchlist):
+def momentum_for(pair):
+    """Strict observational momentum signal, separate from a verified narrative match."""
+    if pair.get("chainId") != "solana":
+        return None
+    token = pair.get("baseToken") or {}
+    mint = str(token.get("address") or "")
+    created = pair.get("pairCreatedAt")
+    if not mint or not created or mint in BASE_QUOTE_MINTS:
+        return None
+    try:
+        age = (time.time() * 1000 - float(created)) / 3600000
+        liquidity = float((pair.get("liquidity") or {}).get("usd") or 0)
+        vol_1h = float((pair.get("volume") or {}).get("h1") or 0)
+        vol_24h = float((pair.get("volume") or {}).get("h24") or 0)
+        change_1h = float((pair.get("priceChange") or {}).get("h1") or 0)
+        change_5m = float((pair.get("priceChange") or {}).get("m5") or 0)
+        tx = (pair.get("txns") or {}).get("h1") or {}
+        buys, sells = int(tx.get("buys") or 0), int(tx.get("sells") or 0)
+    except (ValueError, TypeError, OverflowError):
+        return None
+    if not all(math.isfinite(x) for x in (age, liquidity, vol_1h, vol_24h, change_1h, change_5m)):
+        return None
+    # Avoid thin liquidity, fake single-sided trade bursts and extreme pumps.
+    if not (0 <= age <= 24 and liquidity >= 12000 and vol_1h >= 8000
+            and vol_24h >= 25000 and 8 <= change_1h <= 120
+            and change_5m >= -15 and buys >= 25 and sells >= 10
+            and buys >= 1.2 * sells):
+        return None
+    score = min(100, int(
+        12 + min(18, liquidity / 2500) + min(22, vol_1h / 2000)
+        + min(16, buys / 7) + min(14, change_1h / 4)
+        + min(12, (buys / sells - 1) * 9)
+        + (6 if age <= 6 else 2)
+    ))
+    if score < MOMENTUM_SCORE_MIN:
+        return None
+    name = str(token.get("name") or "?")
+    symbol = str(token.get("symbol") or "?")
+    result = {
+        "mint": mint, "name": name, "symbol": symbol, "score": score,
+        "age_hours": round(age, 2), "liquidity_usd": round(liquidity, 2),
+        "volume_1h_usd": round(vol_1h, 2), "volume_24h_usd": round(vol_24h, 2),
+        "price_change_1h_pct": round(change_1h, 2),
+        "buys_1h": buys, "sells_1h": sells,
+        "url": str(pair.get("url") or "https://dexscreener.com/solana/" + mint)
+    }
+    result["text"] = (
+        "📈 FRÜHES SOLANA-MOMENTUM (kein Narrative-Match)\n\n"
+        + name + " ($" + symbol + ")\n"
+        + "Score: " + str(score) + "/100 (heuristisch, keine Gewinnchance)\n"
+        + "Pool-Alter: " + format(age, ".1f") + " h\n"
+        + "Kursänderung 1 h: " + format(change_1h, "+.1f") + " %\n"
+        + "Volumen 1 h: $" + format(vol_1h, ",.0f") + "\n"
+        + "Liquidität: $" + format(liquidity, ",.0f") + "\n"
+        + "Käufe/Verkäufe 1 h: " + str(buys) + "/" + str(sells) + "\n"
+        + "Contract: " + mint + "\n"
+        + result["url"] + "\n\n"
+        + "⚠️ Nur Marktbeobachtung, kein Kaufsignal. Handelsaktivität kann künstlich sein; "
+        + "Rugpulls, Slippage und Totalverlust sind möglich."
+    )
+    return result
+
+
+def publish_signals(trends, matched, watchlist, momentum=None):
     output = {
         "schema_version": 1,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -450,12 +513,15 @@ def publish_signals(trends, matched, watchlist):
         "chain": "solana",
         "trends": [{"term": term, "score": score, "source": source} for term, score, source in trends[:30]],
         "matches": sorted(matched.values(), key=lambda row: (-row["score"], -row["volume_24h_usd"]))[:20],
-        "watchlist": sorted(watchlist.values(), key=lambda row: -row["volume"])[:15]
+        "watchlist": sorted(watchlist.values(), key=lambda row: -row["volume"])[:15],
+        "momentum": [{key: value for key, value in item.items() if key != "text"}
+                     for item in sorted((momentum or {}).values(), key=lambda row: -row["score"])[:20]]
     }
     target = Path("signals/latest.json")
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    log.info("Published %s narrative matches and %s watchlist pools", len(output["matches"]), len(output["watchlist"]))
+    log.info("Published %s narrative matches, %s momentum signals and %s watchlist pools",
+             len(output["matches"]), len(output["momentum"]), len(output["watchlist"]))
     return output
 
 
@@ -494,6 +560,7 @@ def scan_candidates(trends, seen, profiles=None):
     log.info("Solana candidate tokens: %s", len(profiles))
     matched = {}
     watchlist = {}
+    momentum = {}
     new_alerts = {}
     for pair in candidate_pairs(profiles):
         token = pair.get("baseToken") or {}
@@ -505,6 +572,12 @@ def scan_candidates(trends, seen, profiles=None):
             old = watchlist.get(address)
             if old is None or (pool["volume"], pool["liquidity"]) > (old["volume"], old["liquidity"]):
                 watchlist[address] = pool
+        if MOMENTUM_ENABLED:
+            item = momentum_for(pair)
+            if item:
+                old = momentum.get(address)
+                if old is None or (item["score"], item["volume_1h_usd"]) > (old["score"], old["volume_1h_usd"]):
+                    momentum[address] = item
         if not trends:
             continue
         result = alert_for(pair, trends)
@@ -520,7 +593,7 @@ def scan_candidates(trends, seen, profiles=None):
             "sources": list(dict.fromkeys(t[2] for t in hits)),
             "liquidity_usd": float((pair.get("liquidity") or {}).get("usd") or 0),
             "volume_24h_usd": float((pair.get("volume") or {}).get("h24") or 0),
-            "url": str(pair.get("url") or ""),
+            "url": str(pair.get("url") or "")
         }
         old = matched.get(address)
         if old is None or (details["score"], details["volume_24h_usd"]) > (old["score"], old["volume_24h_usd"]):
@@ -530,8 +603,7 @@ def scan_candidates(trends, seen, profiles=None):
             candidate = (result["score"], result["vol"], address, result["text"])
             if previous is None or candidate[:2] > previous[:2]:
                 new_alerts[address] = candidate
-    alerts = sorted(new_alerts.values(), reverse=True)
-    return matched, watchlist, alerts
+    return matched, watchlist, sorted(new_alerts.values(), reverse=True), momentum
 
 
 def run():
