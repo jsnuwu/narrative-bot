@@ -48,6 +48,18 @@ The bot sends a daily Telegram market report when a scan runs and the report has
 
 **Important:** Two GitHub workflows exist: `Narrative Radar` for push/manual tests and `Narrative Radar Auto` for five-minute scheduled scans. If the GitHub Actions list contains no runs whose Event is `schedule`, automatic monitoring is not taking place. Check **Actions → Narrative Radar Auto** to ensure it is enabled, then check GitHub's scheduling status; scheduled workflows are best effort, and a successful manual run does not prove automatic scheduling works.
 
+## Connection to TradeBot
+
+The public feed at [signals/latest.json](signals/latest.json) is read by the always-running [TradeBot](https://github.com/jsnuwu/TradeBot) via its read-only Narrative Radar bridge. The feed contains trend terms, explicit token-name matches and a separate informational Solana watchlist. No Telegram or wallet secret is shared between repositories. The TradeBot automatically submits only **confirmed narrative matches** to its existing token analysis (subject to the user's saved settings, security controls and risk limits). **Watchlist-only entries are never bought solely for being boosted or appearing on DexScreener.**
+
+The radar feed keeps matching tokens in the JSON even after a Telegram alert was delivered; Telegram alerts themselves remain deduplicated by token. A failure, disabled Telegram notification, or missing Telegram token no longer stops the JSON feed from being generated.
+
+Pairs are requested from the [documented DexScreener batch endpoint](https://docs.dexscreener.com/api/reference), up to 30 token addresses per request, to reduce load compared with individual per-token requests. Pool candidates are deduplicated by token for the shared watchlist.
+
+### Scheduled scans and fallback
+
+GitHub Actions attempts the recurring scan every five minutes, but this is **not guaranteed**. Check the Actions event column for actual `schedule` events. If none occur, manually run [Narrative Radar Auto](.github/workflows/scheduled.yml) using *Run workflow*. The workflow also accepts `repository_dispatch` with event type `radar-scan` from a trusted external scheduler. That optional fallback requires a GitHub token with Actions permissions and must be configured securely; do not put such a token in this repo or share it in chat. The feed is deliberately considered stale by TradeBot after 45 minutes without a successful publication.
+
 ## Detection
 
 For each new candidate Solana pair, the bot matches trend terms against token name/symbol and requires pool age no more than 72 hours, liquidity of at least $8,000 and 24-hour volume of at least $3,000. These numbers can be overridden with GitHub Actions variables named `MAX_AGE_HOURS`, `MIN_LIQUIDITY_USD`, and `MIN_VOLUME_24H_USD`. The maximum number of alerts per run is five.
