@@ -18,6 +18,7 @@ Optional security setting: set the `TELEGRAM_CHAT_ID` secret to your numeric Tel
 
 - `/start` — enable notifications
 - `/status` — last scan and number of alerts
+- `/test` — send a Telegram test notification on the next GitHub Actions run
 - `/stop` — pause notifications
 - `/help` — command list
 
@@ -28,9 +29,16 @@ Commands are processed by GitHub Actions on its next scheduled run, so replies a
 - CoinGecko trending coins (public data, best effort)
 - Google News RSS search for crypto and memecoin headlines (public data, best effort)
 - DexScreener newest token profiles and boosts, plus token-pair metrics
-- X recent search (optional, needs `X_BEARER_TOKEN` API access; not required for free mode)
+- X recent search (optional paid API; requires both `X_BEARER_TOKEN` and the Actions variable `ENABLE_X_API=true`)
 
 The bot does **not** browse a logged-in X account or scrape the X website. The free mode does not claim to directly monitor X trends.
+
+### Optional X API setup and spending control
+
+Create an app in [X Developer Console](https://console.x.com), obtain its read-only Bearer Token, and store it under **Settings → Environments → env → Environment secrets** as `X_BEARER_TOKEN`. The token alone never triggers paid requests. To activate X polling, separately create an **Environment variable** named `ENABLE_X_API` with the value `true`. The default is `false`.
+
+With X enabled, the bot fetches at most **10 posts once per six hours**, using the cached terms for intermediate scans. GitHub Actions cache is best effort; reset caches or simultaneous workflow runs can cause additional API reads. The six-hour interval is configurable with `X_REFRESH_HOURS` but cannot be set below 6 hours in code. X prices public post reads on a pay-per-use basis. Set a **spending limit** in X Developer Console and keep automatic credit recharges disabled to avoid surprise bills. If you require 100% free operation, leave `ENABLE_X_API=false` and do not fund X API credits.
+
 
 ## Detection
 
