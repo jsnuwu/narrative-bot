@@ -180,16 +180,17 @@ def cached_source_terms(state, name, fetcher, interval=1800):
     cache = state.get("sources", {})
     entry = cache.get(name) or {}
     previous = float(entry.get("updated_at", 0))
-    if now - previous >= interval:
+    if now - previous >= interval or entry.get("version") != 2:
         terms = fetcher()
         if terms:
-            entry = {"updated_at": now, "terms": terms}
+            entry = {"updated_at": now, "terms": terms, "version": 2}
             cache[name] = entry
             state["sources"] = cache
             log.info("%s source: %s repeated terms", name, len(terms))
         else:
             log.warning("%s returned no repeated terms, retaining previous signals", name)
-            entry["updated_at"] = now
+            entry["updated_at"] = now - interval + min(interval, 300)
+            entry["version"] = 2
             cache[name] = entry
             state["sources"] = cache
     return entry.get("terms", {})
