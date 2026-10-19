@@ -7,12 +7,12 @@ No wallet connection, trade execution or paid hosting is required. This is an ex
 ## Activate your Telegram bot
 
 1. Open [@BotFather](https://t.me/BotFather). If you shared a bot token, revoke it with `/revoke` and generate a replacement.
-2. In this GitHub repository, open **Settings → Secrets and variables → Actions → New repository secret**.
-3. Create `TELEGRAM_BOT_TOKEN` and paste the **new** token there. Never commit it to the repository or send it in chat.
+2. In this GitHub repository, open **Settings → Environments → env → Environment secrets**.
+3. Store the current token in an environment secret named `TELEGRAM_BOT_TOKEN`. Never commit it to the repository or send it in chat.
 4. Open your Telegram bot, send `/start`, then open **Actions → Narrative Radar → Run workflow** on GitHub.
-5. The next successful workflow run answers `/start` and enables alerts for the first private chat that starts the bot. Future scheduled runs check roughly every five minutes.
+5. The next successful workflow run answers `/start` and enables alerts for the first private chat that starts the bot. The separate **Narrative Radar Auto** workflow attempts a scan every five minutes, although GitHub can delay or drop scheduled jobs.
 
-Optional security setting: set the `TELEGRAM_CHAT_ID` secret to your numeric Telegram chat ID to restrict the bot to that chat before any `/start` command. Without this value, **the first private chat to run `/start` becomes the owner**. Make sure you send `/start` yourself before running the workflow and preferably configure `TELEGRAM_CHAT_ID`.
+Optional security setting: set the `TELEGRAM_CHAT_ID` environment secret to your numeric Telegram chat ID to restrict the bot to that chat before any `/start` command. Without this value, **the first private chat to run `/start` becomes the owner**. Make sure you send `/start` yourself before running the workflow and preferably configure `TELEGRAM_CHAT_ID`.
 
 ## Commands
 
@@ -42,6 +42,12 @@ Create an app in [X Developer Console](https://console.x.com), obtain its read-o
 With X enabled, the bot fetches at most **10 posts once per six hours**, using the cached terms for intermediate scans. GitHub Actions cache is best effort; reset caches or simultaneous workflow runs can cause additional API reads. The six-hour interval is configurable with `X_REFRESH_HOURS` but cannot be set below 6 hours in code. X prices public post reads on a pay-per-use basis. Set a **spending limit** in X Developer Console and keep automatic credit recharges disabled to avoid surprise bills. If you require 100% free operation, leave `ENABLE_X_API=false` and do not fund X API credits.
 
 
+## Automatic Telegram messages
+
+The bot sends a daily Telegram market report when a scan runs and the report has not been sent for the current UTC day. It contains up to three recently detected Solana pools ranked by observed 24-hour trading volume, including name, contract, liquidity and DexScreener URL. **These are not verified narrative matches, audited projects or investment recommendations.** Set `DAILY_REPORT=false` as a GitHub environment variable to disable this message. The first successful run after enabling daily reporting sends the first report. Strict narrative-match alerts are separate and continue to run.
+
+**Important:** Two GitHub workflows exist: `Narrative Radar` for push/manual tests and `Narrative Radar Auto` for five-minute scheduled scans. If the GitHub Actions list contains no runs whose Event is `schedule`, automatic monitoring is not taking place. Check **Actions → Narrative Radar Auto** to ensure it is enabled, then check GitHub's scheduling status; scheduled workflows are best effort, and a successful manual run does not prove automatic scheduling works.
+
 ## Detection
 
 For each new candidate Solana pair, the bot matches trend terms against token name/symbol and requires pool age no more than 72 hours, liquidity of at least $8,000 and 24-hour volume of at least $3,000. These numbers can be overridden with GitHub Actions variables named `MAX_AGE_HOURS`, `MIN_LIQUIDITY_USD`, and `MIN_VOLUME_24H_USD`. The maximum number of alerts per run is five.
@@ -62,6 +68,6 @@ An optional `TELEGRAM_CHAT_ID` environment variable can preselect the owner. Run
 
 ## Operations
 
-Use **Actions → Narrative Radar → Run workflow** for a manual scan. Open the job logs to troubleshoot missing secrets or upstream API errors. Standard GitHub-hosted Actions runners are free for public repositories within GitHub's current policy.
+Use **Actions → Narrative Radar Auto → Run workflow** for a manual scan and verify scheduled events appear afterward. Open the job logs to troubleshoot missing secrets or upstream API errors. Standard GitHub-hosted Actions runners are free for public repositories within GitHub's current policy.
 
 No API token should be placed in any tracked file, workflow definition, commit or issue.
