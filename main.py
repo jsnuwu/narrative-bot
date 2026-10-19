@@ -341,6 +341,23 @@ def watchlist_candidate(pair):
     }
 
 
+def publish_signals(trends, matched, watchlist):
+    output = {
+        "schema_version": 1,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "source": "narrative-radar",
+        "chain": "solana",
+        "trends": [{"term": term, "score": score, "source": source} for term, score, source in trends[:30]],
+        "matches": sorted(matched.values(), key=lambda row: (-row["score"], -row["volume_24h_usd"]))[:20],
+        "watchlist": sorted(watchlist.values(), key=lambda row: -row["volume"])[:15]
+    }
+    target = Path("signals/latest.json")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    log.info("Published %s narrative matches and %s watchlist pools", len(output["matches"]), len(output["watchlist"]))
+    return output
+
+
 def daily_digest_text(trends, watchlist, narrative_count):
     lines = [
         "📡 NARRATIVE RADAR - Tagesbericht",
@@ -385,6 +402,7 @@ def run():
     log.info("Trend terms: %s", len(trends))
     seen = set(state.get("seen", []))
     alerts = []
+    matched = {}
     watchlist = {}
     all_candidates = candidates()
     log.info("Solana candidate tokens: %s", len(all_candidates))
@@ -399,8 +417,24 @@ def run():
                 continue
             result = alert_for(pair, trends)
             if result:
+                token = pair.get("baseToken") or {}
+                address = str(token.get("address") or "")
+                if address:
+                    hits = matching_trends(pair, trends)
+                    matched[address] = {
+                        "mint": address,
+                        "name": str(token.get("name") or ""),
+                        "symbol": str(token.get("symbol") or ""),
+                        "score": int(result["score"]),
+                        "trend_terms": [t[0] for t in hits],
+                        "sources": list(dict.fromkeys(t[2] for t in hits)),
+                        "liquidity_usd": float((pair.get("liquidity") or {}).get("usd") or 0),
+                        "volume_24h_usd": float((pair.get("volume") or {}).get("h24") or 0),
+                        "url": str(pair.get("url") or "")
+                    }
                 alerts.append((result["score"], result["vol"], key, result["text"]))
         time.sleep(0.12)
+    publish_signals(trends, matched, watchlist)
     alerts.sort(reverse=True)
     count = 0
     for _, _, key, message in alerts[:MAX_ALERTS]:
