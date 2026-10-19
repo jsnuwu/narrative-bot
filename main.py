@@ -565,12 +565,13 @@ def publish_signals(trends, matched, watchlist, momentum=None):
     return output
 
 
-def daily_digest_text(trends, watchlist, narrative_count):
+def daily_digest_text(trends, watchlist, narrative_count, momentum_count=0):
     lines = [
         "📡 NARRATIVE RADAR - Tagesbericht",
         "",
         "Trendbegriffe beobachtet: " + str(len(trends)),
-        "Bestätigte Narrative-Matches in diesem Scan: " + str(narrative_count),
+        "Narrative-Alerts in diesem Scan: " + str(narrative_count),
+        "Momentum-Alerts in diesem Scan: " + str(momentum_count),
         "",
     ]
     if watchlist:
@@ -661,25 +662,56 @@ def run():
     trends = trend_signals(state)
     log.info("Trend terms: %s", len(trends))
     seen = set(state.get("seen", []))
-    matched, watchlist, alerts = scan_candidates(trends, seen)
-    publish_signals(trends, matched, watchlist)
-    count = 0
+    profiles = candidates()
+    matched, watchlist, alerts, momentum = scan_candidates(trends, seen, profiles=profiles)
+    publish_signals(trends, matched, watchlist, momentum)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if state.get("momentum_day") != today:
+        state["momentum_day"] = today
+        state["momentum_sent_today"] = 0
+    count, momentum_count = 0, 0
     if notify:
         for _, _, key, message in alerts[:MAX_ALERTS]:
             try:
                 send(owner, message)
             except (requests.RequestException, RuntimeError) as exc:
-                log.warning("Alert delivery failed; will retry later: %s", exc)
+                log.warning("Narrative alert delivery failed; will retry later: %s", exc)
                 continue
             seen.add(key)
             count += 1
             time.sleep(0.3)
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        seen_momentum = state.get("momentum_seen") or {}
+        if not isinstance(seen_momentum, dict):
+            seen_momentum = {}
+        now_seconds = time.time()
+        seen_momentum = {mint: when for mint, when in seen_momentum.items()
+                         if isinstance(when, (float, int)) and now_seconds - when < 72 * 3600}
+        remaining = max(0, MOMENTUM_PER_DAY - int(state.get("momentum_sent_today", 0)))
+        max_new = min(remaining, MOMENTUM_PER_RUN)
+        ordered = sorted(momentum.values(),
+                         key=lambda row: (-row["score"], -row["volume_1h_usd"]))
+        for item in ordered:
+            mint = item["mint"]
+            if momentum_count >= max_new:
+                break
+            if mint in matched or mint in seen_momentum:
+                continue
+            try:
+                send(owner, item["text"])
+            except (requests.RequestException, RuntimeError) as exc:
+                log.warning("Momentum alert delivery failed; will retry later: %s", exc)
+                continue
+            seen_momentum[mint] = now_seconds
+            momentum_count += 1
+            time.sleep(0.3)
+        state["momentum_seen"] = dict(list(seen_momentum.items())[-1500:])
+        state["momentum_sent_today"] = int(state.get("momentum_sent_today", 0)) + momentum_count
+        state["momentum_alerts_sent"] = int(state.get("momentum_alerts_sent", 0)) + momentum_count
     daily_sent = False
     if notify and DAILY_REPORT and state.get("daily_report_date") != today:
         ranked = sorted(watchlist.values(), key=lambda item: (item["volume"], item["liquidity"]), reverse=True)
         try:
-            send(owner, daily_digest_text(trends, ranked, count))
+            send(owner, daily_digest_text(trends, ranked, count, momentum_count))
         except (requests.RequestException, RuntimeError) as exc:
             log.warning("Daily digest delivery failed; will retry later: %s", exc)
         else:
@@ -687,10 +719,20 @@ def run():
             daily_sent = True
     state["seen"] = sorted(seen)[-3000:]
     state["last_scan"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+    state["last_stats"] = {
+        "candidates": len(profiles), "narrative": len(matched),
+        "momentum": len(momentum), "watchlist": len(watchlist)
+    }
+    state["last_momentum"] = [
+        {key: value for key, value in item.items() if key != "text"}
+        for item in sorted(momentum.values(), key=lambda row: -row["score"])[:8]
+    ]
+    state["last_watchlist"] = sorted(
+        watchlist.values(), key=lambda row: -row["volume"])[:8]
     state["alerts_sent"] = int(state.get("alerts_sent", 0)) + count
     save_state(state)
-    log.info("Sent %s narrative alerts, daily digest: %s, matched tokens: %s, watchlist: %s",
-             count, daily_sent, len(matched), len(watchlist))
+    log.info("Sent %s narrative alerts, %s momentum alerts, digest: %s; %s narrative / %s momentum / %s watchlist",
+             count, momentum_count, daily_sent, len(matched), len(momentum), len(watchlist))
 
 if __name__ == "__main__":
     run()
