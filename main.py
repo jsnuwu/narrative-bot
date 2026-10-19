@@ -49,7 +49,7 @@ DEX_URL = "https://api.dexscreener.com"
 GECKO_URL = "https://api.geckoterminal.com/api/v2"
 SOL_MINT = "So11111111111111111111111111111111111111112"
 USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-USDT_MINT = "Es9vMFrzaCERsKR8uF1b2hGnnGRFeX72zNy8xf7TQ1ra"
+USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"
 BASE_QUOTE_MINTS = {SOL_MINT, USDC_MINT, USDT_MINT}
 
 def load_state():
