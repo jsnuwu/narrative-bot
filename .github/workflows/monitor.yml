@@ -40,6 +40,8 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          ENABLE_X_API: ${{ vars.ENABLE_X_API || 'false' }}
+          X_REFRESH_HOURS: ${{ vars.X_REFRESH_HOURS || '6' }}
           MIN_LIQUIDITY_USD: ${{ vars.MIN_LIQUIDITY_USD || '8000' }}
           MIN_VOLUME_24H_USD: ${{ vars.MIN_VOLUME_24H_USD || '3000' }}
           MAX_AGE_HOURS: ${{ vars.MAX_AGE_HOURS || '72' }}
