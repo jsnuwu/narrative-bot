@@ -35,6 +35,7 @@ latest update updates today yesterday tomorrow after before about against first 
 that these those with from what when where which their there while into over
 under very your have will been being than then once more most some only also
 like just news says said report reports share shares rise falls could would should
+ yahoo finance coindesk cryptoticker podcast weekly newsletter headline headlines
 and for the not are was were has had its but you all any new now out how
 who why usd usdt eth btc sol nft defi web3 ai airdrop pump official
 """.split())
@@ -189,7 +190,11 @@ def cached_source_terms(state, name, fetcher, interval=1800):
             state["sources"] = cache
             log.info("%s source: %s repeated terms", name, len(terms))
         else:
-            log.warning("%s returned no repeated terms, retaining previous signals", name)
+            if now - previous > 21600:
+                entry["terms"] = {}
+                log.warning("%s missing for over six hours, discarding stale terms", name)
+            else:
+                log.warning("%s returned no repeated terms, temporarily retaining recent signals", name)
             entry["updated_at"] = now - interval + min(interval, 300)
             entry["version"] = 2
             cache[name] = entry
@@ -227,7 +232,7 @@ def trend_signals(state):
         response.raise_for_status()
         root = ET.fromstring(response.content)
         for item in root.findall(".//item")[:70]:
-            headline = item.findtext("title") or ""
+            headline = (item.findtext("title") or "").rsplit(" - ", 1)[0]
             for term in extract_terms(headline):
                 scores[term] += 1
                 sources.setdefault(term, "Google News")
