@@ -34,6 +34,25 @@ class TestNarrativeRadar(unittest.TestCase):
         }
         self.assertIsNone(main.alert_for(pair, [("frogarmy", 5, "X")]))
 
+    def test_test_command_sends_alert(self):
+        update = {
+            "update_id": 400,
+            "message": {"chat": {"id": 987, "type": "private"}, "text": "/test"}
+        }
+        state = {"owner": "987", "enabled": True}
+        with patch.object(main, "telegram", return_value=[update]), patch.object(main, "send") as send, patch.object(main, "save_state"):
+            main.handle_commands(state)
+        send.assert_called_once()
+        self.assertIn("TEST-ALARM", send.call_args.args[1])
+
+    def test_x_is_opt_in(self):
+        with patch.object(main, "X_TOKEN", "configured"), patch.object(main, "X_ENABLED", False), patch.object(main, "get_json") as getter, patch.object(main.SESSION, "get") as news:
+            response = news.return_value
+            response.content = b"<rss><channel></channel></rss>"
+            main.trend_signals({})
+        self.assertTrue(any("/search/trending" in str(call) for call in getter.call_args_list))
+        self.assertFalse(any("api.x.com" in str(call) for call in getter.call_args_list))
+
     def test_first_start_registers_owner(self):
         update = {
             "update_id": 123,
