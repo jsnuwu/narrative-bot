@@ -81,18 +81,21 @@ def register_commands():
 def handle_commands(state):
     offset = int(state.get("offset", 0))
     updates = telegram("getUpdates", {"offset": offset, "limit": 100, "timeout": 0, "allowed_updates": ["message"]})
+    log.info("Telegram updates received: %s", len(updates))
     for update in updates:
         state["offset"] = max(int(state.get("offset", 0)), int(update["update_id"]) + 1)
         message = update.get("message") or {}
         chat = message.get("chat") or {}
         chat_id = str(chat.get("id", ""))
-        command = (message.get("text") or "").strip().split(" ", 1)[0].split("@", 1)[0].lower()
+        content = re.sub(r"^/\s+", "/", (message.get("text") or "").strip())
+        command = content.split(" ", 1)[0].split("@", 1)[0].lower()
         if not chat_id or chat.get("type") != "private" or command not in {"/start", "/help", "/status", "/stop"}:
             continue
         owner_id = OWNER or str(state.get("owner", ""))
         if command == "/start" and not owner_id:
             state["owner"] = chat_id
             owner_id = chat_id
+        log.info("Processing Telegram command %s", command)
         if chat_id != owner_id:
             send(chat_id, "Dieser Bot ist bereits eingerichtet.")
             continue
