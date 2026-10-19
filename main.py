@@ -87,6 +87,7 @@ def register_commands():
         {"command": "start", "description": "Benachrichtigungen aktivieren"},
         {"command": "status", "description": "Bot-Status anzeigen"},
         {"command": "test", "description": "Testnachricht aufs Handy senden"},
+        {"command": "top", "description": "Aktuelle Momentum-Token und Watchlist"},
         {"command": "stop", "description": "Benachrichtigungen pausieren"},
         {"command": "help", "description": "Alle Befehle anzeigen"}
     ]
@@ -104,7 +105,7 @@ def handle_commands(state):
         chat_id = str(chat.get("id", ""))
         content = re.sub(r"^/\s+", "/", (message.get("text") or "").strip())
         command = content.split(" ", 1)[0].split("@", 1)[0].lower()
-        if not chat_id or chat.get("type") != "private" or command not in {"/start", "/help", "/status", "/stop", "/test"}:
+        if not chat_id or chat.get("type") != "private" or command not in {"/start", "/help", "/status", "/stop", "/test", "/top"}:
             continue
         owner_id = OWNER or str(state.get("owner", ""))
         if command == "/start" and not owner_id:
@@ -122,15 +123,54 @@ def handle_commands(state):
         elif command == "/status":
             last = state.get("last_scan", "noch nicht")
             sent = int(state.get("alerts_sent", 0))
-            send(chat_id, "Narrative Radar\nStatus: " + ("aktiv" if state.get("enabled", True) else "pausiert") + "\nLetzter Scan (UTC): " + last + "\nAlerts gesamt: " + str(sent) + "\nX-Datenquelle: " + ("aktiv (kostenpflichtige API)" if X_TOKEN and X_ENABLED else "deaktiviert") + "\nScans etwa alle 5 Minuten (GitHub Actions).")
+            momentum_count = int(state.get("momentum_alerts_sent", 0))
+            stats = state.get("last_stats") or {}
+            send(chat_id, "Narrative Radar\nStatus: "
+                 + ("aktiv" if state.get("enabled", True) else "pausiert")
+                 + "\nLetzter Scan (UTC): " + last
+                 + "\nNarrative-Alerts gesamt: " + str(sent)
+                 + "\nMomentum-Alerts gesamt: " + str(momentum_count)
+                 + "\nKandidaten letzter Scan: " + str(stats.get("candidates", 0))
+                 + "\nMomentum / Narrative: "
+                 + str(stats.get("momentum", 0)) + " / " + str(stats.get("narrative", 0))
+                 + "\nX-Datenquelle: " + ("aktiv (kostenpflichtige API)" if X_TOKEN and X_ENABLED else "deaktiviert")
+                 + "\nGitHub-Zeitplan: alle 5 Minuten geplant, Ausführung nicht garantiert."
+                 + "\n/top = aktuelle Beobachtungsliste")
+        elif command == "/top":
+            send(chat_id, top_text(state))
         elif command == "/help":
-            send(chat_id, "Narrative Radar\n/start - Alerts aktivieren\n/status - Status anzeigen\n/test - Testnachricht senden\n/stop - Alerts pausieren\n/help - Befehle anzeigen\n\nAntworten erfolgen beim naechsten GitHub-Actions-Lauf.")
+            send(chat_id, "Narrative Radar\n/start - Alerts aktivieren\n/status - Status anzeigen\n/top - beobachtete Momentum-Token\n/test - Testnachricht senden\n/stop - Alerts pausieren\n/help - Befehle anzeigen\n\nAntworten erfolgen beim naechsten GitHub-Actions-Lauf.")
         else:
             state["enabled"] = True
             send(chat_id, "✅ Narrative Radar aktiviert!\n\nIch prüfe neue Solana-Token gegen öffentliche Trendsignale und sende passende Treffer.\n\n/status = Status\n/stop = Alerts pausieren\n/start = Aktivieren\n\nDie Antworten kommen beim nächsten GitHub-Actions-Lauf, nicht sofort. X-Suche braucht optional API-Zugang. Kein automatischer Handel.")
     if OWNER:
         state["owner"] = OWNER
     save_state(state)
+
+def top_text(state):
+    momentum = state.get("last_momentum") or []
+    watchlist = state.get("last_watchlist") or []
+    lines = ["🔎 SOLANA RADAR - Letzte Beobachtung", "",
+             "Letzter Scan (UTC): " + str(state.get("last_scan") or "noch keiner")]
+    if momentum:
+        lines.extend(["", "📈 Frühes Momentum (kein bestätigter Narrative-Match):"])
+        for row in momentum[:3]:
+            lines.extend([
+                str(row.get("symbol") or "?") + " | " + str(row.get("score") or 0) + "/100",
+                "Volumen 1 h: $" + format(float(row.get("volume_1h_usd") or 0), ",.0f"),
+                "Contract: " + str(row.get("mint") or ""),
+                str(row.get("url") or ""),
+                ""
+            ])
+    else:
+        lines.extend(["", "Gerade keine starken Momentum-Signale."])
+    if watchlist:
+        lines.extend(["", "Weitere neue Pools (nur Watchlist):"])
+        for row in watchlist[:3]:
+            lines.append(str(row.get("symbol") or "?") + " — " + str(row.get("url") or ""))
+    lines.extend(["", "⚠️ Kein Kaufsignal und keine Sicherheitsprüfung."])
+    return "\n".join(lines)
+
 
 def clean_term(value):
     value = re.sub(r"[^a-z0-9]+", "", value.lower())
