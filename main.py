@@ -17,6 +17,8 @@ log = logging.getLogger("narrative-bot")
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 OWNER = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 X_TOKEN = os.getenv("X_BEARER_TOKEN", "").strip()
+X_ENABLED = os.getenv("ENABLE_X_API", "false").lower() == "true"
+X_REFRESH_HOURS = max(6, float(os.getenv("X_REFRESH_HOURS", "6")))
 LIQUIDITY_MIN = float(os.getenv("MIN_LIQUIDITY_USD", "8000"))
 VOLUME_MIN = float(os.getenv("MIN_VOLUME_24H_USD", "3000"))
 MAX_AGE_HOURS = float(os.getenv("MAX_AGE_HOURS", "72"))
@@ -72,6 +74,7 @@ def register_commands():
     commands = [
         {"command": "start", "description": "Benachrichtigungen aktivieren"},
         {"command": "status", "description": "Bot-Status anzeigen"},
+        {"command": "test", "description": "Testnachricht aufs Handy senden"},
         {"command": "stop", "description": "Benachrichtigungen pausieren"},
         {"command": "help", "description": "Alle Befehle anzeigen"}
     ]
@@ -89,7 +92,7 @@ def handle_commands(state):
         chat_id = str(chat.get("id", ""))
         content = re.sub(r"^/\s+", "/", (message.get("text") or "").strip())
         command = content.split(" ", 1)[0].split("@", 1)[0].lower()
-        if not chat_id or chat.get("type") != "private" or command not in {"/start", "/help", "/status", "/stop"}:
+        if not chat_id or chat.get("type") != "private" or command not in {"/start", "/help", "/status", "/stop", "/test"}:
             continue
         owner_id = OWNER or str(state.get("owner", ""))
         if command == "/start" and not owner_id:
@@ -102,12 +105,14 @@ def handle_commands(state):
         if command == "/stop":
             state["enabled"] = False
             send(chat_id, "Benachrichtigungen pausiert. /start aktiviert sie wieder.")
+        elif command == "/test":
+            send(chat_id, "🔔 TEST-ALARM\n\nDie Telegram-Benachrichtigungen funktionieren. Dies ist kein echter Token-Fund.")
         elif command == "/status":
             last = state.get("last_scan", "noch nicht")
             sent = int(state.get("alerts_sent", 0))
-            send(chat_id, "Narrative Radar\nStatus: " + ("aktiv" if state.get("enabled", True) else "pausiert") + "\nLetzter Scan (UTC): " + last + "\nAlerts gesamt: " + str(sent) + "\nX-Datenquelle: " + ("aktiv" if X_TOKEN else "nicht konfiguriert") + "\nScans etwa alle 5 Minuten (GitHub Actions).")
+            send(chat_id, "Narrative Radar\nStatus: " + ("aktiv" if state.get("enabled", True) else "pausiert") + "\nLetzter Scan (UTC): " + last + "\nAlerts gesamt: " + str(sent) + "\nX-Datenquelle: " + ("aktiv (kostenpflichtige API)" if X_TOKEN and X_ENABLED else "deaktiviert") + "\nScans etwa alle 5 Minuten (GitHub Actions).")
         elif command == "/help":
-            send(chat_id, "Narrative Radar\n/start - Alerts aktivieren\n/status - Status anzeigen\n/stop - Alerts pausieren\n/help - Befehle anzeigen\n\nAntworten erfolgen beim naechsten GitHub-Actions-Lauf.")
+            send(chat_id, "Narrative Radar\n/start - Alerts aktivieren\n/status - Status anzeigen\n/test - Testnachricht senden\n/stop - Alerts pausieren\n/help - Befehle anzeigen\n\nAntworten erfolgen beim naechsten GitHub-Actions-Lauf.")
         else:
             state["enabled"] = True
             send(chat_id, "✅ Narrative Radar aktiviert!\n\nIch prüfe neue Solana-Token gegen öffentliche Trendsignale und sende passende Treffer.\n\n/status = Status\n/stop = Alerts pausieren\n/start = Aktivieren\n\nDie Antworten kommen beim nächsten GitHub-Actions-Lauf, nicht sofort. X-Suche braucht optional API-Zugang. Kein automatischer Handel.")
@@ -127,22 +132,31 @@ def extract_terms(text):
     matches += re.findall(r"\b[A-Z][A-Za-z0-9]{3,20}\b", text)
     return {term for raw in matches if (term := clean_term(raw))}
 
-def trend_signals():
+def trend_signals(state):
     scores = Counter()
     sources = {}
-    if X_TOKEN:
-        try:
-            payload = get_json(
-                "https://api.x.com/2/tweets/search/recent",
-                headers={"Authorization": "Bearer " + X_TOKEN},
-                params={"query": '(crypto OR memecoin OR solana OR "AI agent") lang:en -is:retweet', "max_results": 100}
-            )
-            for post in payload.get("data", []):
-                for term in extract_terms(post.get("text", "")):
-                    scores[term] += 2
-                    sources.setdefault(term, "X")
-        except (requests.RequestException, ValueError) as exc:
-            log.warning("X signal unavailable: %s", exc)
+    if X_ENABLED and X_TOKEN:
+        now = time.time()
+        previous = float(state.get("x_last_fetch", 0))
+        if now - previous >= X_REFRESH_HOURS * 3600:
+            state["x_last_fetch"] = now
+            try:
+                payload = get_json(
+                    "https://api.x.com/2/tweets/search/recent",
+                    headers={"Authorization": "Bearer " + X_TOKEN},
+                    params={"query": '(crypto OR memecoin OR solana OR "AI agent") lang:en -is:retweet', "max_results": 10}
+                )
+                terms = Counter()
+                for post in payload.get("data", []):
+                    for term in extract_terms(post.get("text", "")):
+                        terms[term] += 2
+                state["x_cached_terms"] = dict(terms.most_common(40))
+                log.info("X recent search fetched up to 10 posts")
+            except (requests.RequestException, ValueError) as exc:
+                log.warning("X signal unavailable: %s", exc)
+        for term, count in state.get("x_cached_terms", {}).items():
+            scores[term] += int(count)
+            sources.setdefault(term, "X")
     try:
         response = SESSION.get(NEWS_URL, params={"q": "(solana OR memecoin OR crypto) when:1d", "hl": "en-US", "gl": "US", "ceid": "US:en"}, timeout=18)
         response.raise_for_status()
@@ -241,7 +255,7 @@ def run():
     if not owner or not state.get("enabled", True):
         log.info("Waiting for /start or paused")
         return
-    trends = trend_signals()
+    trends = trend_signals(state)
     log.info("Trend terms: %s", len(trends))
     seen = set(state.get("seen", []))
     alerts = []
