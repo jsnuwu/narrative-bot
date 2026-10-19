@@ -83,6 +83,30 @@ class TestNarrativeRadar(unittest.TestCase):
         self.assertTrue(any("/search/trending" in str(call) for call in getter.call_args_list))
         self.assertFalse(any("api.x.com" in str(call) for call in getter.call_args_list))
 
+    def test_watchlist_candidate_liquidity_filter(self):
+        pair = {
+            "chainId": "solana",
+            "baseToken": {"name": "Example", "symbol": "EXM", "address": "example-address"},
+            "pairCreatedAt": int((time.time() - 3600) * 1000),
+            "liquidity": {"usd": 1000},
+            "volume": {"h24": 9000}
+        }
+        self.assertIsNone(main.watchlist_candidate(pair))
+
+    def test_digest_content(self):
+        item = {
+            "name": "Example", "symbol": "EXM", "age": 2.5,
+            "liquidity": 20000, "volume": 40000,
+            "address": "example-address",
+            "url": "https://dexscreener.com/solana/example"
+        }
+        text = main.daily_digest_text([], [item], 0)
+        self.assertIn("Example", text)
+        self.assertIn("kein bestätigter Narrative-Match", text)
+
+    def test_digest_empty_watchlist(self):
+        self.assertIn("keine geeigneten", main.daily_digest_text([], [], 0))
+
     def test_first_start_registers_owner(self):
         update = {
             "update_id": 123,
