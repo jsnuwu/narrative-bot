@@ -1,21 +1,11 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-19T12:26:59.455614+00:00",
+  "generated_at": "2026-10-19T12:40:32.207946+00:00",
   "source": "narrative-radar",
   "chain": "solana",
   "trends": [
     {
       "term": "boomer",
-      "score": 8,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "sui",
-      "score": 8,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "xrp",
       "score": 8,
       "source": "CoinGecko Trending"
     },
@@ -31,23 +21,8 @@
     },
     {
       "term": "prediction",
-      "score": 6,
-      "source": "Google News"
-    },
-    {
-      "term": "worth",
       "score": 5,
       "source": "Google News"
-    },
-    {
-      "term": "arb",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "arbitrum",
-      "score": 4,
-      "source": "CoinGecko Trending"
     },
     {
       "term": "bank",
@@ -55,12 +30,32 @@
       "source": "Google News"
     },
     {
-      "term": "hype",
+      "term": "bedrock",
       "score": 4,
       "source": "CoinGecko Trending"
     },
     {
-      "term": "hyperliquid",
+      "term": "billion",
+      "score": 4,
+      "source": "Google News"
+    },
+    {
+      "term": "bittensor",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "bitway",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "btw",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "celestia",
       "score": 4,
       "source": "CoinGecko Trending"
     },
@@ -140,17 +135,22 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "billion",
-      "score": 3,
+      "term": "tao",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "tia",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "worth",
+      "score": 4,
       "source": "Google News"
     },
     {
-      "term": "deutsche",
-      "score": 3,
-      "source": "Google News"
-    },
-    {
-      "term": "four",
+      "term": "access",
       "score": 3,
       "source": "Google News"
     }
@@ -158,12 +158,52 @@
   "matches": [],
   "watchlist": [
     {
+      "address": "EKosQw4oJFbXmeJ4qRnbH1quGFRTc3Eok6nwnFKDpump",
+      "name": "startupSI",
+      "symbol": "startupSI",
+      "age": 18.105335472412108,
+      "liquidity": 262557.71,
+      "volume": 5824429.66,
+      "url": "https://dexscreener.com/solana/ascpffyzxmnhhfhqqwawtcrmasguzcjtwyu6os6cqd2r",
+      "pair": "AscPffyZxMnHHFHqQWawtcrmasgUzCJtwyu6oS6CQD2R"
+    },
+    {
+      "address": "6yMZv1NgnQWBeocyfCNKmdqGr3Enu3Lrdpz3TJRvpump",
+      "name": "catonthinice",
+      "symbol": "CATONICE",
+      "age": 21.07755769063314,
+      "liquidity": 49611.13,
+      "volume": 4511306.44,
+      "url": "https://dexscreener.com/solana/2aegstad7cztrd536xtxkjky88hvthvwsda5tuctqd6v",
+      "pair": "2aegSTad7cZTrd536XtXkjkY88hvthvwsDA5TuCtQD6v"
+    },
+    {
+      "address": "GaPbQwLDPjSXGR9JxxG1aJLNthuxG58dM2XukBi8pump",
+      "name": "The French Doomsday",
+      "symbol": "Doomsday",
+      "age": 14.9211688152398,
+      "liquidity": 70457.4,
+      "volume": 1945209.89,
+      "url": "https://dexscreener.com/solana/5u57wosvaf9uyvbtw1pzyueseu2sqnqiqut1bcd5mjdl",
+      "pair": "5u57WosVAF9uyvbtw1pzYUeSeU2sqNQiQUt1bcd5MJDL"
+    },
+    {
+      "address": "Ee1b5t49HGvjB4CkxTWrWAcbXHhRyYi6nw3A96Gapump",
+      "name": "Really Worthless Asset",
+      "symbol": "RWA",
+      "age": 0.5353354036458333,
+      "liquidity": 43789.83,
+      "volume": 782456.16,
+      "url": "https://dexscreener.com/solana/dnl2poffczvtn97pwramb9vj9qwv2kyvzwtkmh9pyaci",
+      "pair": "DnL2poFFCZVTN97pWRamb9VJ9QwV2KYVzWTkMh9pYAci"
+    },
+    {
       "address": "2rLuDEBwuXM6cBAQnK2bjFYXfsUozYwXsFSmA3Eupump",
       "name": "Rip Kim Jong-Un",
       "symbol": "김정은",
-      "age": 0.9779042749023438,
-      "liquidity": 16451.69,
-      "volume": 719670.58,
+      "age": 1.2036687490505642,
+      "liquidity": 16793.41,
+      "volume": 733719.25,
       "url": "https://dexscreener.com/solana/hrzmpu1pqp5fumtjt6ji44exspqwrckhity2bnstpxab",
       "pair": "HRZmPU1pQP5fuMTjt6Ji44eXspqWRcKhitY2bnSTpXaB"
     },
@@ -171,61 +211,131 @@
       "address": "5qStJjpzRNzEqZjZFjsFmFKF7aykYhBHx6VYjTxspump",
       "name": "Kaida",
       "symbol": "Kaida",
-      "age": 19.612348727552625,
-      "liquidity": 13763.0,
-      "volume": 718320.56,
+      "age": 19.838113203803168,
+      "liquidity": 12321.71,
+      "volume": 719233.57,
       "url": "https://dexscreener.com/solana/buuhaffifwkq88zje7wi3l63ex3zurqhwlfcuxuvkxwf",
       "pair": "BuuhaffifWKQ88zje7Wi3L63Ex3ZurqhwLfcUxUvkXWf"
-    },
-    {
-      "address": "Ee1b5t49HGvjB4CkxTWrWAcbXHhRyYi6nw3A96Gapump",
-      "name": "Really Worthless Asset",
-      "symbol": "RWA",
-      "age": 0.3095709322102865,
-      "liquidity": 41577.04,
-      "volume": 625461.42,
-      "url": "https://dexscreener.com/solana/dnl2poffczvtn97pwramb9vj9qwv2kyvzwtkmh9pyaci",
-      "pair": "DnL2poFFCZVTN97pWRamb9VJ9QwV2KYVzWTkMh9pYAci"
     },
     {
       "address": "BVpFpksfdEwDgaUhZxdG8kSyfAekeYfKV4BdUfNJpump",
       "name": "SuperPursuasiveSuperIntelligence",
       "symbol": "SPSI",
-      "age": 3.4926265195041233,
-      "liquidity": 9032.41,
-      "volume": 402971.82,
+      "age": 3.718391002332899,
+      "liquidity": 8847.34,
+      "volume": 404324.33,
       "url": "https://dexscreener.com/solana/2p3ngpodd5genag6mmoxjsmmkct2tz5d9mwu2djjeube",
       "pair": "2p3NgPodD5genag6MmoXjSmmkct2tZ5D9MWu2dJJeUbe"
-    },
-    {
-      "address": "YE2mBZx8sL1bhfWpoR9dPAozmKhGE8eKa4sEEQ5pump",
-      "name": "Neetopia",
-      "symbol": "NEETOPIA",
-      "age": 1.399293175930447,
-      "liquidity": 22311.91,
-      "volume": 152504.41,
-      "url": "https://dexscreener.com/solana/7qsqastv2ifaogwqdzovctjtsr5ayhkvubfubu1kj4sm",
-      "pair": "7QSQAStv2ifaoGwQdzoVCtjtsr5AyHkvUbFuBU1kj4Sm"
     },
     {
       "address": "GWe3TNg1UPxeaSazxK8U49PDAqXCaX9Jc8zbttFLpump",
       "name": "web4",
       "symbol": "COMPUTE",
-      "age": 0.15512643846299914,
-      "liquidity": 21264.97,
-      "volume": 127679.74,
+      "age": 0.3808909495035807,
+      "liquidity": 27626.34,
+      "volume": 283803.8,
       "url": "https://dexscreener.com/solana/cye8bngpo5rzruevnjxcrh997r8crqutsuvjvpvbhbhj",
       "pair": "CYE8bNGpo5RZRUEVnjxCRh997r8crqUtSUvJVPVBHBHJ"
+    },
+    {
+      "address": "YE2mBZx8sL1bhfWpoR9dPAozmKhGE8eKa4sEEQ5pump",
+      "name": "Neetopia",
+      "symbol": "NEETOPIA",
+      "age": 1.6250576522488065,
+      "liquidity": 17357.77,
+      "volume": 156210.09,
+      "url": "https://dexscreener.com/solana/7qsqastv2ifaogwqdzovctjtsr5ayhkvubfubu1kj4sm",
+      "pair": "7QSQAStv2ifaoGwQdzoVCtjtsr5AyHkvUbFuBU1kj4Sm"
     },
     {
       "address": "2qfUSuUfKuxHyYEMYreiYdK3YyapFzbgq2c6hhfPpump",
       "name": "Larp Scanner",
       "symbol": "LARPSCAN",
-      "age": 25.041515415445964,
-      "liquidity": 12598.66,
-      "volume": 99229.68,
+      "age": 25.267279902275934,
+      "liquidity": 13200.0,
+      "volume": 98271.99,
       "url": "https://dexscreener.com/solana/2alatuc5rmitb9cobteg48deedgem1kdcuhq6vorxhmu",
       "pair": "2ALATuC5rmitB9CoBtEg48DeeDGEM1kDcuHq6VoRxHMu"
+    },
+    {
+      "address": "CvUfTWZG9cyFy2cQdK6TGypxAYu1LuEu2MgunrKzpump",
+      "name": "Grokpad",
+      "symbol": "GROKPAD",
+      "age": 0.17839095370822483,
+      "liquidity": 13656.57,
+      "volume": 83218.6,
+      "url": "https://dexscreener.com/solana/hza8sffccwugcjeuzquohnwb2p7fhvcuvr7vd7puijec",
+      "pair": "HZA8SffcCwuGcjEUzqUoHnwb2P7FhvCUVR7vd7puiJEc"
+    },
+    {
+      "address": "8SHM6trYTzWG2ynLgDpD7uxUTmVtuMqY6mZbgqb7xQAi",
+      "name": "Mymo The Cat",
+      "symbol": "MYMO",
+      "age": 0.03977980760362413,
+      "liquidity": 22045.19,
+      "volume": 50232.47,
+      "url": "https://dexscreener.com/solana/depdstp3gqbrhskxsoyuuge3cbdkucsqu3syttbkvnew",
+      "pair": "DepDstP3GqbRhSKXsoyUuGe3CBdkucsqU3syttBkvNEw"
+    },
+    {
+      "address": "5fBv8b8vUTr2XodhEXWBAEPTQ8J3iWS8vsWqx6Exfpeg",
+      "name": "Mymo The Cat",
+      "symbol": "MYMO",
+      "age": 0.04172427361382378,
+      "liquidity": 21091.37,
+      "volume": 18142.86,
+      "url": "https://dexscreener.com/solana/59iz3vxhiynxddfcvgws2hvlrycgsywbr1zzyfs9p34n",
+      "pair": "59iz3vxHiyNxddFcVGWS2hvLRYcGsYwbR1zZYfS9P34n"
+    },
+    {
+      "address": "CbsUQUF2g7QWf6GJ1gNSUUhPrVGees7TLWewpr3VsuRx",
+      "name": "Nexchain Ai",
+      "symbol": "NEX Ai",
+      "age": 0.05144638027615017,
+      "liquidity": 38544.77,
+      "volume": 12906.06,
+      "url": "https://dexscreener.com/solana/3nqaa25ja34j8gemtjk2aydfvilbgyjjjaakjqgntjmh",
+      "pair": "3nqAa25Ja34J8geMtjk2ayDFViLBgYjJjAaKJqgntjmH"
+    },
+    {
+      "address": "USoEHwaQxrdk66KrrMdd1rhzvfvUDxvNW1Kn75yPjnB",
+      "name": "United States Oil Exchange",
+      "symbol": "USOE",
+      "age": 42.1206132744005,
+      "liquidity": 75628.17,
+      "volume": 10390.75,
+      "url": "https://dexscreener.com/solana/6esbso1k12jjbebnthw8qwjprgzpu3rrmskteuiv9jif",
+      "pair": "6ESbso1k12jJBEbNthW8qwjPRGZpU3rrMskTeuiV9jiF"
+    }
+  ],
+  "momentum": [
+    {
+      "mint": "EKosQw4oJFbXmeJ4qRnbH1quGFRTc3Eok6nwnFKDpump",
+      "name": "startupSI",
+      "symbol": "startupSI",
+      "score": 91,
+      "age_hours": 18.11,
+      "liquidity_usd": 262557.71,
+      "volume_1h_usd": 292218.44,
+      "volume_24h_usd": 5824429.66,
+      "price_change_1h_pct": 36.93,
+      "buys_1h": 2236,
+      "sells_1h": 697,
+      "url": "https://dexscreener.com/solana/ascpffyzxmnhhfhqqwawtcrmasguzcjtwyu6os6cqd2r"
+    },
+    {
+      "mint": "8SHM6trYTzWG2ynLgDpD7uxUTmVtuMqY6mZbgqb7xQAi",
+      "name": "Mymo The Cat",
+      "symbol": "MYMO",
+      "score": 79,
+      "age_hours": 0.04,
+      "liquidity_usd": 22045.19,
+      "volume_1h_usd": 50232.47,
+      "volume_24h_usd": 50232.47,
+      "price_change_1h_pct": 51.48,
+      "buys_1h": 349,
+      "sells_1h": 279,
+      "url": "https://dexscreener.com/solana/depdstp3gqbrhskxsoyuuge3cbdkucsqu3syttbkvnew"
     }
   ]
 }
