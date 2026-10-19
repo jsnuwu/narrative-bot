@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-19T12:24:47.812180+00:00",
+  "generated_at": "2026-10-19T12:26:45.533689+00:00",
   "source": "narrative-radar",
   "chain": "solana",
   "trends": [
@@ -15,14 +15,14 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "week",
-      "score": 8,
-      "source": "Google News"
-    },
-    {
       "term": "xrp",
       "score": 8,
       "source": "CoinGecko Trending"
+    },
+    {
+      "term": "week",
+      "score": 7,
+      "source": "Google News"
     },
     {
       "term": "near",
@@ -31,6 +31,11 @@
     },
     {
       "term": "prediction",
+      "score": 6,
+      "source": "Google News"
+    },
+    {
+      "term": "worth",
       "score": 5,
       "source": "Google News"
     },
@@ -135,22 +140,17 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "worth",
-      "score": 4,
-      "source": "Google News"
-    },
-    {
-      "term": "biggest",
-      "score": 3,
-      "source": "Google News"
-    },
-    {
       "term": "billion",
       "score": 3,
       "source": "Google News"
     },
     {
       "term": "deutsche",
+      "score": 3,
+      "source": "Google News"
+    },
+    {
+      "term": "four",
       "score": 3,
       "source": "Google News"
     }
@@ -161,9 +161,9 @@
       "address": "5qStJjpzRNzEqZjZFjsFmFKF7aykYhBHx6VYjTxspump",
       "name": "Kaida",
       "symbol": "Kaida",
-      "age": 19.57578110446506,
-      "liquidity": 12493.8,
-      "volume": 717168.62,
+      "age": 19.608481551378038,
+      "liquidity": 14045.81,
+      "volume": 718246.72,
       "url": "https://dexscreener.com/solana/buuhaffifwkq88zje7wi3l63ex3zurqhwlfcuxuvkxwf",
       "pair": "BuuhaffifWKQ88zje7Wi3L63Ex3ZurqhwLfcUxUvkXWf"
     },
@@ -171,9 +171,9 @@
       "address": "2rLuDEBwuXM6cBAQnK2bjFYXfsUozYwXsFSmA3Eupump",
       "name": "Rip Kim Jong-Un",
       "symbol": "김정은",
-      "age": 0.9413366517469618,
-      "liquidity": 17949.71,
-      "volume": 713379.84,
+      "age": 0.9740371019829644,
+      "liquidity": 17639.78,
+      "volume": 716509.18,
       "url": "https://dexscreener.com/solana/hrzmpu1pqp5fumtjt6ji44exspqwrckhity2bnstpxab",
       "pair": "HRZmPU1pQP5fuMTjt6Ji44eXspqWRcKhitY2bnSTpXaB"
     },
@@ -181,9 +181,9 @@
       "address": "Ee1b5t49HGvjB4CkxTWrWAcbXHhRyYi6nw3A96Gapump",
       "name": "Really Worthless Asset",
       "symbol": "RWA",
-      "age": 0.2730033081732856,
-      "liquidity": 43097.86,
-      "volume": 600765.95,
+      "age": 0.3057037624782986,
+      "liquidity": 41326.58,
+      "volume": 618004.88,
       "url": "https://dexscreener.com/solana/dnl2poffczvtn97pwramb9vj9qwv2kyvzwtkmh9pyaci",
       "pair": "DnL2poFFCZVTN97pWRamb9VJ9QwV2KYVzWTkMh9pYAci"
     },
@@ -191,29 +191,19 @@
       "address": "BVpFpksfdEwDgaUhZxdG8kSyfAekeYfKV4BdUfNJpump",
       "name": "SuperPursuasiveSuperIntelligence",
       "symbol": "SPSI",
-      "age": 3.4560589002143014,
-      "liquidity": 9011.35,
-      "volume": 402878.66,
+      "age": 3.488759336005317,
+      "liquidity": 9038.92,
+      "volume": 402966.53,
       "url": "https://dexscreener.com/solana/2p3ngpodd5genag6mmoxjsmmkct2tz5d9mwu2djjeube",
       "pair": "2p3NgPodD5genag6MmoXjSmmkct2tZ5D9MWu2dJJeUbe"
-    },
-    {
-      "address": "C1DTU2bWPNDQ7MrdgKTA9Ndcf3kBRXK1wF4siNE3cya4",
-      "name": "Technoking of Tesla",
-      "symbol": "ELON",
-      "age": 1.9249477820502388,
-      "liquidity": 15367.95,
-      "volume": 334353.36,
-      "url": "https://dexscreener.com/solana/851qwnuwmcj1rnhgkm67tsy63865genuuxydpkrak1fy",
-      "pair": "851qwNuwMCJ1rNHgkM67Tsy63865genuuxYdPKrAK1fy"
     },
     {
       "address": "YE2mBZx8sL1bhfWpoR9dPAozmKhGE8eKa4sEEQ5pump",
       "name": "Neetopia",
       "symbol": "NEETOPIA",
-      "age": 1.3627255527072482,
-      "liquidity": 21567.34,
-      "volume": 152028.03,
+      "age": 1.3954259978569878,
+      "liquidity": 22332.08,
+      "volume": 152410.14,
       "url": "https://dexscreener.com/solana/7qsqastv2ifaogwqdzovctjtsr5ayhkvubfubu1kj4sm",
       "pair": "7QSQAStv2ifaoGwQdzoVCtjtsr5AyHkvUbFuBU1kj4Sm"
     },
@@ -221,9 +211,9 @@
       "address": "GWe3TNg1UPxeaSazxK8U49PDAqXCaX9Jc8zbttFLpump",
       "name": "web4",
       "symbol": "COMPUTE",
-      "age": 0.11855878858778211,
-      "liquidity": 19910.56,
-      "volume": 104490.71,
+      "age": 0.15125928582085504,
+      "liquidity": 21167.76,
+      "volume": 121863.74,
       "url": "https://dexscreener.com/solana/cye8bngpo5rzruevnjxcrh997r8crqutsuvjvpvbhbhj",
       "pair": "CYE8bNGpo5RZRUEVnjxCRh997r8crqUtSUvJVPVBHBHJ"
     },
@@ -231,9 +221,9 @@
       "address": "2qfUSuUfKuxHyYEMYreiYdK3YyapFzbgq2c6hhfPpump",
       "name": "Larp Scanner",
       "symbol": "LARPSCAN",
-      "age": 25.00494779730903,
-      "liquidity": 12638.73,
-      "volume": 99217.86,
+      "age": 25.037648228420682,
+      "liquidity": 12598.66,
+      "volume": 99229.68,
       "url": "https://dexscreener.com/solana/2alatuc5rmitb9cobteg48deedgem1kdcuhq6vorxhmu",
       "pair": "2ALATuC5rmitB9CoBtEg48DeeDGEM1kDcuHq6VoRxHMu"
     }
