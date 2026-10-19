@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - .github/workflows/monitor.yml
+      - main.py
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
