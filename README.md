@@ -17,7 +17,8 @@ Optional security setting: set the `TELEGRAM_CHAT_ID` environment secret to your
 ## Commands
 
 - `/start` — enable notifications
-- `/status` — last scan and number of alerts
+- `/status` — last scan, number of scanned candidates and separate narrative/momentum alert counters
+- `/top` — show the latest 3 momentum signals and observation-only new pools on Telegram
 - `/test` — send a Telegram test notification on the next GitHub Actions run
 - `/stop` — pause notifications
 - `/help` — command list
@@ -30,7 +31,8 @@ Commands are processed by GitHub Actions on its next scheduled run, so replies a
 - Reddit public RSS feed from r/solana (best effort; may be rate-limited)
 - CoinGecko trending coins (public data, best effort)
 - Google News RSS search for crypto and memecoin headlines (public data, best effort)
-- DexScreener newest token profiles and boosts, plus token-pair metrics
+- DexScreener newest profiles, latest/top paid boosts and community takeovers, plus batch token-pair metrics
+- GeckoTerminal public Solana new-pool feed (up to 2 pages per scan), independent of paid promotions; best effort, no API key, free-tier rate limits apply
 - X recent search (optional paid API; requires both `X_BEARER_TOKEN` and the Actions variable `ENABLE_X_API=true`)
 
 The bot does **not** browse a logged-in X account or scrape the X website. The free mode does not claim to directly monitor X trends. Public Bluesky and Reddit trend terms are refreshed at most once every 30 minutes, cached between checks, and counted only when repeated in multiple items. No social-media login or cookies are needed.
@@ -42,11 +44,24 @@ Create an app in [X Developer Console](https://console.x.com), obtain its read-o
 With X enabled, the bot fetches at most **10 posts once per six hours**, using the cached terms for intermediate scans. GitHub Actions cache is best effort; reset caches or simultaneous workflow runs can cause additional API reads. The six-hour interval is configurable with `X_REFRESH_HOURS` but cannot be set below 6 hours in code. X prices public post reads on a pay-per-use basis. Set a **spending limit** in X Developer Console and keep automatic credit recharges disabled to avoid surprise bills. If you require 100% free operation, leave `ENABLE_X_API=false` and do not fund X API credits.
 
 
+## More discoveries without X API or Telegram spam
+
+The bot now monitors two separate types of events:
+
+- **Narrative match:** A newly listed Solana token's name/symbol matches a term from public news, CoinGecko and optional Bluesky/Reddit. Telegram alerts and TradeBot auto-analysis retain their existing independent eligibility checks.
+- **Early momentum:** A **market-data-only observation**; no social-media narrative is claimed. A pool must be at most 24 hours old, with at least $12,000 liquidity, $25,000 volume over 24 h, $8,000 volume over the last hour, at least 25 buys **and** 10 sells in that hour, a buy/sell ratio of at least 1.2, a one-hour price rise between 8% and 120%, and no steeper than −15% change in the last five minutes. It must also clear a configurable heuristic score. This is a monitoring filter, **not** a prediction, security audit or buy recommendation. Volume and price movements can be manipulated. These signals are added separately to the public JSON as `momentum` and **are not submitted as automatically actionable Narrative Radar matches to TradeBot**.
+
+By default momentum alerts are enabled (`MOMENTUM_ALERTS=true`) with **at most two per successful scan and six per UTC day**. The bot remembers alerted mint addresses for 72 hours, so different pools for one token do not cause repeat alerts. These controls can be changed through GitHub environment variables `MOMENTUM_ALERTS_PER_RUN`, `MOMENTUM_ALERTS_PER_DAY` and `MOMENTUM_MIN_SCORE`. If Telegram delivery fails, an alert is not marked as sent.
+
+The `/top` command returns the last saved momentum candidates plus a short list of new pools even when no strict narrative match exists. Note that commands are processed only when a GitHub Actions scan actually runs.
+
+The public GeckoTerminal API is free but can be rate limited or temporarily unavailable. If a source fails, the other sources continue. The DexScreener token lookup remains grouped into batches of up to 30 addresses, with 120 addresses inspected per default scan (GitHub variable `MAX_TOKENS_PER_RUN` can override this). This is **not** a guarantee of complete Solana coverage.
+
 ## Automatic Telegram messages
 
-The bot sends a daily Telegram market report when a scan runs and the report has not been sent for the current UTC day. It contains up to three recently detected Solana pools ranked by observed 24-hour trading volume, including name, contract, liquidity and DexScreener URL. **These are not verified narrative matches, audited projects or investment recommendations.** Set `DAILY_REPORT=false` as a GitHub environment variable to disable this message. The first successful run after enabling daily reporting sends the first report. Strict narrative-match alerts are separate and continue to run.
+The bot sends a daily Telegram market report when a scan runs and the report has not been sent for the current UTC day. It also sends separate, rate-capped momentum notifications for qualifying market activity. It contains up to three recently detected Solana pools ranked by observed 24-hour trading volume, including name, contract, liquidity and DexScreener URL. **These are not verified narrative matches, audited projects or investment recommendations.** Set `DAILY_REPORT=false` as a GitHub environment variable to disable this message. The first successful run after enabling daily reporting sends the first report. Strict narrative-match alerts are separate and continue to run.
 
-**Important:** Two GitHub workflows exist: `Narrative Radar` for push/manual tests and `Narrative Radar Auto` for five-minute scheduled scans. If the GitHub Actions list contains no runs whose Event is `schedule`, automatic monitoring is not taking place. Check **Actions → Narrative Radar Auto** to ensure it is enabled, then check GitHub's scheduling status; scheduled workflows are best effort, and a successful manual run does not prove automatic scheduling works.
+**Important:** Two GitHub workflows exist: `Narrative Radar` for push/manual tests and `Narrative Radar Auto` for five-minute scheduled scans. If the GitHub Actions list contains no runs whose Event is `schedule`, automatic monitoring is not taking place. As of the October 19, 2026 checks, the recorded runs were push/manual-triggered, so timely unattended alerts cannot yet be guaranteed. Check **Actions → Narrative Radar Auto** to ensure it is enabled, then check GitHub's scheduling status; scheduled workflows are best effort, and a successful manual run does not prove automatic scheduling works.
 
 ## Connection to TradeBot
 

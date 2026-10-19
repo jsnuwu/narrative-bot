@@ -1,5 +1,6 @@
 import json
 import logging
+import math
 import os
 import re
 import time
@@ -22,8 +23,12 @@ X_REFRESH_HOURS = max(6, float(os.getenv("X_REFRESH_HOURS", "6")))
 LIQUIDITY_MIN = float(os.getenv("MIN_LIQUIDITY_USD", "8000"))
 VOLUME_MIN = float(os.getenv("MIN_VOLUME_24H_USD", "3000"))
 MAX_AGE_HOURS = float(os.getenv("MAX_AGE_HOURS", "72"))
-MAX_TOKENS = int(os.getenv("MAX_TOKENS_PER_RUN", "75"))
+MAX_TOKENS = max(10, min(180, int(os.getenv("MAX_TOKENS_PER_RUN", "120"))))
 MAX_ALERTS = int(os.getenv("MAX_ALERTS_PER_RUN", "5"))
+MOMENTUM_ENABLED = os.getenv("MOMENTUM_ALERTS", "true").lower() == "true"
+MOMENTUM_PER_RUN = max(0, min(4, int(os.getenv("MOMENTUM_ALERTS_PER_RUN", "2"))))
+MOMENTUM_PER_DAY = max(0, min(16, int(os.getenv("MOMENTUM_ALERTS_PER_DAY", "6"))))
+MOMENTUM_SCORE_MIN = max(40, min(95, int(os.getenv("MOMENTUM_MIN_SCORE", "60"))))
 DAILY_REPORT = os.getenv("DAILY_REPORT", "true").lower() == "true"
 STATE_PATH = Path(".state/state.json")
 SESSION = requests.Session()
@@ -41,6 +46,11 @@ who why usd usdt eth btc sol nft defi web3 ai airdrop pump official
 """.split())
 NEWS_URL = "https://news.google.com/rss/search"
 DEX_URL = "https://api.dexscreener.com"
+GECKO_URL = "https://api.geckoterminal.com/api/v2"
+SOL_MINT = "So11111111111111111111111111111111111111112"
+USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+USDT_MINT = "Es9vMFrzaCERsKR8uF1b2hGnnGRFeX72zNy8xf7TQ1ra"
+BASE_QUOTE_MINTS = {SOL_MINT, USDC_MINT, USDT_MINT}
 
 def load_state():
     try:
@@ -77,6 +87,7 @@ def register_commands():
         {"command": "start", "description": "Benachrichtigungen aktivieren"},
         {"command": "status", "description": "Bot-Status anzeigen"},
         {"command": "test", "description": "Testnachricht aufs Handy senden"},
+        {"command": "top", "description": "Aktuelle Momentum-Token und Watchlist"},
         {"command": "stop", "description": "Benachrichtigungen pausieren"},
         {"command": "help", "description": "Alle Befehle anzeigen"}
     ]
@@ -94,7 +105,7 @@ def handle_commands(state):
         chat_id = str(chat.get("id", ""))
         content = re.sub(r"^/\s+", "/", (message.get("text") or "").strip())
         command = content.split(" ", 1)[0].split("@", 1)[0].lower()
-        if not chat_id or chat.get("type") != "private" or command not in {"/start", "/help", "/status", "/stop", "/test"}:
+        if not chat_id or chat.get("type") != "private" or command not in {"/start", "/help", "/status", "/stop", "/test", "/top"}:
             continue
         owner_id = OWNER or str(state.get("owner", ""))
         if command == "/start" and not owner_id:
@@ -112,15 +123,54 @@ def handle_commands(state):
         elif command == "/status":
             last = state.get("last_scan", "noch nicht")
             sent = int(state.get("alerts_sent", 0))
-            send(chat_id, "Narrative Radar\nStatus: " + ("aktiv" if state.get("enabled", True) else "pausiert") + "\nLetzter Scan (UTC): " + last + "\nAlerts gesamt: " + str(sent) + "\nX-Datenquelle: " + ("aktiv (kostenpflichtige API)" if X_TOKEN and X_ENABLED else "deaktiviert") + "\nScans etwa alle 5 Minuten (GitHub Actions).")
+            momentum_count = int(state.get("momentum_alerts_sent", 0))
+            stats = state.get("last_stats") or {}
+            send(chat_id, "Narrative Radar\nStatus: "
+                 + ("aktiv" if state.get("enabled", True) else "pausiert")
+                 + "\nLetzter Scan (UTC): " + last
+                 + "\nNarrative-Alerts gesamt: " + str(sent)
+                 + "\nMomentum-Alerts gesamt: " + str(momentum_count)
+                 + "\nKandidaten letzter Scan: " + str(stats.get("candidates", 0))
+                 + "\nMomentum / Narrative: "
+                 + str(stats.get("momentum", 0)) + " / " + str(stats.get("narrative", 0))
+                 + "\nX-Datenquelle: " + ("aktiv (kostenpflichtige API)" if X_TOKEN and X_ENABLED else "deaktiviert")
+                 + "\nGitHub-Zeitplan: alle 5 Minuten geplant, Ausführung nicht garantiert."
+                 + "\n/top = aktuelle Beobachtungsliste")
+        elif command == "/top":
+            send(chat_id, top_text(state))
         elif command == "/help":
-            send(chat_id, "Narrative Radar\n/start - Alerts aktivieren\n/status - Status anzeigen\n/test - Testnachricht senden\n/stop - Alerts pausieren\n/help - Befehle anzeigen\n\nAntworten erfolgen beim naechsten GitHub-Actions-Lauf.")
+            send(chat_id, "Narrative Radar\n/start - Alerts aktivieren\n/status - Status anzeigen\n/top - beobachtete Momentum-Token\n/test - Testnachricht senden\n/stop - Alerts pausieren\n/help - Befehle anzeigen\n\nAntworten erfolgen beim naechsten GitHub-Actions-Lauf.")
         else:
             state["enabled"] = True
             send(chat_id, "✅ Narrative Radar aktiviert!\n\nIch prüfe neue Solana-Token gegen öffentliche Trendsignale und sende passende Treffer.\n\n/status = Status\n/stop = Alerts pausieren\n/start = Aktivieren\n\nDie Antworten kommen beim nächsten GitHub-Actions-Lauf, nicht sofort. X-Suche braucht optional API-Zugang. Kein automatischer Handel.")
     if OWNER:
         state["owner"] = OWNER
     save_state(state)
+
+def top_text(state):
+    momentum = state.get("last_momentum") or []
+    watchlist = state.get("last_watchlist") or []
+    lines = ["🔎 SOLANA RADAR - Letzte Beobachtung", "",
+             "Letzter Scan (UTC): " + str(state.get("last_scan") or "noch keiner")]
+    if momentum:
+        lines.extend(["", "📈 Frühes Momentum (kein bestätigter Narrative-Match):"])
+        for row in momentum[:3]:
+            lines.extend([
+                str(row.get("symbol") or "?") + " | " + str(row.get("score") or 0) + "/100",
+                "Volumen 1 h: $" + format(float(row.get("volume_1h_usd") or 0), ",.0f"),
+                "Contract: " + str(row.get("mint") or ""),
+                str(row.get("url") or ""),
+                ""
+            ])
+    else:
+        lines.extend(["", "Gerade keine starken Momentum-Signale."])
+    if watchlist:
+        lines.extend(["", "Weitere neue Pools (nur Watchlist):"])
+        for row in watchlist[:3]:
+            lines.append(str(row.get("symbol") or "?") + " — " + str(row.get("url") or ""))
+    lines.extend(["", "⚠️ Kein Kaufsignal und keine Sicherheitsprüfung."])
+    return "\n".join(lines)
+
 
 def clean_term(value):
     value = re.sub(r"[^a-z0-9]+", "", value.lower())
@@ -257,17 +307,76 @@ def trend_signals(state):
     ranked.sort(key=lambda x: (-x[1], x[0]))
     return ranked[:50]
 
+def gecko_new_pool_profiles(pages=2):
+    """Independent free on-chain discovery, not dependent on paid DEX profiles/boosts."""
+    results = {}
+    for page in range(1, pages + 1):
+        try:
+            payload = get_json(
+                GECKO_URL + "/networks/solana/new_pools",
+                params={"page": page},
+                headers={"Accept": "application/json"}
+            )
+            pools = payload.get("data") or []
+            if not isinstance(pools, list):
+                continue
+            for pool in pools:
+                relations = pool.get("relationships") or {}
+                base = ((relations.get("base_token") or {}).get("data") or {}).get("id") or ""
+                quote_token = ((relations.get("quote_token") or {}).get("data") or {}).get("id") or ""
+                base = str(base).removeprefix("solana_")
+                quote_token = str(quote_token).removeprefix("solana_")
+                address = quote_token if base in BASE_QUOTE_MINTS else base
+                if not re.fullmatch(r"[1-9A-HJ-NP-Za-km-z]{32,44}", address):
+                    continue
+                if address in BASE_QUOTE_MINTS:
+                    continue
+                attrs = pool.get("attributes") or {}
+                # Retain metadata only; DexScreener confirms up-to-date liquidity and price.
+                results[address] = {"chainId": "solana", "tokenAddress": address,
+                                    "source": "GeckoTerminal new pools",
+                                    "pool_created_at": attrs.get("pool_created_at")}
+        except (requests.RequestException, ValueError, TypeError, AttributeError) as exc:
+            log.warning("GeckoTerminal new pools page %s unavailable: %s", page, exc)
+            break
+    log.info("GeckoTerminal: %s independent new-pool token addresses", len(results))
+    return list(results.values())
+
+
 def candidates():
     results = {}
-    for endpoint in ("/token-profiles/latest/v1", "/token-boosts/latest/v1"):
+    for endpoint in (
+        "/token-profiles/latest/v1",
+        "/token-boosts/latest/v1",
+        "/token-boosts/top/v1",
+        "/community-takeovers/latest/v1",
+    ):
         try:
             payload = get_json(DEX_URL + endpoint)
             for item in payload if isinstance(payload, list) else []:
                 if item.get("chainId") == "solana" and item.get("tokenAddress"):
-                    results[item["tokenAddress"]] = item
-        except (requests.RequestException, ValueError) as exc:
-            log.warning("DEX candidate feed unavailable: %s", exc)
-    return list(results.values())[:MAX_TOKENS]
+                    address = str(item["tokenAddress"])
+                    if address not in results:
+                        results[address] = {**item, "source": "DexScreener promoted"}
+        except (requests.RequestException, ValueError, TypeError) as exc:
+            log.warning("DEX candidate %s unavailable: %s", endpoint, exc)
+    gecko = gecko_new_pool_profiles()
+    # New pools receive priority over paid promotion, with a reserved selection budget.
+    gecko_limit = min(len(gecko), max(20, MAX_TOKENS // 3))
+    selected = {x["tokenAddress"]: x for x in gecko[:gecko_limit]}
+    for address, info in results.items():
+        if len(selected) >= MAX_TOKENS:
+            break
+        selected.setdefault(address, info)
+    # Fill unused spots with the rest of the free new-pool feed.
+    for info in gecko[gecko_limit:]:
+        if len(selected) >= MAX_TOKENS:
+            break
+        selected.setdefault(info["tokenAddress"], info)
+    log.info("Discovery sources: DexScreener %s, GeckoTerminal %s, combined %s",
+             len(results), len(gecko), len(selected))
+    return list(selected.values())
+
 
 def candidate_pairs(profiles):
     addresses = list(dict.fromkeys(
@@ -373,7 +482,70 @@ def watchlist_candidate(pair):
     }
 
 
-def publish_signals(trends, matched, watchlist):
+def momentum_for(pair):
+    """Strict observational momentum signal, separate from a verified narrative match."""
+    if pair.get("chainId") != "solana":
+        return None
+    token = pair.get("baseToken") or {}
+    mint = str(token.get("address") or "")
+    created = pair.get("pairCreatedAt")
+    if not mint or not created or mint in BASE_QUOTE_MINTS:
+        return None
+    try:
+        age = (time.time() * 1000 - float(created)) / 3600000
+        liquidity = float((pair.get("liquidity") or {}).get("usd") or 0)
+        vol_1h = float((pair.get("volume") or {}).get("h1") or 0)
+        vol_24h = float((pair.get("volume") or {}).get("h24") or 0)
+        change_1h = float((pair.get("priceChange") or {}).get("h1") or 0)
+        change_5m = float((pair.get("priceChange") or {}).get("m5") or 0)
+        tx = (pair.get("txns") or {}).get("h1") or {}
+        buys, sells = int(tx.get("buys") or 0), int(tx.get("sells") or 0)
+    except (ValueError, TypeError, OverflowError):
+        return None
+    if not all(math.isfinite(x) for x in (age, liquidity, vol_1h, vol_24h, change_1h, change_5m)):
+        return None
+    # Avoid thin liquidity, fake single-sided trade bursts and extreme pumps.
+    if not (0 <= age <= 24 and liquidity >= 12000 and vol_1h >= 8000
+            and vol_24h >= 25000 and 8 <= change_1h <= 120
+            and change_5m >= -15 and buys >= 25 and sells >= 10
+            and buys >= 1.2 * sells):
+        return None
+    score = min(100, int(
+        12 + min(18, liquidity / 2500) + min(22, vol_1h / 2000)
+        + min(16, buys / 7) + min(14, change_1h / 4)
+        + min(12, (buys / sells - 1) * 9)
+        + (6 if age <= 6 else 2)
+    ))
+    if score < MOMENTUM_SCORE_MIN:
+        return None
+    name = str(token.get("name") or "?")
+    symbol = str(token.get("symbol") or "?")
+    result = {
+        "mint": mint, "name": name, "symbol": symbol, "score": score,
+        "age_hours": round(age, 2), "liquidity_usd": round(liquidity, 2),
+        "volume_1h_usd": round(vol_1h, 2), "volume_24h_usd": round(vol_24h, 2),
+        "price_change_1h_pct": round(change_1h, 2),
+        "buys_1h": buys, "sells_1h": sells,
+        "url": str(pair.get("url") or "https://dexscreener.com/solana/" + mint)
+    }
+    result["text"] = (
+        "📈 FRÜHES SOLANA-MOMENTUM (kein Narrative-Match)\n\n"
+        + name + " ($" + symbol + ")\n"
+        + "Score: " + str(score) + "/100 (heuristisch, keine Gewinnchance)\n"
+        + "Pool-Alter: " + format(age, ".1f") + " h\n"
+        + "Kursänderung 1 h: " + format(change_1h, "+.1f") + " %\n"
+        + "Volumen 1 h: $" + format(vol_1h, ",.0f") + "\n"
+        + "Liquidität: $" + format(liquidity, ",.0f") + "\n"
+        + "Käufe/Verkäufe 1 h: " + str(buys) + "/" + str(sells) + "\n"
+        + "Contract: " + mint + "\n"
+        + result["url"] + "\n\n"
+        + "⚠️ Nur Marktbeobachtung, kein Kaufsignal. Handelsaktivität kann künstlich sein; "
+        + "Rugpulls, Slippage und Totalverlust sind möglich."
+    )
+    return result
+
+
+def publish_signals(trends, matched, watchlist, momentum=None):
     output = {
         "schema_version": 1,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -381,21 +553,25 @@ def publish_signals(trends, matched, watchlist):
         "chain": "solana",
         "trends": [{"term": term, "score": score, "source": source} for term, score, source in trends[:30]],
         "matches": sorted(matched.values(), key=lambda row: (-row["score"], -row["volume_24h_usd"]))[:20],
-        "watchlist": sorted(watchlist.values(), key=lambda row: -row["volume"])[:15]
+        "watchlist": sorted(watchlist.values(), key=lambda row: -row["volume"])[:15],
+        "momentum": [{key: value for key, value in item.items() if key != "text"}
+                     for item in sorted((momentum or {}).values(), key=lambda row: -row["score"])[:20]]
     }
     target = Path("signals/latest.json")
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    log.info("Published %s narrative matches and %s watchlist pools", len(output["matches"]), len(output["watchlist"]))
+    log.info("Published %s narrative matches, %s momentum signals and %s watchlist pools",
+             len(output["matches"]), len(output["momentum"]), len(output["watchlist"]))
     return output
 
 
-def daily_digest_text(trends, watchlist, narrative_count):
+def daily_digest_text(trends, watchlist, narrative_count, momentum_count=0):
     lines = [
         "📡 NARRATIVE RADAR - Tagesbericht",
         "",
         "Trendbegriffe beobachtet: " + str(len(trends)),
-        "Bestätigte Narrative-Matches in diesem Scan: " + str(narrative_count),
+        "Narrative-Alerts in diesem Scan: " + str(narrative_count),
+        "Momentum-Alerts in diesem Scan: " + str(momentum_count),
         "",
     ]
     if watchlist:
@@ -425,6 +601,7 @@ def scan_candidates(trends, seen, profiles=None):
     log.info("Solana candidate tokens: %s", len(profiles))
     matched = {}
     watchlist = {}
+    momentum = {}
     new_alerts = {}
     for pair in candidate_pairs(profiles):
         token = pair.get("baseToken") or {}
@@ -436,6 +613,12 @@ def scan_candidates(trends, seen, profiles=None):
             old = watchlist.get(address)
             if old is None or (pool["volume"], pool["liquidity"]) > (old["volume"], old["liquidity"]):
                 watchlist[address] = pool
+        if MOMENTUM_ENABLED:
+            item = momentum_for(pair)
+            if item:
+                old = momentum.get(address)
+                if old is None or (item["score"], item["volume_1h_usd"]) > (old["score"], old["volume_1h_usd"]):
+                    momentum[address] = item
         if not trends:
             continue
         result = alert_for(pair, trends)
@@ -451,7 +634,7 @@ def scan_candidates(trends, seen, profiles=None):
             "sources": list(dict.fromkeys(t[2] for t in hits)),
             "liquidity_usd": float((pair.get("liquidity") or {}).get("usd") or 0),
             "volume_24h_usd": float((pair.get("volume") or {}).get("h24") or 0),
-            "url": str(pair.get("url") or ""),
+            "url": str(pair.get("url") or "")
         }
         old = matched.get(address)
         if old is None or (details["score"], details["volume_24h_usd"]) > (old["score"], old["volume_24h_usd"]):
@@ -461,8 +644,7 @@ def scan_candidates(trends, seen, profiles=None):
             candidate = (result["score"], result["vol"], address, result["text"])
             if previous is None or candidate[:2] > previous[:2]:
                 new_alerts[address] = candidate
-    alerts = sorted(new_alerts.values(), reverse=True)
-    return matched, watchlist, alerts
+    return matched, watchlist, sorted(new_alerts.values(), reverse=True), momentum
 
 
 def run():
@@ -480,25 +662,56 @@ def run():
     trends = trend_signals(state)
     log.info("Trend terms: %s", len(trends))
     seen = set(state.get("seen", []))
-    matched, watchlist, alerts = scan_candidates(trends, seen)
-    publish_signals(trends, matched, watchlist)
-    count = 0
+    profiles = candidates()
+    matched, watchlist, alerts, momentum = scan_candidates(trends, seen, profiles=profiles)
+    publish_signals(trends, matched, watchlist, momentum)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if state.get("momentum_day") != today:
+        state["momentum_day"] = today
+        state["momentum_sent_today"] = 0
+    count, momentum_count = 0, 0
     if notify:
         for _, _, key, message in alerts[:MAX_ALERTS]:
             try:
                 send(owner, message)
             except (requests.RequestException, RuntimeError) as exc:
-                log.warning("Alert delivery failed; will retry later: %s", exc)
+                log.warning("Narrative alert delivery failed; will retry later: %s", exc)
                 continue
             seen.add(key)
             count += 1
             time.sleep(0.3)
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        seen_momentum = state.get("momentum_seen") or {}
+        if not isinstance(seen_momentum, dict):
+            seen_momentum = {}
+        now_seconds = time.time()
+        seen_momentum = {mint: when for mint, when in seen_momentum.items()
+                         if isinstance(when, (float, int)) and now_seconds - when < 72 * 3600}
+        remaining = max(0, MOMENTUM_PER_DAY - int(state.get("momentum_sent_today", 0)))
+        max_new = min(remaining, MOMENTUM_PER_RUN)
+        ordered = sorted(momentum.values(),
+                         key=lambda row: (-row["score"], -row["volume_1h_usd"]))
+        for item in ordered:
+            mint = item["mint"]
+            if momentum_count >= max_new:
+                break
+            if mint in matched or mint in seen_momentum:
+                continue
+            try:
+                send(owner, item["text"])
+            except (requests.RequestException, RuntimeError) as exc:
+                log.warning("Momentum alert delivery failed; will retry later: %s", exc)
+                continue
+            seen_momentum[mint] = now_seconds
+            momentum_count += 1
+            time.sleep(0.3)
+        state["momentum_seen"] = dict(list(seen_momentum.items())[-1500:])
+        state["momentum_sent_today"] = int(state.get("momentum_sent_today", 0)) + momentum_count
+        state["momentum_alerts_sent"] = int(state.get("momentum_alerts_sent", 0)) + momentum_count
     daily_sent = False
     if notify and DAILY_REPORT and state.get("daily_report_date") != today:
         ranked = sorted(watchlist.values(), key=lambda item: (item["volume"], item["liquidity"]), reverse=True)
         try:
-            send(owner, daily_digest_text(trends, ranked, count))
+            send(owner, daily_digest_text(trends, ranked, count, momentum_count))
         except (requests.RequestException, RuntimeError) as exc:
             log.warning("Daily digest delivery failed; will retry later: %s", exc)
         else:
@@ -506,10 +719,20 @@ def run():
             daily_sent = True
     state["seen"] = sorted(seen)[-3000:]
     state["last_scan"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+    state["last_stats"] = {
+        "candidates": len(profiles), "narrative": len(matched),
+        "momentum": len(momentum), "watchlist": len(watchlist)
+    }
+    state["last_momentum"] = [
+        {key: value for key, value in item.items() if key != "text"}
+        for item in sorted(momentum.values(), key=lambda row: -row["score"])[:8]
+    ]
+    state["last_watchlist"] = sorted(
+        watchlist.values(), key=lambda row: -row["volume"])[:8]
     state["alerts_sent"] = int(state.get("alerts_sent", 0)) + count
     save_state(state)
-    log.info("Sent %s narrative alerts, daily digest: %s, matched tokens: %s, watchlist: %s",
-             count, daily_sent, len(matched), len(watchlist))
+    log.info("Sent %s narrative alerts, %s momentum alerts, digest: %s; %s narrative / %s momentum / %s watchlist",
+             count, momentum_count, daily_sent, len(matched), len(momentum), len(watchlist))
 
 if __name__ == "__main__":
     run()

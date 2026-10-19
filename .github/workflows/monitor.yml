@@ -43,8 +43,12 @@ jobs:
           MIN_LIQUIDITY_USD: ${{ vars.MIN_LIQUIDITY_USD || '8000' }}
           MIN_VOLUME_24H_USD: ${{ vars.MIN_VOLUME_24H_USD || '3000' }}
           MAX_AGE_HOURS: ${{ vars.MAX_AGE_HOURS || '72' }}
-          MAX_TOKENS_PER_RUN: ${{ vars.MAX_TOKENS_PER_RUN || '75' }}
+          MAX_TOKENS_PER_RUN: ${{ vars.MAX_TOKENS_PER_RUN || '120' }}
           MAX_ALERTS_PER_RUN: ${{ vars.MAX_ALERTS_PER_RUN || '5' }}
+          MOMENTUM_ALERTS: ${{ vars.MOMENTUM_ALERTS || 'true' }}
+          MOMENTUM_ALERTS_PER_RUN: ${{ vars.MOMENTUM_ALERTS_PER_RUN || '2' }}
+          MOMENTUM_ALERTS_PER_DAY: ${{ vars.MOMENTUM_ALERTS_PER_DAY || '6' }}
+          MOMENTUM_MIN_SCORE: ${{ vars.MOMENTUM_MIN_SCORE || '60' }}
           DAILY_REPORT: ${{ vars.DAILY_REPORT || 'true' }}
       - name: Publish public radar signal feed
         run: |
