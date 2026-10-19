@@ -24,6 +24,7 @@ VOLUME_MIN = float(os.getenv("MIN_VOLUME_24H_USD", "3000"))
 MAX_AGE_HOURS = float(os.getenv("MAX_AGE_HOURS", "72"))
 MAX_TOKENS = int(os.getenv("MAX_TOKENS_PER_RUN", "75"))
 MAX_ALERTS = int(os.getenv("MAX_ALERTS_PER_RUN", "5"))
+DAILY_REPORT = os.getenv("DAILY_REPORT", "true").lower() == "true"
 STATE_PATH = Path(".state/state.json")
 SESSION = requests.Session()
 SESSION.headers.update({"User-Agent": "narrative-radar/1.0 (personal monitoring)"})
@@ -313,6 +314,63 @@ def alert_for(pair, trends):
     )
     return {"text": text, "score": sum(t[1] for t in hits), "vol": vol}
 
+def watchlist_candidate(pair):
+    if pair.get("chainId") != "solana":
+        return None
+    token = pair.get("baseToken") or {}
+    address = str(token.get("address") or "")
+    created = pair.get("pairCreatedAt")
+    if not address or not created:
+        return None
+    age = (time.time() * 1000 - float(created)) / 3600000
+    if not 0 <= age <= min(MAX_AGE_HOURS, 48):
+        return None
+    liq = float((pair.get("liquidity") or {}).get("usd") or 0)
+    vol = float((pair.get("volume") or {}).get("h24") or 0)
+    if liq < LIQUIDITY_MIN or vol < VOLUME_MIN:
+        return None
+    return {
+        "address": address,
+        "name": str(token.get("name") or "?"),
+        "symbol": str(token.get("symbol") or "?"),
+        "age": age,
+        "liquidity": liq,
+        "volume": vol,
+        "url": str(pair.get("url") or "https://dexscreener.com/solana/" + address),
+        "pair": str(pair.get("pairAddress") or address)
+    }
+
+
+def daily_digest_text(trends, watchlist, narrative_count):
+    lines = [
+        "📡 NARRATIVE RADAR - Tagesbericht",
+        "",
+        "Trendbegriffe beobachtet: " + str(len(trends)),
+        "Bestätigte Narrative-Matches in diesem Scan: " + str(narrative_count),
+        "",
+    ]
+    if watchlist:
+        lines.append("📈 Neue Solana-Pools nach Handelsvolumen (kein bestätigter Narrative-Match):")
+        for i, item in enumerate(watchlist[:3], 1):
+            lines.extend([
+                "",
+                str(i) + ". " + item["name"] + " ($" + item["symbol"] + ")",
+                "Alter: " + format(item["age"], ".1f") + " h | Liquidität: $" + format(item["liquidity"], ",.0f"),
+                "Volumen 24 h: $" + format(item["volume"], ",.0f"),
+                "Contract: " + item["address"],
+                item["url"]
+            ])
+    else:
+        lines.append("Aktuell keine geeigneten neuen Solana-Pools in der beobachteten Auswahl.")
+    lines.extend([
+        "",
+        "⚠️ Beobachtung, keine Kaufempfehlung. Token können manipuliert sein; insbesondere bezahlte Boosts sind kein Qualitätssignal.",
+        "Für eine sofortige Testmeldung: /test",
+        "Alerts pausieren: /stop"
+    ])
+    return "\n".join(lines)
+
+
 def run():
     if not TOKEN:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret is required")
@@ -327,11 +385,17 @@ def run():
     log.info("Trend terms: %s", len(trends))
     seen = set(state.get("seen", []))
     alerts = []
-    for profile in candidates() if trends else []:
+    watchlist = {}
+    all_candidates = candidates()
+    log.info("Solana candidate tokens: %s", len(all_candidates))
+    for profile in all_candidates:
         address = profile.get("tokenAddress")
         for pair in fetch_pairs(address):
             key = pair.get("pairAddress") or address
-            if key in seen:
+            pool = watchlist_candidate(pair)
+            if pool:
+                watchlist[key] = pool
+            if key in seen or not trends:
                 continue
             result = alert_for(pair, trends)
             if result:
@@ -344,11 +408,18 @@ def run():
         seen.add(key)
         count += 1
         time.sleep(0.3)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    daily_sent = False
+    if DAILY_REPORT and state.get("daily_report_date") != today:
+        ranked = sorted(watchlist.values(), key=lambda item: (item["volume"], item["liquidity"]), reverse=True)
+        send(owner, daily_digest_text(trends, ranked, count))
+        state["daily_report_date"] = today
+        daily_sent = True
     state["seen"] = sorted(seen)[-3000:]
     state["last_scan"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     state["alerts_sent"] = int(state.get("alerts_sent", 0)) + count
     save_state(state)
-    log.info("Sent %s alerts", count)
+    log.info("Sent %s narrative alerts, daily digest: %s, watchlist: %s", count, daily_sent, len(watchlist))
 
 if __name__ == "__main__":
     run()
