@@ -134,24 +134,28 @@ def extract_terms(text):
 
 def bluesky_terms():
     terms = Counter()
-    for query in ("solana", "memecoin", "crypto"):
-        try:
-            payload = get_json(
-                "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts",
-                params={"q": query, "sort": "latest", "limit": 50}
-            )
-            for post in payload.get("posts", []):
-                record = post.get("record") or {}
-                for term in extract_terms(record.get("text", "")):
-                    terms[term] += 1
-        except (requests.RequestException, ValueError) as exc:
-            log.warning("Bluesky %s unavailable: %s", query, exc)
+    try:
+        payload = get_json(
+            "https://public.api.bsky.app/xrpc/app.bsky.feed.getFeed",
+            params={
+                "feed": "at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot",
+                "limit": 100
+            }
+        )
+        for entry in payload.get("feed", []):
+            record = (entry.get("post") or {}).get("record") or {}
+            content = record.get("text", "")
+            if not re.search(r"\b(?:crypto|solana|memecoin|memetoken|token|blockchain|defi)\b|\$[A-Za-z]{3,15}\b", content, re.IGNORECASE):
+                continue
+            for term in extract_terms(content):
+                terms[term] += 1
+    except (requests.RequestException, ValueError) as exc:
+        log.warning("Bluesky Discover feed unavailable: %s", exc)
     return {term: count for term, count in terms.most_common(70) if count >= 2}
-
 
 def reddit_terms():
     terms = Counter()
-    for subreddit in ("solana", "CryptoMoonShots", "CryptoCurrency"):
+    for subreddit in ("solana",):
         try:
             response = SESSION.get(
                 "https://www.reddit.com/r/" + subreddit + "/new/.rss",
