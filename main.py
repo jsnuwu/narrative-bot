@@ -1,5 +1,6 @@
 import json
 import logging
+import math
 import os
 import re
 import time
@@ -22,8 +23,12 @@ X_REFRESH_HOURS = max(6, float(os.getenv("X_REFRESH_HOURS", "6")))
 LIQUIDITY_MIN = float(os.getenv("MIN_LIQUIDITY_USD", "8000"))
 VOLUME_MIN = float(os.getenv("MIN_VOLUME_24H_USD", "3000"))
 MAX_AGE_HOURS = float(os.getenv("MAX_AGE_HOURS", "72"))
-MAX_TOKENS = int(os.getenv("MAX_TOKENS_PER_RUN", "75"))
+MAX_TOKENS = max(10, min(180, int(os.getenv("MAX_TOKENS_PER_RUN", "120"))))
 MAX_ALERTS = int(os.getenv("MAX_ALERTS_PER_RUN", "5"))
+MOMENTUM_ENABLED = os.getenv("MOMENTUM_ALERTS", "true").lower() == "true"
+MOMENTUM_PER_RUN = max(0, min(4, int(os.getenv("MOMENTUM_ALERTS_PER_RUN", "2"))))
+MOMENTUM_PER_DAY = max(0, min(16, int(os.getenv("MOMENTUM_ALERTS_PER_DAY", "6"))))
+MOMENTUM_SCORE_MIN = max(40, min(95, int(os.getenv("MOMENTUM_MIN_SCORE", "60"))))
 DAILY_REPORT = os.getenv("DAILY_REPORT", "true").lower() == "true"
 STATE_PATH = Path(".state/state.json")
 SESSION = requests.Session()
@@ -41,6 +46,11 @@ who why usd usdt eth btc sol nft defi web3 ai airdrop pump official
 """.split())
 NEWS_URL = "https://news.google.com/rss/search"
 DEX_URL = "https://api.dexscreener.com"
+GECKO_URL = "https://api.geckoterminal.com/api/v2"
+SOL_MINT = "So11111111111111111111111111111111111111112"
+USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+USDT_MINT = "Es9vMFrzaCERsKR8uF1b2hGnnGRFeX72zNy8xf7TQ1ra"
+BASE_QUOTE_MINTS = {SOL_MINT, USDC_MINT, USDT_MINT}
 
 def load_state():
     try:
@@ -257,17 +267,76 @@ def trend_signals(state):
     ranked.sort(key=lambda x: (-x[1], x[0]))
     return ranked[:50]
 
+def gecko_new_pool_profiles(pages=2):
+    """Independent free on-chain discovery, not dependent on paid DEX profiles/boosts."""
+    results = {}
+    for page in range(1, pages + 1):
+        try:
+            payload = get_json(
+                GECKO_URL + "/networks/solana/new_pools",
+                params={"page": page},
+                headers={"Accept": "application/json"}
+            )
+            pools = payload.get("data") or []
+            if not isinstance(pools, list):
+                continue
+            for pool in pools:
+                relations = pool.get("relationships") or {}
+                base = ((relations.get("base_token") or {}).get("data") or {}).get("id") or ""
+                quote_token = ((relations.get("quote_token") or {}).get("data") or {}).get("id") or ""
+                base = str(base).removeprefix("solana_")
+                quote_token = str(quote_token).removeprefix("solana_")
+                address = quote_token if base in BASE_QUOTE_MINTS else base
+                if not re.fullmatch(r"[1-9A-HJ-NP-Za-km-z]{32,44}", address):
+                    continue
+                if address in BASE_QUOTE_MINTS:
+                    continue
+                attrs = pool.get("attributes") or {}
+                # Retain metadata only; DexScreener confirms up-to-date liquidity and price.
+                results[address] = {"chainId": "solana", "tokenAddress": address,
+                                    "source": "GeckoTerminal new pools",
+                                    "pool_created_at": attrs.get("pool_created_at")}
+        except (requests.RequestException, ValueError, TypeError, AttributeError) as exc:
+            log.warning("GeckoTerminal new pools page %s unavailable: %s", page, exc)
+            break
+    log.info("GeckoTerminal: %s independent new-pool token addresses", len(results))
+    return list(results.values())
+
+
 def candidates():
     results = {}
-    for endpoint in ("/token-profiles/latest/v1", "/token-boosts/latest/v1"):
+    for endpoint in (
+        "/token-profiles/latest/v1",
+        "/token-boosts/latest/v1",
+        "/token-boosts/top/v1",
+        "/community-takeovers/latest/v1",
+    ):
         try:
             payload = get_json(DEX_URL + endpoint)
             for item in payload if isinstance(payload, list) else []:
                 if item.get("chainId") == "solana" and item.get("tokenAddress"):
-                    results[item["tokenAddress"]] = item
-        except (requests.RequestException, ValueError) as exc:
-            log.warning("DEX candidate feed unavailable: %s", exc)
-    return list(results.values())[:MAX_TOKENS]
+                    address = str(item["tokenAddress"])
+                    if address not in results:
+                        results[address] = {**item, "source": "DexScreener promoted"}
+        except (requests.RequestException, ValueError, TypeError) as exc:
+            log.warning("DEX candidate %s unavailable: %s", endpoint, exc)
+    gecko = gecko_new_pool_profiles()
+    # New pools receive priority over paid promotion, with a reserved selection budget.
+    gecko_limit = min(len(gecko), max(20, MAX_TOKENS // 3))
+    selected = {x["tokenAddress"]: x for x in gecko[:gecko_limit]}
+    for address, info in results.items():
+        if len(selected) >= MAX_TOKENS:
+            break
+        selected.setdefault(address, info)
+    # Fill unused spots with the rest of the free new-pool feed.
+    for info in gecko[gecko_limit:]:
+        if len(selected) >= MAX_TOKENS:
+            break
+        selected.setdefault(info["tokenAddress"], info)
+    log.info("Discovery sources: DexScreener %s, GeckoTerminal %s, combined %s",
+             len(results), len(gecko), len(selected))
+    return list(selected.values())
+
 
 def candidate_pairs(profiles):
     addresses = list(dict.fromkeys(
