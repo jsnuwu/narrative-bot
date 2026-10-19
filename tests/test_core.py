@@ -174,6 +174,40 @@ class TestNarrativeRadar(unittest.TestCase):
     def test_digest_empty_watchlist(self):
         self.assertIn("keine geeigneten", main.daily_digest_text([], [], 0))
 
+    def test_expired_social_cache_is_not_reused(self):
+        state = {"sources": {"Reddit": {"updated_at": 1000, "version": 2,
+                                        "terms": {"oldtrend": 5}}}}
+        with patch.object(main.time, "time", return_value=1000 + 7 * 3600):
+            result = main.cached_source_terms(state, "Reddit", lambda: {})
+        self.assertEqual(result, {})
+
+    def test_failed_telegram_alert_is_retryable_and_feed_is_published(self):
+        pair = {
+            "chainId": "solana",
+            "baseToken": {"name": "FrogArmy", "symbol": "FROGARMY",
+                          "address": "token-frog"},
+            "pairAddress": "pool-frog",
+            "pairCreatedAt": int((time.time() - 3600) * 1000),
+            "liquidity": {"usd": 22000},
+            "volume": {"h24": 35000}
+        }
+        state = {"owner": "123", "enabled": True}
+        with patch.object(main, "TOKEN", "not-a-real-token"), \
+                patch.object(main, "load_state", return_value=state), \
+                patch.object(main, "register_commands"), \
+                patch.object(main, "handle_commands"), \
+                patch.object(main, "save_state") as saved, \
+                patch.object(main, "trend_signals", return_value=[("frogarmy", 5, "Reddit")]), \
+                patch.object(main, "candidate_pairs", return_value=[pair]), \
+                patch.object(main, "candidates", return_value=[]), \
+                patch.object(main, "publish_signals") as published, \
+                patch.object(main, "send", side_effect=RuntimeError("Telegram unavailable")):
+            main.run()
+        published.assert_called_once()
+        saved.assert_called_once()
+        self.assertEqual(state["seen"], [])
+        self.assertEqual(state["alerts_sent"], 0)
+
     def test_first_start_registers_owner(self):
         update = {
             "update_id": 123,
