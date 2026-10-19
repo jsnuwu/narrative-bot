@@ -35,6 +35,7 @@ latest update updates today yesterday tomorrow after before about against first 
 that these those with from what when where which their there while into over
 under very your have will been being than then once more most some only also
 like just news says said report reports share shares rise falls could would should
+ yahoo finance coindesk cryptoticker podcast weekly newsletter headline headlines
 and for the not are was were has had its but you all any new now out how
 who why usd usdt eth btc sol nft defi web3 ai airdrop pump official
 """.split())
@@ -189,7 +190,11 @@ def cached_source_terms(state, name, fetcher, interval=1800):
             state["sources"] = cache
             log.info("%s source: %s repeated terms", name, len(terms))
         else:
-            log.warning("%s returned no repeated terms, retaining previous signals", name)
+            if now - previous > 21600:
+                entry["terms"] = {}
+                log.warning("%s missing for over six hours, discarding stale terms", name)
+            else:
+                log.warning("%s returned no repeated terms, temporarily retaining recent signals", name)
             entry["updated_at"] = now - interval + min(interval, 300)
             entry["version"] = 2
             cache[name] = entry
@@ -227,7 +232,7 @@ def trend_signals(state):
         response.raise_for_status()
         root = ET.fromstring(response.content)
         for item in root.findall(".//item")[:70]:
-            headline = item.findtext("title") or ""
+            headline = (item.findtext("title") or "").rsplit(" - ", 1)[0]
             for term in extract_terms(headline):
                 scores[term] += 1
                 sources.setdefault(term, "Google News")
@@ -263,6 +268,33 @@ def candidates():
         except (requests.RequestException, ValueError) as exc:
             log.warning("DEX candidate feed unavailable: %s", exc)
     return list(results.values())[:MAX_TOKENS]
+
+def candidate_pairs(profiles):
+    addresses = list(dict.fromkeys(
+        str(profile.get("tokenAddress") or "").strip()
+        for profile in profiles
+        if profile.get("chainId") == "solana" and profile.get("tokenAddress")
+    ))[:MAX_TOKENS]
+    pairs = {}
+    for offset in range(0, len(addresses), 30):
+        batch = addresses[offset:offset + 30]
+        try:
+            payload = get_json(DEX_URL + "/tokens/v1/solana/" + ",".join(quote(a, safe="") for a in batch))
+            allowed = set(batch)
+            for pair in payload if isinstance(payload, list) else []:
+                if pair.get("chainId") != "solana":
+                    continue
+                if str((pair.get("baseToken") or {}).get("address") or "") not in allowed:
+                    continue
+                key = str(pair.get("pairAddress") or "")
+                if key:
+                    pairs[key] = pair
+        except (requests.RequestException, ValueError) as exc:
+            log.warning("DEX batch lookup failed (%s addresses): %s", len(batch), exc)
+    log.info("DEX: %s addresses resolved to %s pairs in %s batches",
+             len(addresses), len(pairs), (len(addresses) + 29) // 30)
+    return list(pairs.values())
+
 
 def fetch_pairs(address):
     try:
@@ -388,72 +420,96 @@ def daily_digest_text(trends, watchlist, narrative_count):
     return "\n".join(lines)
 
 
+def scan_candidates(trends, seen, profiles=None):
+    profiles = candidates() if profiles is None else profiles
+    log.info("Solana candidate tokens: %s", len(profiles))
+    matched = {}
+    watchlist = {}
+    new_alerts = {}
+    for pair in candidate_pairs(profiles):
+        token = pair.get("baseToken") or {}
+        address = str(token.get("address") or "")
+        if not address:
+            continue
+        pool = watchlist_candidate(pair)
+        if pool:
+            old = watchlist.get(address)
+            if old is None or (pool["volume"], pool["liquidity"]) > (old["volume"], old["liquidity"]):
+                watchlist[address] = pool
+        if not trends:
+            continue
+        result = alert_for(pair, trends)
+        if not result:
+            continue
+        hits = matching_trends(pair, trends)
+        details = {
+            "mint": address,
+            "name": str(token.get("name") or ""),
+            "symbol": str(token.get("symbol") or ""),
+            "score": int(result["score"]),
+            "trend_terms": [t[0] for t in hits],
+            "sources": list(dict.fromkeys(t[2] for t in hits)),
+            "liquidity_usd": float((pair.get("liquidity") or {}).get("usd") or 0),
+            "volume_24h_usd": float((pair.get("volume") or {}).get("h24") or 0),
+            "url": str(pair.get("url") or ""),
+        }
+        old = matched.get(address)
+        if old is None or (details["score"], details["volume_24h_usd"]) > (old["score"], old["volume_24h_usd"]):
+            matched[address] = details
+        if address not in seen:
+            previous = new_alerts.get(address)
+            candidate = (result["score"], result["vol"], address, result["text"])
+            if previous is None or candidate[:2] > previous[:2]:
+                new_alerts[address] = candidate
+    alerts = sorted(new_alerts.values(), reverse=True)
+    return matched, watchlist, alerts
+
+
 def run():
-    if not TOKEN:
-        raise RuntimeError("TELEGRAM_BOT_TOKEN secret is required")
-    register_commands()
     state = load_state()
-    handle_commands(state)
+    if TOKEN:
+        try:
+            register_commands()
+            handle_commands(state)
+        except (requests.RequestException, RuntimeError, ValueError) as exc:
+            log.warning("Telegram command processing unavailable; continuing data feed: %s", exc)
+    else:
+        log.warning("Telegram token missing; scanning for TradeBot feed without Telegram notifications")
     owner = OWNER or str(state.get("owner", ""))
-    if not owner or not state.get("enabled", True):
-        log.info("Waiting for /start or paused")
-        return
+    notify = bool(TOKEN and owner and state.get("enabled", True))
     trends = trend_signals(state)
     log.info("Trend terms: %s", len(trends))
     seen = set(state.get("seen", []))
-    alerts = []
-    matched = {}
-    watchlist = {}
-    all_candidates = candidates()
-    log.info("Solana candidate tokens: %s", len(all_candidates))
-    for profile in all_candidates:
-        address = profile.get("tokenAddress")
-        for pair in fetch_pairs(address):
-            key = pair.get("pairAddress") or address
-            pool = watchlist_candidate(pair)
-            if pool:
-                watchlist[key] = pool
-            if key in seen or not trends:
-                continue
-            result = alert_for(pair, trends)
-            if result:
-                token = pair.get("baseToken") or {}
-                address = str(token.get("address") or "")
-                if address:
-                    hits = matching_trends(pair, trends)
-                    matched[address] = {
-                        "mint": address,
-                        "name": str(token.get("name") or ""),
-                        "symbol": str(token.get("symbol") or ""),
-                        "score": int(result["score"]),
-                        "trend_terms": [t[0] for t in hits],
-                        "sources": list(dict.fromkeys(t[2] for t in hits)),
-                        "liquidity_usd": float((pair.get("liquidity") or {}).get("usd") or 0),
-                        "volume_24h_usd": float((pair.get("volume") or {}).get("h24") or 0),
-                        "url": str(pair.get("url") or "")
-                    }
-                alerts.append((result["score"], result["vol"], key, result["text"]))
-        time.sleep(0.12)
+    matched, watchlist, alerts = scan_candidates(trends, seen)
     publish_signals(trends, matched, watchlist)
-    alerts.sort(reverse=True)
     count = 0
-    for _, _, key, message in alerts[:MAX_ALERTS]:
-        send(owner, message)
-        seen.add(key)
-        count += 1
-        time.sleep(0.3)
+    if notify:
+        for _, _, key, message in alerts[:MAX_ALERTS]:
+            try:
+                send(owner, message)
+            except (requests.RequestException, RuntimeError) as exc:
+                log.warning("Alert delivery failed; will retry later: %s", exc)
+                continue
+            seen.add(key)
+            count += 1
+            time.sleep(0.3)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     daily_sent = False
-    if DAILY_REPORT and state.get("daily_report_date") != today:
+    if notify and DAILY_REPORT and state.get("daily_report_date") != today:
         ranked = sorted(watchlist.values(), key=lambda item: (item["volume"], item["liquidity"]), reverse=True)
-        send(owner, daily_digest_text(trends, ranked, count))
-        state["daily_report_date"] = today
-        daily_sent = True
+        try:
+            send(owner, daily_digest_text(trends, ranked, count))
+        except (requests.RequestException, RuntimeError) as exc:
+            log.warning("Daily digest delivery failed; will retry later: %s", exc)
+        else:
+            state["daily_report_date"] = today
+            daily_sent = True
     state["seen"] = sorted(seen)[-3000:]
     state["last_scan"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     state["alerts_sent"] = int(state.get("alerts_sent", 0)) + count
     save_state(state)
-    log.info("Sent %s narrative alerts, daily digest: %s, watchlist: %s", count, daily_sent, len(watchlist))
+    log.info("Sent %s narrative alerts, daily digest: %s, matched tokens: %s, watchlist: %s",
+             count, daily_sent, len(matched), len(watchlist))
 
 if __name__ == "__main__":
     run()

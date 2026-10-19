@@ -54,6 +54,73 @@ class TestNarrativeRadar(unittest.TestCase):
         self.assertIsNotNone(alert)
         self.assertIn("FrogArmy", alert["text"])
 
+    def test_candidate_pair_batches_and_filters_unrequested_tokens(self):
+        def profile(address):
+            return {"chainId": "solana", "tokenAddress": address}
+        profiles = [profile("valid-" + str(i)) for i in range(31)]
+        def mocked_get(url, **kwargs):
+            self.assertIn("/tokens/v1/solana/", url)
+            addresses = set(url.rsplit("/", 1)[-1].split(","))
+            data = [{
+                "chainId": "solana",
+                "pairAddress": "pool-" + address,
+                "baseToken": {"address": address},
+            } for address in addresses]
+            data.append({"chainId": "solana", "pairAddress": "fake",
+                         "baseToken": {"address": "unrequested"}})
+            return data
+        with patch.object(main, "get_json", side_effect=mocked_get) as getter:
+            pairs = main.candidate_pairs(profiles)
+        self.assertEqual(getter.call_count, 2)
+        self.assertEqual(len(pairs), 31)
+        self.assertNotIn("fake", {pair["pairAddress"] for pair in pairs})
+
+    def test_seen_telegram_alert_remains_in_tradebot_feed(self):
+        pair = {
+            "chainId": "solana",
+            "baseToken": {"name": "FrogArmy", "symbol": "FROGARMY",
+                          "address": "token-frog"},
+            "pairAddress": "pool-frog",
+            "pairCreatedAt": int((time.time() - 3600) * 1000),
+            "liquidity": {"usd": 22000},
+            "volume": {"h24": 35000},
+        }
+        with patch.object(main, "candidate_pairs", return_value=[pair]):
+            matches, watchlist, alerts = main.scan_candidates(
+                [("frogarmy", 5, "Google News")], {"token-frog"},
+                profiles=[{"chainId": "solana", "tokenAddress": "token-frog"}])
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(len(watchlist), 1)
+        self.assertEqual(alerts, [])
+
+    def test_multiple_pools_deduplicated_into_best_watchlist(self):
+        token = {"name": "FrogArmy", "symbol": "FROGARMY", "address": "token-frog"}
+        def pool(name, vol):
+            return {"chainId": "solana", "baseToken": token, "pairAddress": name,
+                    "pairCreatedAt": int((time.time() - 3600) * 1000),
+                    "liquidity": {"usd": 25000}, "volume": {"h24": vol}}
+        with patch.object(main, "candidate_pairs",
+                          return_value=[pool("p1", 12000), pool("p2", 25000)]):
+            matched, watchlist, alerts = main.scan_candidates(
+                [("frogarmy", 5, "Reddit")], set(), profiles=[])
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(len(watchlist), 1)
+        self.assertEqual(watchlist["token-frog"]["volume"], 25000)
+        self.assertEqual(len(alerts), 1)
+
+    def test_feed_still_published_with_telegram_notifications_off(self):
+        saved_state = {"owner": "999", "enabled": False}
+        with patch.object(main, "TOKEN", ""), patch.object(main, "load_state", return_value=saved_state), \
+                patch.object(main, "save_state") as saved, \
+                patch.object(main, "trend_signals", return_value=[]), \
+                patch.object(main, "scan_candidates", return_value=({}, {}, [])), \
+                patch.object(main, "publish_signals") as publish, \
+                patch.object(main, "send") as sending:
+            main.run()
+        publish.assert_called_once()
+        saved.assert_called_once()
+        sending.assert_not_called()
+
     def test_old_pair_rejected(self):
         pair = {
             "chainId": "solana",
@@ -106,6 +173,40 @@ class TestNarrativeRadar(unittest.TestCase):
 
     def test_digest_empty_watchlist(self):
         self.assertIn("keine geeigneten", main.daily_digest_text([], [], 0))
+
+    def test_expired_social_cache_is_not_reused(self):
+        state = {"sources": {"Reddit": {"updated_at": 1000, "version": 2,
+                                        "terms": {"oldtrend": 5}}}}
+        with patch.object(main.time, "time", return_value=1000 + 7 * 3600):
+            result = main.cached_source_terms(state, "Reddit", lambda: {})
+        self.assertEqual(result, {})
+
+    def test_failed_telegram_alert_is_retryable_and_feed_is_published(self):
+        pair = {
+            "chainId": "solana",
+            "baseToken": {"name": "FrogArmy", "symbol": "FROGARMY",
+                          "address": "token-frog"},
+            "pairAddress": "pool-frog",
+            "pairCreatedAt": int((time.time() - 3600) * 1000),
+            "liquidity": {"usd": 22000},
+            "volume": {"h24": 35000}
+        }
+        state = {"owner": "123", "enabled": True}
+        with patch.object(main, "TOKEN", "not-a-real-token"), \
+                patch.object(main, "load_state", return_value=state), \
+                patch.object(main, "register_commands"), \
+                patch.object(main, "handle_commands"), \
+                patch.object(main, "save_state") as saved, \
+                patch.object(main, "trend_signals", return_value=[("frogarmy", 5, "Reddit")]), \
+                patch.object(main, "candidate_pairs", return_value=[pair]), \
+                patch.object(main, "candidates", return_value=[]), \
+                patch.object(main, "publish_signals") as published, \
+                patch.object(main, "send", side_effect=RuntimeError("Telegram unavailable")):
+            main.run()
+        published.assert_called_once()
+        saved.assert_called_once()
+        self.assertEqual(state["seen"], [])
+        self.assertEqual(state["alerts_sent"], 0)
 
     def test_first_start_registers_owner(self):
         update = {
