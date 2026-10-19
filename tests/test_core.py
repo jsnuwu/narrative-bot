@@ -10,6 +10,36 @@ class TestNarrativeRadar(unittest.TestCase):
         self.assertIn("frogarmy", terms)
         self.assertNotIn("solana", terms)
 
+    def test_bluesky_signal_counting(self):
+        posts = [
+            {"record": {"text": "#FrogArmy on Solana"}},
+            {"record": {"text": "Joining $FROGARMY right now"}},
+            {"record": {"text": "Another #FrogArmy update"}}
+        ]
+        with patch.object(main, "get_json", return_value={"posts": posts}):
+            result = main.bluesky_terms()
+        self.assertGreaterEqual(result["frogarmy"], 3)
+
+    def test_reddit_rss_counting(self):
+        rss = b"""<?xml version="1.0" encoding="UTF-8"?>
+        <feed xmlns="http://www.w3.org/2005/Atom">
+            <entry><title>$FROGARMY launches</title></entry>
+            <entry><title>More on #FrogArmy</title></entry>
+        </feed>"""
+        with patch.object(main.SESSION, "get") as getter:
+            getter.return_value.content = rss
+            result = main.reddit_terms()
+        self.assertGreaterEqual(result["frogarmy"], 2)
+
+    def test_cached_public_signals(self):
+        state = {}
+        with patch.object(main.time, "time", return_value=2000):
+            first = main.cached_source_terms(state, "Bluesky", lambda: {"frogarmy": 4})
+        with patch.object(main.time, "time", return_value=2100):
+            second = main.cached_source_terms(state, "Bluesky", lambda: {"other": 7})
+        self.assertEqual(first, second)
+        self.assertEqual(state["sources"]["Bluesky"]["terms"]["frogarmy"], 4)
+
     def test_new_pair_alert(self):
         pair = {
             "chainId": "solana",
