@@ -132,6 +132,65 @@ def extract_terms(text):
     matches += re.findall(r"\b[A-Z][A-Za-z0-9]{3,20}\b", text)
     return {term for raw in matches if (term := clean_term(raw))}
 
+def bluesky_terms():
+    terms = Counter()
+    for query in ("solana", "memecoin", "crypto"):
+        try:
+            payload = get_json(
+                "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts",
+                params={"q": query, "sort": "latest", "limit": 50}
+            )
+            for post in payload.get("posts", []):
+                record = post.get("record") or {}
+                for term in extract_terms(record.get("text", "")):
+                    terms[term] += 1
+        except (requests.RequestException, ValueError) as exc:
+            log.warning("Bluesky %s unavailable: %s", query, exc)
+    return {term: count for term, count in terms.most_common(70) if count >= 2}
+
+
+def reddit_terms():
+    terms = Counter()
+    for subreddit in ("solana", "CryptoMoonShots", "CryptoCurrency"):
+        try:
+            response = SESSION.get(
+                "https://www.reddit.com/r/" + subreddit + "/new/.rss",
+                params={"limit": 35},
+                timeout=18,
+                headers={"User-Agent": "narrative-radar/1.0 personal research bot"}
+            )
+            response.raise_for_status()
+            root = ET.fromstring(response.content)
+            entries = root.findall("{http://www.w3.org/2005/Atom}entry")
+            for entry in entries:
+                title = entry.findtext("{http://www.w3.org/2005/Atom}title") or ""
+                for term in extract_terms(title):
+                    terms[term] += 1
+        except (requests.RequestException, ET.ParseError) as exc:
+            log.warning("Reddit %s unavailable: %s", subreddit, exc)
+    return {term: count for term, count in terms.most_common(70) if count >= 2}
+
+
+def cached_source_terms(state, name, fetcher, interval=1800):
+    now = time.time()
+    cache = state.get("sources", {})
+    entry = cache.get(name) or {}
+    previous = float(entry.get("updated_at", 0))
+    if now - previous >= interval:
+        terms = fetcher()
+        if terms:
+            entry = {"updated_at": now, "terms": terms}
+            cache[name] = entry
+            state["sources"] = cache
+            log.info("%s source: %s repeated terms", name, len(terms))
+        else:
+            log.warning("%s returned no repeated terms, retaining previous signals", name)
+            entry["updated_at"] = now
+            cache[name] = entry
+            state["sources"] = cache
+    return entry.get("terms", {})
+
+
 def trend_signals(state):
     scores = Counter()
     sources = {}
@@ -179,9 +238,13 @@ def trend_signals(state):
                     sources[term] = "CoinGecko Trending"
     except (requests.RequestException, ValueError) as exc:
         log.warning("CoinGecko signal unavailable: %s", exc)
+    for name, collector in (("Bluesky", bluesky_terms), ("Reddit", reddit_terms)):
+        for term, count in cached_source_terms(state, name, collector).items():
+            scores[term] += min(int(count), 12)
+            sources.setdefault(term, name)
     ranked = [(term, count, sources[term]) for term, count in scores.items() if count >= 2]
     ranked.sort(key=lambda x: (-x[1], x[0]))
-    return ranked[:35]
+    return ranked[:50]
 
 def candidates():
     results = {}
