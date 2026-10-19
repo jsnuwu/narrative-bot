@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   scan:
+    environment: env
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
