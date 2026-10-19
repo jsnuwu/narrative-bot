@@ -1,6 +1,6 @@
 # Narrative Radar
 
-Telegram alert bot for emerging crypto narratives and recently listed Solana pairs. It reads public Bluesky posts, Reddit community RSS feeds, CoinGecko trending coins and crypto-related Google News headlines, optionally checks X recent search only when paid API access is explicitly enabled, and compares those signals with recently profiled or boosted tokens on DexScreener.
+Telegram alert bot for emerging crypto narratives and recently listed Solana pairs. It reads the public Bluesky Discover feed, Reddit community RSS, CoinGecko trending coins and crypto-related Google News headlines, optionally checks X recent search only when paid API access is explicitly enabled, and compares those signals with recently profiled or boosted tokens on DexScreener.
 
 No wallet connection, trade execution or paid hosting is required. This is an experimental keyword monitor, not investment advice or a scam detector.
 
@@ -26,8 +26,8 @@ Commands are processed by GitHub Actions on its next scheduled run, so replies a
 
 ## Data sources
 
-- Bluesky public recent-post search about Solana, memecoins and crypto (no account or API key, best effort)
-- Reddit public RSS feeds from r/solana, r/CryptoMoonShots and r/CryptoCurrency (best effort, may be rate-limited)
+- Bluesky public Discover feed, filtering crypto and Solana posts (no account or API key, best effort; not a platform-wide search)
+- Reddit public RSS feed from r/solana (best effort; may be rate-limited)
 - CoinGecko trending coins (public data, best effort)
 - Google News RSS search for crypto and memecoin headlines (public data, best effort)
 - DexScreener newest token profiles and boosts, plus token-pair metrics
