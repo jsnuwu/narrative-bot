@@ -1,26 +1,21 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-25T21:42:58.095552+00:00",
+  "generated_at": "2026-10-25T23:36:39.598329+00:00",
   "source": "narrative-radar",
   "chain": "solana",
   "trends": [
     {
       "term": "netanyahu",
-      "score": 12,
+      "score": 10,
+      "source": "Google News"
+    },
+    {
+      "term": "prediction",
+      "score": 10,
       "source": "Google News"
     },
     {
       "term": "remittix",
-      "score": 12,
-      "source": "Google News"
-    },
-    {
-      "term": "aave",
-      "score": 9,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "prediction",
       "score": 9,
       "source": "Google News"
     },
@@ -30,7 +25,17 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "ondo",
+      "term": "ore",
+      "score": 8,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "pearl",
+      "score": 8,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "pepe",
       "score": 8,
       "source": "CoinGecko Trending"
     },
@@ -38,31 +43,6 @@
       "term": "pepina",
       "score": 8,
       "source": "CoinGecko Trending"
-    },
-    {
-      "term": "stonk",
-      "score": 8,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "sui",
-      "score": 8,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "xrp",
-      "score": 8,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "stocks",
-      "score": 7,
-      "source": "Google News"
-    },
-    {
-      "term": "week",
-      "score": 7,
-      "source": "Google News"
     },
     {
       "term": "zcash",
@@ -75,49 +55,39 @@
       "source": "Google News"
     },
     {
+      "term": "week",
+      "score": 6,
+      "source": "Google News"
+    },
+    {
       "term": "backpack",
       "score": 5,
       "source": "Reddit"
     },
     {
+      "term": "stocks",
+      "score": 5,
+      "source": "Google News"
+    },
+    {
+      "term": "aero",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "aerodromefinance",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
       "term": "below",
-      "score": 5,
-      "source": "Google News"
-    },
-    {
-      "term": "earn",
-      "score": 5,
-      "source": "Google News"
-    },
-    {
-      "term": "earnings",
-      "score": 5,
-      "source": "Google News"
-    },
-    {
-      "term": "funds",
-      "score": 5,
-      "source": "Google News"
-    },
-    {
-      "term": "testers",
-      "score": 5,
-      "source": "Google News"
-    },
-    {
-      "term": "tokenized",
-      "score": 5,
-      "source": "Google News"
-    },
-    {
-      "term": "best",
       "score": 4,
       "source": "Google News"
     },
     {
-      "term": "coinbase",
+      "term": "canton",
       "score": 4,
-      "source": "Google News"
+      "source": "CoinGecko Trending"
     },
     {
       "term": "dacity",
@@ -130,6 +100,16 @@
       "source": "CoinGecko Trending"
     },
     {
+      "term": "earn",
+      "score": 4,
+      "source": "Google News"
+    },
+    {
+      "term": "earnings",
+      "score": 4,
+      "source": "Google News"
+    },
+    {
       "term": "ena",
       "score": 4,
       "source": "CoinGecko Trending"
@@ -140,86 +120,80 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "jpmorgan",
-      "score": 4,
-      "source": "Google News"
-    },
-    {
-      "term": "mon",
+      "term": "pengu",
       "score": 4,
       "source": "CoinGecko Trending"
     },
     {
-      "term": "monad",
+      "term": "pudgypenguins",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "pumpfun",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "qnt",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "qtc",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "quant",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "quantus",
       "score": 4,
       "source": "CoinGecko Trending"
     }
   ],
-  "matches": [
-    {
-      "mint": "Eb5aJBSrzMAP29UL16Jc4gmq2sGme6Jk4ZVp64KBpump",
-      "name": "DacityCoin",
-      "symbol": "AUC",
-      "score": 4,
-      "trend_terms": [
-        "dacitycoin"
-      ],
-      "sources": [
-        "CoinGecko Trending"
-      ],
-      "liquidity_usd": 9164.9,
-      "volume_24h_usd": 89953.99,
-      "url": "https://dexscreener.com/solana/grsfqyaksdtdvz3pk7r35tcqsqz51qr3xu3c8nqy2eth"
-    }
-  ],
+  "matches": [],
   "watchlist": [
-    {
-      "address": "H7VZNCBynDK5ikBS9krDJ2Tx8CUr1wxedV19ZgkWpump",
-      "name": "Cattleaxe",
-      "symbol": "CATTLEAXE",
-      "age": 26.116970900472005,
-      "liquidity": 103106.78,
-      "volume": 4483810.11,
-      "url": "https://dexscreener.com/solana/3p3uya9ayzv7w2nhejeo8ankuuwhyuonqvhhs8lyrqjy",
-      "pair": "3p3uYa9AYzV7w2nHEJeo8ANkuuwhYUonQvhHS8LyrqJY"
-    },
     {
       "address": "AhBidGAgv6QbKSWfrSCegGrzFLcBx4E5FNYTKHNQQj6C",
       "name": "Launch",
       "symbol": "LAUNCH",
-      "age": 10.069193078816731,
-      "liquidity": 127120.91,
-      "volume": 4419938.88,
+      "age": 11.964054973551432,
+      "liquidity": 128577.4,
+      "volume": 4845642.43,
       "url": "https://dexscreener.com/solana/gezarkyjgqsjid7m9zg3jkxxfmnhuh8ddzmqupbl7k59",
       "pair": "GezArkyjgqsjid7m9zg3jkxxFmnHuh8dDzmqUpbL7K59"
+    },
+    {
+      "address": "H7VZNCBynDK5ikBS9krDJ2Tx8CUr1wxedV19ZgkWpump",
+      "name": "Cattleaxe",
+      "symbol": "CATTLEAXE",
+      "age": 28.011832798394096,
+      "liquidity": 100106.46,
+      "volume": 4223981.86,
+      "url": "https://dexscreener.com/solana/3p3uya9ayzv7w2nhejeo8ankuuwhyuonqvhhs8lyrqjy",
+      "pair": "3p3uYa9AYzV7w2nHEJeo8ANkuuwhYUonQvhHS8LyrqJY"
     },
     {
       "address": "EwX2T1p2PmgTsSq2Bi6XtQYxPC5krR4P2fxPfN4Qpump",
       "name": "███",
       "symbol": "███",
-      "age": 42.28947093899197,
-      "liquidity": 66630.88,
-      "volume": 2288870.3,
+      "age": 44.184332822062174,
+      "liquidity": 62837.95,
+      "volume": 1609064.91,
       "url": "https://dexscreener.com/solana/9sy4amm2rfpsbq1qgcqtxcjfvhmfj9k4d2j5xfm1k75m",
       "pair": "9sY4Amm2RFpsBQ1qgCQTxcjfvhmfJ9K4d2J5xfM1k75M"
-    },
-    {
-      "address": "CA8q2mkYWZnUNqYmf6pxyxAPZsmSe2EG9P7hHMW5pump",
-      "name": "Remus",
-      "symbol": "REMUS",
-      "age": 46.54169312886556,
-      "liquidity": 88390.62,
-      "volume": 1426302.86,
-      "url": "https://dexscreener.com/solana/6jdispswbwcsn8xba4lnbzmzrikxksbxcto8j3elr4cg",
-      "pair": "6JDiSPsWBwcSN8xBa4LNBzMZRikxksbxcto8J3ELR4cG"
     },
     {
       "address": "3p4LAKKCcsiBF5nuYYqLu8mJpfXStQJMk2LYubM3pump",
       "name": "GTA Dog Mascot",
       "symbol": "Chop",
-      "age": 1.4294708340793185,
-      "liquidity": 51072.42,
-      "volume": 1276557.16,
+      "age": 3.3243327282714845,
+      "liquidity": 56434.98,
+      "volume": 1506822.14,
       "url": "https://dexscreener.com/solana/bhdsn1gnhe2xrtydcc5qwggz12upa1k7rhmxtsh13skg",
       "pair": "BHDsn1gnHe2xRtydcc5qwggz12Upa1k7rhMxtSh13skG"
     },
@@ -227,117 +201,141 @@
       "address": "9DGb9TWswLUqu85reo2kNoZkKkME9nB9YVfjYkqopump",
       "name": "Giga Titty Ass",
       "symbol": "GTA",
-      "age": 5.992526439073351,
-      "liquidity": 62778.3,
-      "volume": 970388.8,
+      "age": 7.887388340861003,
+      "liquidity": 39097.82,
+      "volume": 1169806.63,
       "url": "https://dexscreener.com/solana/2cv1er9jyn1dc6z2dmukstymnpnujz9pb91v4zzaejf2",
       "pair": "2CV1er9JYn1dC6Z2dMuKSTYmNPnUJZ9Pb91v4zzAejf2"
     },
     {
-      "address": "BTCk1ZAAGrbSq7e4L7mg8oiRKRqafkUbeLQpXeGq9BTC",
-      "name": "Big Testicle Coin",
-      "symbol": "BTC",
-      "age": 12.166137582872178,
-      "liquidity": 21151.43,
-      "volume": 815479.84,
-      "url": "https://dexscreener.com/solana/9nke3b5zf3ycdh8yrqrhch4dgnylycnbqeb7feo3v9av",
-      "pair": "9nkE3B5zF3yCDh8YrQrhch4dGNyLYcNBqEB7feo3V9Av"
+      "address": "8U4hUSfL4PEjz5DbXmsSfaRJwrb4tW65FQn7jZAdLnZF",
+      "name": "Linkr Launch",
+      "symbol": "LINKR",
+      "age": 1.1037771504720053,
+      "liquidity": 28428.01,
+      "volume": 355315.23,
+      "url": "https://dexscreener.com/solana/9n1hsgn3nh7goqfhw63p1jyebzqqhzxdilrrdptb1ytp",
+      "pair": "9n1hsgn3Nh7goqfHw63P1jyeBzQqhzxDiLRRDptb1Ytp"
     },
     {
-      "address": "3LPTanzycRAjguU6VAXE7T2Fd12LePQLpHATXXs9pump",
-      "name": "US PRESIDENT 2028",
-      "symbol": "PRESIDENT",
-      "age": 0.6436374287923177,
-      "liquidity": 40516.46,
-      "volume": 796351.84,
-      "url": "https://dexscreener.com/solana/4a4vae5qmggjqtu2tcwt5pjyq6dxi7h1a5fjxr2kamhd",
-      "pair": "4a4VAe5qmggjqtu2TcWt5pJYq6dXi7H1a5FJxr2KaMhD"
+      "address": "7JEfFdwmXfQf89ty1sF3aspN9oku9fHikA7XZTTXpump",
+      "name": "Grand Trump Agency",
+      "symbol": "GTA",
+      "age": 0.6621104545762804,
+      "liquidity": 41793.83,
+      "volume": 337737.82,
+      "url": "https://dexscreener.com/solana/hfoj3dgn1c7ew68mjj7tywrgpa3o79v7r6rjdxu52zka",
+      "pair": "Hfoj3dGN1C7eW68mJj7TYwRgpa3o79v7R6RjDxU52zKa"
     },
     {
-      "address": "9PPQ5jEY3UpXjAa22a1aMb12VjoYYfL21aC9RhSspump",
-      "name": "Genny The Hippo",
-      "symbol": "GENNY",
-      "age": 3.2108597089979383,
-      "liquidity": 9138.31,
-      "volume": 468321.24,
-      "url": "https://dexscreener.com/solana/gmqu1jgtr3u5k9tlq41ymtecsrcqnmuvdu1fm9p8gmqp",
-      "pair": "GMqu1JgTr3U5k9tLq41ymTecsrCqNmUvdu1FM9P8GmQp"
+      "address": "4U6QvbLXyTpJTiU9HbgaN9yGa6CQ7gXFnWL1HFaWpump",
+      "name": "Squad Champion Series",
+      "symbol": "SCS",
+      "age": 0.3354438026936849,
+      "liquidity": 34370.26,
+      "volume": 233906.59,
+      "url": "https://dexscreener.com/solana/z9dvrydunsrx2ahj9dhyq7ubaqthvzg2ozvcyyrxkun",
+      "pair": "z9DvRYdunSrx2AhJ9dhYQ7UBaqtHvZG2ozVCYyRXKun"
+    },
+    {
+      "address": "CsovxRtEM6g4jcVGtcTB3xwycoAuPjEafpUTR6zrpump",
+      "name": "Hellcat",
+      "symbol": "Hellcat",
+      "age": 1.687388278198242,
+      "liquidity": 20922.13,
+      "volume": 176773.41,
+      "url": "https://dexscreener.com/solana/h2hylzx9vnjhamfxukd1c8q9b8gmsxsdoeuumsjtcvjf",
+      "pair": "H2hyLzX9VnjhamfXUkd1c8Q9B8GMSxsdoEuuMSjTcVjf"
     },
     {
       "address": "8THZ69JP2ErZuHVj4G5rcwkFfsQafp5mQsaoQReApump",
       "name": "Network Coin",
       "symbol": "NETWORK",
-      "age": 23.903915320909288,
-      "liquidity": 34740.45,
-      "volume": 345535.0,
+      "age": 25.79877722222222,
+      "liquidity": 32718.02,
+      "volume": 120843.46,
       "url": "https://dexscreener.com/solana/88jxy6wuyurl7whzsnywjvjqwvtdoxt3rurac1prglwu",
       "pair": "88Jxy6WUYurL7WhZSNYwJvjQwvtDoxT3RUrac1PRgLwu"
     },
     {
-      "address": "Pairn5qtjZqVDMGbFuxMvLF6Mf7f2ZRSE46bNjyme67",
-      "name": "Pair Me Daddy",
-      "symbol": "PMD",
-      "age": 0.9175263827175564,
-      "liquidity": 13641.12,
-      "volume": 215010.0,
-      "url": "https://dexscreener.com/solana/2nebynhmanjujruhfk8tukjybjmtbesj8cbreov7cjd3",
-      "pair": "2NEBYNhmAnjujRuhfk8TukJybjmtbEsJ8CbrEoV7cJd3"
+      "address": "GWKw27d8mYA2TnnrE5jDdksEVCmMsGnDsi6FzqWgVmHq",
+      "name": "Cute Crypto Carrot",
+      "symbol": "CCC",
+      "age": 0.537388212890625,
+      "liquidity": 19048.88,
+      "volume": 110545.45,
+      "url": "https://dexscreener.com/solana/gj15muq9vhwwmpmphdt4kxmdfwnzwxi9jsjn2u6p1go8",
+      "pair": "Gj15MUQ9vHWWMpMPHDt4KXMDFWNzWXi9JSJn2u6p1go8"
     },
     {
-      "address": "H4F4711qnUzBo4rhDtRUqT2sGimvb3LXUsuPe6onpump",
-      "name": "TheCoinClapper",
-      "symbol": "TCC",
-      "age": 0.3714152495659722,
-      "liquidity": 17486.31,
-      "volume": 140609.22,
-      "url": "https://dexscreener.com/solana/chdmqoigsspvchygras3vg8z2iexr6mtwhbwpmrcdgjt",
-      "pair": "CHDMQoigSspVCHYgRAs3Vg8Z2iExR6MtwhbWpmRCDGjt"
-    },
-    {
-      "address": "Eb5aJBSrzMAP29UL16Jc4gmq2sGme6Jk4ZVp64KBpump",
-      "name": "DacityCoin",
-      "symbol": "AUC",
-      "age": 0.04697072041829427,
-      "liquidity": 9164.9,
-      "volume": 89953.99,
-      "url": "https://dexscreener.com/solana/grsfqyaksdtdvz3pk7r35tcqsqz51qr3xu3c8nqy2eth",
-      "pair": "GrsfqyakSdTdVz3Pk7R35tCQSQz51qR3xU3C8nqy2ETh"
+      "address": "4WgxC56hGyNXLd14mCgxBuR2DUyDReF8koFDynhepump",
+      "name": "Nut Vigorously In Dat Insane Ass",
+      "symbol": "NVDA",
+      "age": 2.2404438224283854,
+      "liquidity": 26967.43,
+      "volume": 103549.12,
+      "url": "https://dexscreener.com/solana/2aafddgbz3uqnxwnxkwc94gdrijzlewklnoc5xb1rkfp",
+      "pair": "2aAfDdGbZ3uQnXwnXkwc94GdRiJzLeWkLnoC5XB1RKFp"
     },
     {
       "address": "EcuMNoYi79hmX7fr48zk33fDnCcazKPrgJiZ9Gp1pump",
       "name": "Big Testicle Coin",
       "symbol": "BTC",
-      "age": 11.376693155381945,
-      "liquidity": 9879.31,
-      "volume": 53247.38,
+      "age": 13.27155503797743,
+      "liquidity": 8336.88,
+      "volume": 53643.97,
       "url": "https://dexscreener.com/solana/9ogipy6zc7ewmpuldufd6sbg1vzecbydhmgowhuc8llj",
       "pair": "9ogiPY6zc7EwMPuLdUfD6SBG1vzecByDhMgoWhUc8LLJ"
+    },
+    {
+      "address": "2WG7bzXCGVR47xWfqNpDvPbeviS7Sskt51MAj6iMpump",
+      "name": "TATOBRO",
+      "symbol": "BRO",
+      "age": 5.002666106160482,
+      "liquidity": 23211.42,
+      "volume": 26833.87,
+      "url": "https://dexscreener.com/solana/evj5rzuq73zh7eqf6jctqgm2nbgksuug9pfwlyjnknj5",
+      "pair": "EVJ5RzUQ73zH7EQf6jCtQGM2NBGkSuUG9pFwLYJnKNJ5"
     },
     {
       "address": "3X2xbBx6ShSVkhP2RoHGZbrQWZpxx5mdjG2PaAXzpump",
       "name": "Jeff FunnyGuy",
       "symbol": "JEFF",
-      "age": 31.14391533399794,
-      "liquidity": 10267.71,
-      "volume": 28642.93,
+      "age": 33.038777236395944,
+      "liquidity": 8766.84,
+      "volume": 25586.27,
       "url": "https://dexscreener.com/solana/2mc6enfklgmigi7ytt32ryignpwoddfl5xb1rp7ksfm8",
       "pair": "2MC6ENfKLgMigi7ytT32RyiGNpwoddFL5Xb1rP7kSfM8"
     }
   ],
   "momentum": [
     {
-      "mint": "BTCk1ZAAGrbSq7e4L7mg8oiRKRqafkUbeLQpXeGq9BTC",
-      "name": "Big Testicle Coin",
-      "symbol": "BTC",
-      "score": 62,
-      "age_hours": 12.17,
-      "liquidity_usd": 21151.43,
-      "volume_1h_usd": 11502.4,
-      "volume_24h_usd": 815479.84,
-      "price_change_1h_pct": 50.98,
-      "buys_1h": 127,
-      "sells_1h": 77,
-      "url": "https://dexscreener.com/solana/9nke3b5zf3ycdh8yrqrhch4dgnylycnbqeb7feo3v9av"
+      "mint": "3p4LAKKCcsiBF5nuYYqLu8mJpfXStQJMk2LYubM3pump",
+      "name": "GTA Dog Mascot",
+      "symbol": "Chop",
+      "score": 89,
+      "age_hours": 3.32,
+      "liquidity_usd": 56434.98,
+      "volume_1h_usd": 113538.09,
+      "volume_24h_usd": 1506822.14,
+      "price_change_1h_pct": 14.74,
+      "buys_1h": 4891,
+      "sells_1h": 1362,
+      "url": "https://dexscreener.com/solana/bhdsn1gnhe2xrtydcc5qwggz12upa1k7rhmxtsh13skg"
+    },
+    {
+      "mint": "AhBidGAgv6QbKSWfrSCegGrzFLcBx4E5FNYTKHNQQj6C",
+      "name": "Launch",
+      "symbol": "LAUNCH",
+      "score": 76,
+      "age_hours": 11.96,
+      "liquidity_usd": 128577.4,
+      "volume_1h_usd": 128243.87,
+      "volume_24h_usd": 4845642.43,
+      "price_change_1h_pct": 16.69,
+      "buys_1h": 805,
+      "sells_1h": 619,
+      "url": "https://dexscreener.com/solana/gezarkyjgqsjid7m9zg3jkxxfmnhuh8ddzmqupbl7k59"
     }
   ]
 }
