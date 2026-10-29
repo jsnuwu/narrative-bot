@@ -327,5 +327,42 @@ class TestNarrativeRadar(unittest.TestCase):
         self.assertEqual(state["offset"], 124)
         send.assert_called_once()
 
+    def test_group_receives_alerts_and_accepts_commands(self):
+        updates = [
+            {"update_id": 5, "message": {"chat": {"id": -1004448227091, "type": "supergroup"}, "text": "/top@RadarBot"}},
+            {"update_id": 6, "message": {"chat": {"id": -1009999, "type": "supergroup"}, "text": "/top"}},
+            {"update_id": 7, "message": {"chat": {"id": 555, "type": "private"}, "text": "/start"}},
+        ]
+        state = {"owner": "987", "enabled": True}
+        with patch.object(main, "OWNER", ""), patch.object(main, "GROUP", "-1004448227091"), \
+                patch.object(main, "telegram", return_value=updates), patch.object(main, "send") as send, \
+                patch.object(main, "save_state"):
+            main.handle_commands(state)
+            self.assertEqual(main.recipients(state), ["987", "-1004448227091"])
+        chats = [call.args[0] for call in send.call_args_list]
+        self.assertIn("-1004448227091", chats)  # Befehl in der eingetragenen Gruppe beantwortet
+        self.assertNotIn("-1009999", chats)  # fremde Gruppe ignoriert
+        self.assertEqual(state["owner"], "987")  # Fremder wird nicht Besitzer
+        self.assertIn("555", chats)  # bekommt nur den Hinweis "bereits eingerichtet"
+
+    def test_group_can_pause_without_pausing_owner(self):
+        update = {"update_id": 9, "message": {"chat": {"id": -1004448227091, "type": "supergroup"}, "text": "/stop"}}
+        state = {"owner": "987", "enabled": True}
+        with patch.object(main, "OWNER", ""), patch.object(main, "GROUP", "-1004448227091"), \
+                patch.object(main, "telegram", return_value=[update]), patch.object(main, "send"), \
+                patch.object(main, "save_state"):
+            main.handle_commands(state)
+            self.assertEqual(main.recipients(state), ["987"])
+        self.assertTrue(state["enabled"])
+
+    def test_broadcast_counts_partial_delivery(self):
+        def flaky(chat_id, text):
+            if chat_id == "bad":
+                raise RuntimeError("blocked")
+        with patch.object(main, "send", side_effect=flaky):
+            self.assertEqual(main.broadcast(["987", "bad"], "x"), 1)
+            with self.assertRaises(RuntimeError):
+                main.broadcast(["bad"], "x")
+
 if __name__ == "__main__":
     unittest.main()

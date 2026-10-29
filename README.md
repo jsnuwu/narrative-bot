@@ -12,6 +12,8 @@ No wallet connection, trade execution or paid hosting is required. This is an ex
 4. Open your Telegram bot, send `/start`, then open **Actions → Narrative Radar → Run workflow** on GitHub.
 5. The next successful workflow run answers `/start` and enables alerts for the first private chat that starts the bot. The separate **Narrative Radar Auto** workflow attempts a scan every five minutes, although GitHub can delay or drop scheduled jobs.
 
+**Group chat:** The bot also posts every alert to the Telegram group set in `TELEGRAM_GROUP_ID` (workflow default `-1004448227091`, overridable via the repository variable `TELEGRAM_GROUP_ID`). In that group `/top`, `/status`, `/test`, `/start` and `/stop` work as well (with privacy mode use `/top@YourBot` if other bots are present). `/stop` in the group pauses only the group; the private owner chat keeps receiving alerts and vice versa. Other groups are ignored.
+
 Optional security setting: set the `TELEGRAM_CHAT_ID` environment secret to your numeric Telegram chat ID to restrict the bot to that chat before any `/start` command. Without this value, **the first private chat to run `/start` becomes the owner**. Make sure you send `/start` yourself before running the workflow and preferably configure `TELEGRAM_CHAT_ID`.
 
 ## Commands

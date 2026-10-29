@@ -40,6 +40,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Gruppe, in die der Bot zusätzlich schreibt (keine geheime Angabe; ohne Bot-Token nutzlos)
+          TELEGRAM_GROUP_ID: ${{ vars.TELEGRAM_GROUP_ID || '-1004448227091' }}
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           ENABLE_X_API: ${{ vars.ENABLE_X_API || 'false' }}
           X_REFRESH_HOURS: ${{ vars.X_REFRESH_HOURS || '6' }}

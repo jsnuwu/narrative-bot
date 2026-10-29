@@ -17,6 +17,8 @@ log = logging.getLogger("narrative-bot")
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 OWNER = os.getenv("TELEGRAM_CHAT_ID", "").strip()
+# Optional: Telegram-Gruppe, in die der Bot zusätzlich schreibt und in der er Befehle annimmt (z. B. -100…).
+GROUP = os.getenv("TELEGRAM_GROUP_ID", "").strip()
 X_TOKEN = os.getenv("X_BEARER_TOKEN", "").strip()
 X_ENABLED = os.getenv("ENABLE_X_API", "false").lower() == "true"
 X_REFRESH_HOURS = max(6, float(os.getenv("X_REFRESH_HOURS", "6")))
@@ -94,6 +96,36 @@ def register_commands():
     telegram("setMyCommands", {"commands": commands})
     log.info("Telegram commands registered")
 
+def chat_enabled(state, chat_id):
+    """Privater Chat nutzt weiter ``enabled``; jede Gruppe kann getrennt pausiert werden."""
+    if GROUP and str(chat_id) == GROUP:
+        return bool(state.get("group_enabled", True))
+    return bool(state.get("enabled", True))
+
+def set_enabled(state, chat_id, value):
+    state["group_enabled" if GROUP and str(chat_id) == GROUP else "enabled"] = bool(value)
+
+def recipients(state):
+    """Alle Chats, die Meldungen bekommen: Besitzer (privat) und optional die Gruppe."""
+    out = []
+    for chat_id in (OWNER or str(state.get("owner", "")), GROUP):
+        if chat_id and chat_id not in out and chat_enabled(state, chat_id):
+            out.append(chat_id)
+    return out
+
+def broadcast(chats, text):
+    """An alle Chats senden. Gilt als zugestellt, sobald mindestens ein Chat die Nachricht erhalten hat."""
+    delivered = 0
+    for chat_id in chats:
+        try:
+            send(chat_id, text)
+            delivered += 1
+        except (requests.RequestException, RuntimeError) as exc:
+            log.warning("Telegram delivery to one chat failed: %s", exc)
+    if not delivered:
+        raise RuntimeError("Telegram delivery failed for all chats")
+    return delivered
+
 def handle_commands(state):
     offset = int(state.get("offset", 0))
     updates = telegram("getUpdates", {"offset": offset, "limit": 100, "timeout": 0, "allowed_updates": ["message"]})
@@ -105,18 +137,21 @@ def handle_commands(state):
         chat_id = str(chat.get("id", ""))
         content = re.sub(r"^/\s+", "/", (message.get("text") or "").strip())
         command = content.split(" ", 1)[0].split("@", 1)[0].lower()
-        if not chat_id or chat.get("type") != "private" or command not in {"/start", "/help", "/status", "/stop", "/test", "/top"}:
+        if command not in {"/start", "/help", "/status", "/stop", "/test", "/top"}:
+            continue
+        in_group = bool(GROUP) and chat_id == GROUP and chat.get("type") in {"group", "supergroup"}
+        if not chat_id or (chat.get("type") != "private" and not in_group):
             continue
         owner_id = OWNER or str(state.get("owner", ""))
-        if command == "/start" and not owner_id:
+        if command == "/start" and not owner_id and not in_group:
             state["owner"] = chat_id
             owner_id = chat_id
         log.info("Processing Telegram command %s", command)
-        if chat_id != owner_id:
+        if chat_id != owner_id and not in_group:
             send(chat_id, "Dieser Bot ist bereits eingerichtet.")
             continue
         if command == "/stop":
-            state["enabled"] = False
+            set_enabled(state, chat_id, False)
             send(chat_id, "Benachrichtigungen pausiert. /start aktiviert sie wieder.")
         elif command == "/test":
             send(chat_id, "🔔 TEST-ALARM\n\nDie Telegram-Benachrichtigungen funktionieren. Dies ist kein echter Token-Fund.")
@@ -126,7 +161,7 @@ def handle_commands(state):
             momentum_count = int(state.get("momentum_alerts_sent", 0))
             stats = state.get("last_stats") or {}
             send(chat_id, "Narrative Radar\nStatus: "
-                 + ("aktiv" if state.get("enabled", True) else "pausiert")
+                 + ("aktiv" if chat_enabled(state, chat_id) else "pausiert")
                  + "\nLetzter Scan (UTC): " + last
                  + "\nNarrative-Alerts gesamt: " + str(sent)
                  + "\nMomentum-Alerts gesamt: " + str(momentum_count)
@@ -141,7 +176,7 @@ def handle_commands(state):
         elif command == "/help":
             send(chat_id, "Narrative Radar\n/start - Alerts aktivieren\n/status - Status anzeigen\n/top - beobachtete Momentum-Token\n/test - Testnachricht senden\n/stop - Alerts pausieren\n/help - Befehle anzeigen\n\nAntworten erfolgen beim naechsten GitHub-Actions-Lauf.")
         else:
-            state["enabled"] = True
+            set_enabled(state, chat_id, True)
             send(chat_id, "✅ Narrative Radar aktiviert!\n\nIch prüfe neue Solana-Token gegen öffentliche Trendsignale und sende passende Treffer.\n\n/status = Status\n/stop = Alerts pausieren\n/start = Aktivieren\n\nDie Antworten kommen beim nächsten GitHub-Actions-Lauf, nicht sofort. X-Suche braucht optional API-Zugang. Kein automatischer Handel.")
     if OWNER:
         state["owner"] = OWNER
@@ -657,8 +692,8 @@ def run():
             log.warning("Telegram command processing unavailable; continuing data feed: %s", exc)
     else:
         log.warning("Telegram token missing; scanning for TradeBot feed without Telegram notifications")
-    owner = OWNER or str(state.get("owner", ""))
-    notify = bool(TOKEN and owner and state.get("enabled", True))
+    chats = recipients(state)
+    notify = bool(TOKEN and chats)
     trends = trend_signals(state)
     log.info("Trend terms: %s", len(trends))
     seen = set(state.get("seen", []))
@@ -673,7 +708,7 @@ def run():
     if notify:
         for _, _, key, message in alerts[:MAX_ALERTS]:
             try:
-                send(owner, message)
+                broadcast(chats, message)
             except (requests.RequestException, RuntimeError) as exc:
                 log.warning("Narrative alert delivery failed; will retry later: %s", exc)
                 continue
@@ -697,7 +732,7 @@ def run():
             if mint in matched or mint in seen_momentum:
                 continue
             try:
-                send(owner, item["text"])
+                broadcast(chats, item["text"])
             except (requests.RequestException, RuntimeError) as exc:
                 log.warning("Momentum alert delivery failed; will retry later: %s", exc)
                 continue
@@ -711,7 +746,7 @@ def run():
     if notify and DAILY_REPORT and state.get("daily_report_date") != today:
         ranked = sorted(watchlist.values(), key=lambda item: (item["volume"], item["liquidity"]), reverse=True)
         try:
-            send(owner, daily_digest_text(trends, ranked, count, momentum_count))
+            broadcast(chats, daily_digest_text(trends, ranked, count, momentum_count))
         except (requests.RequestException, RuntimeError) as exc:
             log.warning("Daily digest delivery failed; will retry later: %s", exc)
         else:
