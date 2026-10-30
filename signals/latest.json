@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-30T09:34:03.159495+00:00",
+  "generated_at": "2026-10-30T16:13:24.683262+00:00",
   "source": "narrative-radar",
   "chain": "solana",
   "trends": [
@@ -10,17 +10,27 @@
       "source": "Google News"
     },
     {
-      "term": "aave",
-      "score": 8,
-      "source": "CoinGecko Trending"
+      "term": "hack",
+      "score": 11,
+      "source": "Google News"
     },
     {
-      "term": "beam",
-      "score": 8,
-      "source": "CoinGecko Trending"
+      "term": "billion",
+      "score": 9,
+      "source": "Google News"
     },
     {
       "term": "bnb",
+      "score": 8,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "hackers",
+      "score": 8,
+      "source": "Google News"
+    },
+    {
+      "term": "pearl",
       "score": 8,
       "source": "CoinGecko Trending"
     },
@@ -30,27 +40,32 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "biggest",
-      "score": 6,
-      "source": "Google News"
+      "term": "sui",
+      "score": 8,
+      "source": "CoinGecko Trending"
     },
     {
-      "term": "billion",
-      "score": 6,
-      "source": "Google News"
+      "term": "xrp",
+      "score": 8,
+      "source": "CoinGecko Trending"
     },
     {
-      "term": "hack",
-      "score": 6,
+      "term": "heist",
+      "score": 7,
       "source": "Google News"
     },
     {
       "term": "north",
-      "score": 6,
+      "score": 7,
       "source": "Google News"
     },
     {
-      "term": "canton",
+      "term": "biggest",
+      "score": 4,
+      "source": "Google News"
+    },
+    {
+      "term": "bittensor",
       "score": 4,
       "source": "CoinGecko Trending"
     },
@@ -63,11 +78,6 @@
       "term": "ethena",
       "score": 4,
       "source": "CoinGecko Trending"
-    },
-    {
-      "term": "heist",
-      "score": 4,
-      "source": "Google News"
     },
     {
       "term": "hype",
@@ -90,6 +100,11 @@
       "source": "CoinGecko Trending"
     },
     {
+      "term": "korea",
+      "score": 4,
+      "source": "Google News"
+    },
+    {
       "term": "lighter",
       "score": 4,
       "source": "CoinGecko Trending"
@@ -98,11 +113,6 @@
       "term": "lit",
       "score": 4,
       "source": "CoinGecko Trending"
-    },
-    {
-      "term": "live",
-      "score": 4,
-      "source": "Google News"
     },
     {
       "term": "near",
@@ -135,23 +145,13 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "uni",
+      "term": "tao",
       "score": 4,
       "source": "CoinGecko Trending"
     },
     {
-      "term": "uniswap",
+      "term": "tech",
       "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "backpack",
-      "score": 3,
-      "source": "Reddit"
-    },
-    {
-      "term": "exchange",
-      "score": 3,
       "source": "Google News"
     }
   ],
@@ -161,9 +161,9 @@
       "address": "ANVLA6eKiAq4nstD2Sg3SZhfVkSEwfnGccn12UQWpump",
       "name": "Hexncoin",
       "symbol": "HEXN",
-      "age": 16.63059978149414,
-      "liquidity": 73941.11,
-      "volume": 4855690.58,
+      "age": 23.286578637830946,
+      "liquidity": 51477.19,
+      "volume": 6138576.72,
       "url": "https://dexscreener.com/solana/bqjzersgugnhav8c1m3vc4wa6mgqbae8t2w7eptsdkw4",
       "pair": "BQJzersGUgNhav8C1m3VC4WA6MgQBAE8T2W7EpTSDKW4"
     },
@@ -171,171 +171,157 @@
       "address": "3ApVr1xphYMpi9dn3rpqU4hwvpmCQDVwxET1rdCDpump",
       "name": "Hyper-Chan",
       "symbol": "HYPERCHAN",
-      "age": 6.164488633151584,
-      "liquidity": 121718.16,
-      "volume": 2306901.1,
+      "age": 12.820467518785264,
+      "liquidity": 109812.57,
+      "volume": 3118221.57,
       "url": "https://dexscreener.com/solana/5mxppt9pftdyk624qq5lxbw1hfgr4ycqeafudkmtkyvy",
       "pair": "5mxPpt9pFtDyK624QQ5Lxbw1HfGr4YCqeaFUdKMtKyVY"
-    },
-    {
-      "address": "GydpvgKppv8a4gGQqAQsyQJxtQN4S6Ym9gKxjnN3mfun",
-      "name": "Sixth Sense Labs",
-      "symbol": "SENSE",
-      "age": 18.941710904812282,
-      "liquidity": 54115.2,
-      "volume": 1982631.84,
-      "url": "https://dexscreener.com/solana/gtl872vumrwnc34asqlzctih8co2fcwd9zpkzy2y1lqc",
-      "pair": "GTL872VUMrWnC34AsQLzctih8Co2FcwD9zpkzY2Y1LQc"
     },
     {
       "address": "J3ReuwckNtcJP1Zhn7wVbfXhTDNTkHxozQWWAwxWpump",
       "name": "Foxii",
       "symbol": "Foxii",
-      "age": 7.110044184773763,
-      "liquidity": 65981.22,
-      "volume": 1590945.69,
+      "age": 13.76602307135688,
+      "liquidity": 32781.61,
+      "volume": 2584623.41,
       "url": "https://dexscreener.com/solana/dcfrbm9vywqswmqiqjsb3mynfj2mgpqwdirfzt78dq97",
       "pair": "DcfRBm9vYwQSwMqiQjsB3mynfJ2mgpQWDiRFzt78Dq97"
+    },
+    {
+      "address": "FhdqbRJgDnsxHS4mcY5YpuezTFysbPyDzLXrthyBpump",
+      "name": "Elon The Troller",
+      "symbol": "ELONTROLL",
+      "age": 1.0004674710422092,
+      "liquidity": 18240.35,
+      "volume": 842379.6,
+      "url": "https://dexscreener.com/solana/2pzradmnzfg3wbqgoc66ge9mtk8r9ajwv8wly2sdbw66",
+      "pair": "2PZradmNzFg3WbqGoC66ge9MTk8r9aJwv8WLy2sdBw66"
+    },
+    {
+      "address": "BLN4c4FERWn8pf3PysRDapSKzB5JoHx9HbaxjYkEpump",
+      "name": "Space Cat",
+      "symbol": "SPACECAT",
+      "age": 0.8265785862901476,
+      "liquidity": 32080.25,
+      "volume": 715420.85,
+      "url": "https://dexscreener.com/solana/8tcfyhnf3a4czjkxhvk1oxwjxjynhl7kmsafgbdvgyzr",
+      "pair": "8tCfyhnF3A4CZJkXhvK1oXWjXJyNhL7kMsaFGbdVGyzr"
+    },
+    {
+      "address": "GydpvgKppv8a4gGQqAQsyQJxtQN4S6Ym9gKxjnN3mfun",
+      "name": "Sixth Sense Labs",
+      "symbol": "SENSE",
+      "age": 25.597689760131836,
+      "liquidity": 52058.23,
+      "volume": 427523.57,
+      "url": "https://dexscreener.com/solana/gtl872vumrwnc34asqlzctih8co2fcwd9zpkzy2y1lqc",
+      "pair": "GTL872VUMrWnC34AsQLzctih8Co2FcwD9zpkzY2Y1LQc"
     },
     {
       "address": "5wsjHxT5nW5jQuVupXUNnYszF3WoWCfGGk9LMcsCJzY8",
       "name": "STANK",
       "symbol": "STANK",
-      "age": 19.620599798651803,
-      "liquidity": 25425.89,
-      "volume": 503716.15,
+      "age": 26.276578609347872,
+      "liquidity": 40484.75,
+      "volume": 399656.63,
       "url": "https://dexscreener.com/solana/6hyfmye2byyscterqueckhihq5x9j2wd2z9watdwy38n",
       "pair": "6hYFMyE2BYYScTErqUeCKhihQ5X9j2WD2z9waTdwy38N"
     },
     {
-      "address": "9ZRHMXqFTucBLuCs3TqmDEPjQCzhSuZ3bQR6dqpepump",
-      "name": "Zeroday",
-      "symbol": "ZERODAY",
-      "age": 0.48282191670735675,
-      "liquidity": 25488.51,
-      "volume": 309670.11,
-      "url": "https://dexscreener.com/solana/6lovbxun4oj6q2qvzwgmykjzyed8c7x8umug4pq3pgeq",
-      "pair": "6LovbxuN4oj6q2QvzwGmYkjZYEd8C7x8umUg4pQ3PgEQ"
+      "address": "57vAaMsnAJXkvULtAz7fsi6gRn3bHRJFJsJV1okNpump",
+      "name": "Oren",
+      "symbol": "OREN",
+      "age": 28.30518975579156,
+      "liquidity": 31596.03,
+      "volume": 387171.55,
+      "url": "https://dexscreener.com/solana/fptqm7ev2nwfnt2v4qw5e1chh6takgytqd2ncjekwebx",
+      "pair": "FptqM7Ev2nWFNT2v4QW5e1cHH6TAkgYtQd2NcJeKWebx"
+    },
+    {
+      "address": "kziXxCJLQMpkiuoyAkgHELxGcKDs4hNoeWdnpgkpump",
+      "name": "Sexy Ass Forever Unashamed",
+      "symbol": "SAFU",
+      "age": 1.8229674663628472,
+      "liquidity": 33495.18,
+      "volume": 381443.11,
+      "url": "https://dexscreener.com/solana/etemncpleoev3zqdkitxp9jea1mj3ayak36schy9lygz",
+      "pair": "ETemNCpLeoeV3ZQdkiTXp9JEa1mJ3AyaK36ScHy9LYgZ"
+    },
+    {
+      "address": "2gTbp2gwH46rqExzabSyrdR3294SLwCp2rSqWDS6Sim1",
+      "name": "CATPAD",
+      "symbol": "CATPAD",
+      "age": 1.2482452672661675,
+      "liquidity": 28340.3,
+      "volume": 361036.15,
+      "url": "https://dexscreener.com/solana/gu2ajbkebpvxumm27t41xetevusbvrwghdmjw7fdc4bn",
+      "pair": "GU2ajBKEBpvXumm27t41XEteVUsbvrwGhDmJW7FDc4BN"
+    },
+    {
+      "address": "G4vGFQjeqYdbfckvipiuyusFgY1jqAK23mbYG4H8pump",
+      "name": "Crypto Troll Officer",
+      "symbol": "CTO",
+      "age": 0.9643563380940755,
+      "liquidity": 35283.37,
+      "volume": 323215.09,
+      "url": "https://dexscreener.com/solana/ez1ugymqknutux49sljagdzwmdmisbbypwt2ru25afxw",
+      "pair": "EZ1uGYMQkNuTuX49sLJagdzWMdmiSbBYpWT2RU25AfXw"
+    },
+    {
+      "address": "pa6bZZbPUj8JVciH9b2DrcqmDuDwkvPBAZnWHKnpump",
+      "name": "The $19 Freeze",
+      "symbol": "$19",
+      "age": 0.8074118983968099,
+      "liquidity": 25235.74,
+      "volume": 286213.46,
+      "url": "https://dexscreener.com/solana/frsxr7s9dntk8uixnuduvks113ejbgsrqkez5ljg71ps",
+      "pair": "FrSxr7s9DNtk8uiXNuDUvKS113EjBgsrQkEZ5Ljg71Ps"
     },
     {
       "address": "4HSHFbFiKuMvZW7yGiDTab17B63MzBkkhadFKxhkpump",
       "name": "stay calm",
       "symbol": "calm",
-      "age": 9.878933098890517,
-      "liquidity": 21214.48,
-      "volume": 145413.89,
+      "age": 16.53491196770562,
+      "liquidity": 22455.23,
+      "volume": 221152.38,
       "url": "https://dexscreener.com/solana/angic41jczghsdbxvygyvyzhfagq8g9pycxfsehg15oh",
       "pair": "AngiC41JCzghSDbXVygYVYZHFaGq8G9PycXFSEHg15oh"
     },
     {
-      "address": "9hhLCxn41KZcmK1vAf7u5M6vKLHRcsVn1VmVgUrhpump",
-      "name": "Chief Troll Officer",
-      "symbol": "CTO",
-      "age": 0.13921078870985243,
-      "liquidity": 20563.46,
-      "volume": 140831.23,
-      "url": "https://dexscreener.com/solana/5ctyphj9dabecdw3zktod9vkhgkvbpskvf2147yvxx2c",
-      "pair": "5cTypHj9DabECdW3zKtoD9vKHgKVBPSKvf2147yvXX2c"
+      "address": "HJqY1zuc8fEgVVdBy7YGe5dr9g4wBiqonw4KPfdepump",
+      "name": "Reef",
+      "symbol": "Reef",
+      "age": 0.9760230410427517,
+      "liquidity": 14934.6,
+      "volume": 113001.98,
+      "url": "https://dexscreener.com/solana/grq8tkn5fvnd8nof1azdtuu1pfcbyeahg3onrb6nxgqy",
+      "pair": "GRq8TKn5fvNd8nof1AZdTUu1PfCbYeaHG3oNRb6nxGqY"
     },
     {
-      "address": "51H7AzyyUAy6AkTPa2g1AMyfkoEoVXZjAKkqyHTopump",
-      "name": "PERPS",
-      "symbol": "PERPS",
-      "age": 19.880044149169922,
-      "liquidity": 21368.19,
-      "volume": 103496.74,
-      "url": "https://dexscreener.com/solana/ex7py8gh5ugcpdhd5ksghhr7etwbat44p2wwor8mzxpf",
-      "pair": "Ex7py8GH5UgcPDhd5KSGHHR7eTWbAt44p2WWor8MZxPF"
-    },
-    {
-      "address": "FGGwUpqPHTxwLDdtoY37KBJ6tQxfY5N1JLTXEs2ppump",
-      "name": "Just a Dead Guy",
-      "symbol": "DEADGUY",
-      "age": 7.680044197998047,
-      "liquidity": 16621.62,
-      "volume": 98156.37,
-      "url": "https://dexscreener.com/solana/dalmyxnh2mpqen6vdp1ph5er59bdlvcakxfhh1pwwouf",
-      "pair": "DaLMyXnH2mPqen6vDP1ph5ER59BdLVCakxFhH1PWwouF"
-    },
-    {
-      "address": "3uAfWxkhj7SrTzpwvRAyxmupzQj3ds4zsHffHgNhQsBn",
-      "name": "JET",
-      "symbol": "JET",
-      "age": 12.451433111029731,
-      "liquidity": 11591.49,
-      "volume": 81243.96,
-      "url": "https://dexscreener.com/solana/n9t7wydjgtt5vsqcwa9tn3n5u9rosrevfuitxng9q5j",
-      "pair": "N9t7wyDJGTt5vsqcWA9tN3N5u9RosrevfuiTxNG9Q5J"
-    },
-    {
-      "address": "BN4Z5NtntHhu6p3atEqkeAVi8Bn9Ri2QTv8FD7iupump",
-      "name": "CRIME",
-      "symbol": "CRIME",
-      "age": 0.826988602701823,
-      "liquidity": 14148.43,
-      "volume": 54768.9,
-      "url": "https://dexscreener.com/solana/39sj3dqezdkpul8stn9qzwr5uwvhsuqcxxtugmndvjfe",
-      "pair": "39SJ3DQezdKpUL8stn9qzwR5UwVhsuqcxxTUGmnDvjfe"
-    },
-    {
-      "address": "8uGEg4TpoMyiRYYY3WyhHJDF1SfSC3Kpr2vwaWGTpump",
-      "name": "FLOAT",
-      "symbol": "FLOAT",
-      "age": 0.05087744154188368,
-      "liquidity": 103471.65,
-      "volume": 43093.24,
-      "url": "https://dexscreener.com/solana/j9wyugwnb5urbnf19fw4ovnghcudfnwvnae8vbjt8uyl",
-      "pair": "J9Wyugwnb5urbnF19Fw4ovnGHcUdFnWvnAe8vBjT8uyL"
-    },
-    {
-      "address": "5C5K1ZetdvGoF5QRcyRbVMiVLhkJzS8RkH8UL2pwpump",
-      "name": "PEPEween",
-      "symbol": "PEPEween",
-      "age": 39.38365536695692,
-      "liquidity": 12605.73,
-      "volume": 35761.28,
-      "url": "https://dexscreener.com/solana/5nbbsufa547vr74djq3jwdg7ygtdicpwhzdw4bmqo2w8",
-      "pair": "5NBbSUfA547Vr74Djq3JWDg7ygtdiCpwHzdW4bMqo2w8"
-    },
-    {
-      "address": "FBACZF1nWvsGubj2sJZsaAjgmKnxkUfYGYXZ1Zyjpump",
-      "name": "PEPEYE",
-      "symbol": "PEPEYE",
-      "age": 15.358377547946507,
-      "liquidity": 13941.92,
-      "volume": 27579.65,
-      "url": "https://dexscreener.com/solana/8cvmx4rfuxhykubzyzfhi8eg9ndsxcdgnxyhniwvhlex",
-      "pair": "8CvMx4rfuXhykUBzyzFHi8eG9nDsXcdgnxyHniWvHLEx"
+      "address": "JtEQ6fMvbcubwenxwAM8Ev79gm9DSiHFy8SmMZqZkZ9",
+      "name": "SAFU Fund",
+      "symbol": "SAFU",
+      "age": 0.05102295925564236,
+      "liquidity": 96250.06,
+      "volume": 85747.72,
+      "url": "https://dexscreener.com/solana/3rwebejrkuodft6c5hs9drdn1ga6nsegxt7ajxswapwu",
+      "pair": "3RWEBejRkuodft6C5hs9DrdN1Ga6nsEgxT7AJXswApWu"
     }
   ],
   "momentum": [
     {
-      "mint": "ANVLA6eKiAq4nstD2Sg3SZhfVkSEwfnGccn12UQWpump",
-      "name": "Hexncoin",
-      "symbol": "HEXN",
-      "score": 86,
-      "age_hours": 16.63,
-      "liquidity_usd": 73941.11,
-      "volume_1h_usd": 179790.54,
-      "volume_24h_usd": 4855690.58,
-      "price_change_1h_pct": 17.82,
-      "buys_1h": 5416,
-      "sells_1h": 934,
-      "url": "https://dexscreener.com/solana/bqjzersgugnhav8c1m3vc4wa6mgqbae8t2w7eptsdkw4"
-    },
-    {
-      "mint": "9hhLCxn41KZcmK1vAf7u5M6vKLHRcsVn1VmVgUrhpump",
-      "name": "Chief Troll Officer",
-      "symbol": "CTO",
-      "score": 75,
-      "age_hours": 0.14,
-      "liquidity_usd": 20563.46,
-      "volume_1h_usd": 140831.23,
-      "volume_24h_usd": 140831.23,
-      "price_change_1h_pct": 30.19,
-      "buys_1h": 2005,
-      "sells_1h": 1475,
-      "url": "https://dexscreener.com/solana/5ctyphj9dabecdw3zktod9vkhgkvbpskvf2147yvxx2c"
+      "mint": "JtEQ6fMvbcubwenxwAM8Ev79gm9DSiHFy8SmMZqZkZ9",
+      "name": "SAFU Fund",
+      "symbol": "SAFU",
+      "score": 93,
+      "age_hours": 0.05,
+      "liquidity_usd": 96250.06,
+      "volume_1h_usd": 85747.72,
+      "volume_24h_usd": 85747.72,
+      "price_change_1h_pct": 32.53,
+      "buys_1h": 165,
+      "sells_1h": 73,
+      "url": "https://dexscreener.com/solana/3rwebejrkuodft6c5hs9drdn1ga6nsegxt7ajxswapwu"
     }
   ]
 }
