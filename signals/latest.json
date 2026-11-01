@@ -1,31 +1,41 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-01T02:40:08.840947+00:00",
+  "generated_at": "2026-11-01T09:46:35.128188+00:00",
   "source": "narrative-radar",
   "chain": "solana",
   "trends": [
     {
       "term": "binance",
-      "score": 38,
+      "score": 35,
       "source": "Google News"
     },
     {
       "term": "north",
-      "score": 17,
+      "score": 28,
       "source": "Google News"
     },
     {
       "term": "korea",
-      "score": 15,
+      "score": 25,
       "source": "Google News"
     },
     {
-      "term": "hack",
-      "score": 8,
+      "term": "billion",
+      "score": 9,
       "source": "Google News"
+    },
+    {
+      "term": "beam",
+      "score": 8,
+      "source": "CoinGecko Trending"
     },
     {
       "term": "pearl",
+      "score": 8,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "pepe",
       "score": 8,
       "source": "CoinGecko Trending"
     },
@@ -35,34 +45,29 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "rhea",
-      "score": 8,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "billion",
+      "term": "prediction",
       "score": 7,
       "source": "Google News"
     },
     {
-      "term": "hyperliquid",
-      "score": 5,
+      "term": "backpack",
+      "score": 6,
       "source": "CoinGecko Trending"
     },
     {
-      "term": "biggest",
-      "score": 4,
+      "term": "hack",
+      "score": 5,
       "source": "Google News"
     },
     {
-      "term": "canton",
-      "score": 4,
-      "source": "CoinGecko Trending"
+      "term": "heist",
+      "score": 5,
+      "source": "Google News"
     },
     {
-      "term": "fet",
+      "term": "assets",
       "score": 4,
-      "source": "CoinGecko Trending"
+      "source": "Google News"
     },
     {
       "term": "hype",
@@ -70,14 +75,14 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "kinetiq",
+      "term": "hyperliquid",
       "score": 4,
       "source": "CoinGecko Trending"
     },
     {
-      "term": "know",
+      "term": "kinetiq",
       "score": 4,
-      "source": "Google News"
+      "source": "CoinGecko Trending"
     },
     {
       "term": "kntq",
@@ -95,6 +100,16 @@
       "source": "CoinGecko Trending"
     },
     {
+      "term": "mon",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "monad",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
       "term": "near",
       "score": 4,
       "source": "CoinGecko Trending"
@@ -105,24 +120,9 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "need",
-      "score": 4,
-      "source": "Google News"
-    },
-    {
-      "term": "october",
-      "score": 4,
-      "source": "Google News"
-    },
-    {
       "term": "pengu",
       "score": 4,
       "source": "CoinGecko Trending"
-    },
-    {
-      "term": "prediction",
-      "score": 4,
-      "source": "Google News"
     },
     {
       "term": "pudgypenguins",
@@ -135,135 +135,115 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "qtc",
-      "score": 4,
-      "source": "CoinGecko Trending"
+      "term": "biggest",
+      "score": 3,
+      "source": "Google News"
     },
     {
-      "term": "quantus",
-      "score": 4,
-      "source": "CoinGecko Trending"
+      "term": "korean",
+      "score": 3,
+      "source": "Google News"
     },
     {
-      "term": "rune",
-      "score": 4,
-      "source": "CoinGecko Trending"
+      "term": "year",
+      "score": 3,
+      "source": "Google News"
     },
     {
-      "term": "superpepe",
-      "score": 4,
-      "source": "CoinGecko Trending"
+      "term": "arena",
+      "score": 2,
+      "source": "Google News"
     }
   ],
   "matches": [],
   "watchlist": [
     {
-      "address": "EYqygbhZjP7EbM4fSn8devctnksAvPAD1Bt57XBFpump",
-      "name": "Broke Nigga Baddie",
-      "symbol": "BNB",
-      "age": 29.833566847941082,
-      "liquidity": 88444.79,
-      "volume": 5341658.72,
-      "url": "https://dexscreener.com/solana/81jgrptmsqwc1rgwxutyyww27ruiatehuzwlydchhwdb",
-      "pair": "81jgrpTMsQWc1rGWXutyYWW27ruiAtehUZwLydcHHWDB"
+      "address": "FdKdpz11GsTofLaNiddrhxrsE4APZYSSfLFqQ9YKpump",
+      "name": "Super Intelligence Satellite",
+      "symbol": "SIS",
+      "age": 15.893091091986761,
+      "liquidity": 53152.64,
+      "volume": 3719723.06,
+      "url": "https://dexscreener.com/solana/ht4gxw1pl2sfamcfc3qczecjdhpe55ttjujnkvs2nhxr",
+      "pair": "Ht4GxW1pL2SfamcfC3qcZEcjDHpE55TtjUjnKVs2nhxr"
     },
     {
       "address": "762ZqBCd5m2q3QJ5UPkFL5rqdEUeygNkfTZrpGEZpump",
       "name": "PAWCAT",
       "symbol": "PAWCAT",
-      "age": 6.763289036865235,
-      "liquidity": 166906.68,
-      "volume": 3012749.65,
+      "age": 13.87059109802246,
+      "liquidity": 145036.9,
+      "volume": 3554747.83,
       "url": "https://dexscreener.com/solana/eej4zypgintcwrq4cvbdubqq7s45krm7xaefcu3uugb",
       "pair": "eEJ4ZYpgiNTCwRq4cVBdUbqq7s45KrM7XaEFcu3uuGb"
-    },
-    {
-      "address": "HvitmAeh6TkToQonoiNwqWcrZsYdYiaSZHP7yMmspump",
-      "name": "LUMI",
-      "symbol": "LUMI",
-      "age": 25.636066859266492,
-      "liquidity": 28525.93,
-      "volume": 2658002.81,
-      "url": "https://dexscreener.com/solana/db4jzrhqtfkeeamvvtiylrnpqt2w1xeofrj9kxxps3z7",
-      "pair": "Db4jZrHQTFKEeAMVVtiyLRNpqT2W1XEoFrj9KxxpS3Z7"
-    },
-    {
-      "address": "FdKdpz11GsTofLaNiddrhxrsE4APZYSSfLFqQ9YKpump",
-      "name": "Super Intelligence Satellite",
-      "symbol": "SIS",
-      "age": 8.78578905863444,
-      "liquidity": 65398.18,
-      "volume": 2517060.86,
-      "url": "https://dexscreener.com/solana/ht4gxw1pl2sfamcfc3qczecjdhpe55ttjujnkvs2nhxr",
-      "pair": "Ht4GxW1pL2SfamcfC3qcZEcjDHpE55TtjUjnKVs2nhxr"
     },
     {
       "address": "GYKnd6jGUSQoBUnj6LdGCBtCWYDgr2Zd6QwNPcy5pump",
       "name": "Apple Cat",
       "symbol": "AAPLCAT",
-      "age": 7.92106677327474,
-      "liquidity": 92654.15,
-      "volume": 2345044.99,
+      "age": 15.028368859320747,
+      "liquidity": 84267.4,
+      "volume": 3222103.38,
       "url": "https://dexscreener.com/solana/6bnptaekgetqfgqgdwidhfqagamhusyqxqjnllw74exw",
       "pair": "6BNptAEKGETQFGQgDWiDhFqAgAmHusyqXqJnLLw74Exw"
-    },
-    {
-      "address": "CvRJ8MrnB1AwjrgX25uyeLJiXNSugTo2ZHh8UXDTpump",
-      "name": "The Black Bear",
-      "symbol": "ANSEM",
-      "age": 10.656900163913303,
-      "liquidity": 46325.4,
-      "volume": 1651921.89,
-      "url": "https://dexscreener.com/solana/8q2jacsxrbd98bbc9m8tswy8eukcjuhk7hdv7yqjv174",
-      "pair": "8q2jaCSxrbD98BBC9M8TsWY8euKCjuhk7hdv7YqJV174"
-    },
-    {
-      "address": "2MXhpKgHBREgYYj3bSdorqbuJjkPAve1LTNHtk8Lpump",
-      "name": "Pikmin",
-      "symbol": "Pikmin",
-      "age": 12.38662242919922,
-      "liquidity": 36260.67,
-      "volume": 1400923.64,
-      "url": "https://dexscreener.com/solana/eyi8qwe7tflhwrgajd88kuzpxuxetf9b5hn9zbyvkxi6",
-      "pair": "Eyi8QWE7TfLhwRGAJD88KUZpxuxETf9B5HN9ZByVKxi6"
     },
     {
       "address": "CPoGSmcjprCvzA2MFYLJMpQkGjmgVzKg4RVwMdrzpump",
       "name": "BLUE COIN",
       "symbol": "BLUE",
-      "age": 0.9274556266276042,
-      "liquidity": 53062.53,
-      "volume": 961267.87,
+      "age": 8.034757730373807,
+      "liquidity": 60285.89,
+      "volume": 2829247.06,
       "url": "https://dexscreener.com/solana/bzomhwb33rgwuywdm8sqfi3zdnauwnpmhraiqalqnzia",
       "pair": "BzomHwB33RGwuyWdm8sQFi3ZDNaUWnpmHRaiQaLQNZiA"
     },
     {
-      "address": "wMHBD2B8KbDagvXUEapginhtJdrH4QSvSezBM8Tpump",
-      "name": "Anthropic",
-      "symbol": "ANTS",
-      "age": 11.100511172688803,
-      "liquidity": 69806.76,
-      "volume": 559370.33,
-      "url": "https://dexscreener.com/solana/cngphrpgnoeh37yakxvyipfgsvmuu2fckktlyessdqqc",
-      "pair": "CnGpHrpgnoeh37YakXvYipfgsvMuU2fcKKtLYEsSDQqc"
+      "address": "2MXhpKgHBREgYYj3bSdorqbuJjkPAve1LTNHtk8Lpump",
+      "name": "Pikmin",
+      "symbol": "Pikmin",
+      "age": 19.493924448242186,
+      "liquidity": 29483.81,
+      "volume": 1539912.17,
+      "url": "https://dexscreener.com/solana/eyi8qwe7tflhwrgajd88kuzpxuxetf9b5hn9zbyvkxi6",
+      "pair": "Eyi8QWE7TfLhwRGAJD88KUZpxuxETf9B5HN9ZByVKxi6"
     },
     {
-      "address": "8s11PkgQt4ZzdZ7oo84hK5t9HG1EvdgAjcg4W7Lpump",
-      "name": "BLOB",
-      "symbol": "BLOB",
-      "age": 11.066066712782119,
-      "liquidity": 65537.67,
-      "volume": 552724.53,
-      "url": "https://dexscreener.com/solana/hr9qopjxcuak38rxdpzduufhdak2bfjtoxbfqzvn2ewu",
-      "pair": "Hr9qopJXCuak38rxDpZduUFhdAK2BfjtoXbfQZVn2EwU"
+      "address": "3kRQDKPGqMWwBdGjiVPpPqVzFsnYG5PDqvrVz1D2pump",
+      "name": "tipr",
+      "symbol": "tipr",
+      "age": 6.139202161322699,
+      "liquidity": 35034.6,
+      "volume": 1165876.93,
+      "url": "https://dexscreener.com/solana/6qfkd7d8rafvan1fc76m5mtqar3khrhpxpwmqvl6ndxt",
+      "pair": "6qfkD7d8RaFVAn1FC76M5MtqAr3kHrHpxPwMQvL6Ndxt"
+    },
+    {
+      "address": "CCF6ui6YjjhLaVtuYLH8b5jza8jHathqww5VbrMapump",
+      "name": "paws at you",
+      "symbol": "paws",
+      "age": 0.5800354549831814,
+      "liquidity": 28127.48,
+      "volume": 448201.7,
+      "url": "https://dexscreener.com/solana/b2tp5jdkynwmid2iecsahpacqv1tsgdwp9cmulv7g5pr",
+      "pair": "B2Tp5jDkYnwMid2iECsaHPACQV1tsGdWP9cMULv7g5Pr"
+    },
+    {
+      "address": "nikemwCaTqBamHqfRVqPzwtWsmuwdXb6To25xJ2znwT",
+      "name": "Nike Tyson",
+      "symbol": "niketyson",
+      "age": 2.758646594645182,
+      "liquidity": 35261.17,
+      "volume": 414863.53,
+      "url": "https://dexscreener.com/solana/ceqehrfywixgzssbrtkjksrze6euwgwqprau7cdbe1ef",
+      "pair": "CEQeHrfYWiXgZsSbrtkJKsRZe6eUWGWqpRAU7CdbE1ef"
     },
     {
       "address": "66auXVTRw9ZekMeB8h5jdJS9WhMRVz8zfMyzqeinpump",
       "name": "APPLECAT",
       "symbol": "AAPLCAT",
-      "age": 28.036900202704537,
-      "liquidity": 26019.97,
-      "volume": 459355.05,
+      "age": 35.14420222310384,
+      "liquidity": 25338.45,
+      "volume": 365737.07,
       "url": "https://dexscreener.com/solana/as7yzegi8f8yr17vu9jhvbyu3ut4cf6x4fjugpl8hykc",
       "pair": "As7yZeGi8F8yr17vu9JhvbyU3Ut4cF6x4FJugPL8Hykc"
     },
@@ -271,9 +251,9 @@
       "address": "GexThZHgaswpAQ7Fi8QrHFubjPimUNSYhJiAA7XZpump",
       "name": "WASTED",
       "symbol": "WASTED",
-      "age": 32.50940009962294,
-      "liquidity": 32792.66,
-      "volume": 394324.0,
+      "age": 39.61670218770345,
+      "liquidity": 32015.38,
+      "volume": 229011.2,
       "url": "https://dexscreener.com/solana/tt7dks9yjjzj1fwmgopmkbmdrezzymamrhodcgdfwqn",
       "pair": "TT7DKs9YjJZj1fwMGoPmKBmDreZzyMAMrHoDCGdfwqN"
     },
@@ -281,61 +261,109 @@
       "address": "5iCwbSuVERt4v19ULqzQLhQzFQQaoJkm9Me6699fpump",
       "name": "Lumi",
       "symbol": "Lumi",
-      "age": 25.569955767483183,
-      "liquidity": 9773.79,
-      "volume": 217927.82,
+      "age": 32.67725778455946,
+      "liquidity": 9460.77,
+      "volume": 130411.53,
       "url": "https://dexscreener.com/solana/2n8sedmb2efzcnp7imteklndkjghw1ztz2yntvkvrpih",
       "pair": "2N8sEDMB2EFZCnP7imTeKLndkjghW1ZtZ2YNTVkvrPiH"
     },
     {
-      "address": "4RGFCEspCXydaXwH4siYcyeNduY2MABG1nWsTUAjpump",
-      "name": "No Nut November",
-      "symbol": "NNN",
-      "age": 0.40273338643391926,
-      "liquidity": 27421.15,
-      "volume": 183317.82,
-      "url": "https://dexscreener.com/solana/4rcpypa3agbn5dzuk5ty3mwbz1cyjt7wsqkjrnzxbxvw",
-      "pair": "4RCpYPa3Agbn5dZUk5TY3MwBZ1cyjT7WsQkjrNZXBXvW"
+      "address": "2pDkdMYChGZQQMfbRhfDgorZkKwmPF6sjN4bPfxoABTC",
+      "name": "THE F7931A CAT",
+      "symbol": "NEKO",
+      "age": 11.582535529852974,
+      "liquidity": 9246.09,
+      "volume": 116215.45,
+      "url": "https://dexscreener.com/solana/7juobd3bjzeww2wwwxwrqqkgdfdkgmyxa3ysks2zv4ye",
+      "pair": "7jUobd3BJZeWW2wwwxwRqqkgdFdkGMyXa3ysKS2Zv4ye"
     },
     {
-      "address": "BR862M2Qr9JhMXT3Jt5n1JrzREEHvreMWgQ2M3Qbpump",
-      "name": "LOOOONGCAT",
-      "symbol": "LOOOONGCAT",
-      "age": 10.907455731133355,
-      "liquidity": 9250.75,
-      "volume": 131386.08,
-      "url": "https://dexscreener.com/solana/b37vaxqdnkkh8qo2wq2fturjfcqimrv6sxlotepmc1zb",
-      "pair": "B37vAXQdnkKh8qo2wq2FTURjFCqimrv6SxLoTePMc1Zb"
+      "address": "3qjBR3LfzEAKVS6QXuR2QZ1RFUsXzATWvmjbGB5Dpump",
+      "name": "Jason Duval",
+      "symbol": "Jason",
+      "age": 40.27975777079264,
+      "liquidity": 26461.8,
+      "volume": 107412.05,
+      "url": "https://dexscreener.com/solana/cyksjjjfpzb7hn7m6i7beax2p6ukgs8cssy8uv9x5u1",
+      "pair": "CYksJjJfPzb7hn7M6i7BEax2p6ukgS8csSy8UV9X5u1"
+    },
+    {
+      "address": "4RA6qtU7qLF6G5ghXdRoFrxVokABf8sPAruM8d7fhixU",
+      "name": "Burger Queen",
+      "symbol": "BLACKED",
+      "age": 0.03170204040527344,
+      "liquidity": 19747.05,
+      "volume": 90135.26,
+      "url": "https://dexscreener.com/solana/cjbj6duqwctf6jheftkryvsr9jxg5p3xykncihlyaehx",
+      "pair": "Cjbj6DUqwCTF6JHEFtKRYvsr9Jxg5P3XYkNCiHLyAEhx"
+    },
+    {
+      "address": "GS6DbJJeNzWJ4SHBrMxh9tGCQJjtACjeyk1E6Qrgpump",
+      "name": "The Dead Bull",
+      "symbol": "ANSEM",
+      "age": 0.2144798914252387,
+      "liquidity": 12890.06,
+      "volume": 79418.59,
+      "url": "https://dexscreener.com/solana/dezcbmwq85eurqomyzotkqxiuqwwjmdvvnklxgehf2gs",
+      "pair": "DEZCBMwQ85EuRqoMyZotkQXiUQWWJMDvvnkLxGehF2gS"
     }
   ],
   "momentum": [
     {
-      "mint": "762ZqBCd5m2q3QJ5UPkFL5rqdEUeygNkfTZrpGEZpump",
-      "name": "PAWCAT",
-      "symbol": "PAWCAT",
-      "score": 84,
-      "age_hours": 6.76,
-      "liquidity_usd": 166906.68,
-      "volume_1h_usd": 151418.36,
-      "volume_24h_usd": 3012749.65,
-      "price_change_1h_pct": 10.6,
-      "buys_1h": 11476,
-      "sells_1h": 4682,
-      "url": "https://dexscreener.com/solana/eej4zypgintcwrq4cvbdubqq7s45krm7xaefcu3uugb"
+      "mint": "4rFeMwkLEUSj57n4wfKggMadbsepjnMCTvNCabRkpump",
+      "name": "Burger Queen",
+      "symbol": "BLACKED",
+      "score": 88,
+      "age_hours": 0.04,
+      "liquidity_usd": 20044.69,
+      "volume_1h_usd": 69385.48,
+      "volume_24h_usd": 69385.48,
+      "price_change_1h_pct": 50.56,
+      "buys_1h": 666,
+      "sells_1h": 171,
+      "url": "https://dexscreener.com/solana/7wcznkbsbkacbhtuzxevrpzcw36xnpcd5zkui2luf8ez"
     },
     {
-      "mint": "GYKnd6jGUSQoBUnj6LdGCBtCWYDgr2Zd6QwNPcy5pump",
-      "name": "Apple Cat",
-      "symbol": "AAPLCAT",
+      "mint": "CNWC7eWmorosDdkwFmKi7TbGPEuCFLGSCUoCqwbWEHAS",
+      "name": "BLACKED",
+      "symbol": "BLACKED",
+      "score": 88,
+      "age_hours": 0.05,
+      "liquidity_usd": 17421.58,
+      "volume_1h_usd": 68845.95,
+      "volume_24h_usd": 68845.95,
+      "price_change_1h_pct": 106.0,
+      "buys_1h": 573,
+      "sells_1h": 237,
+      "url": "https://dexscreener.com/solana/21mycdwkhx6xnky1wp3wak6ftbrzxxpkpad9g1rj6fwq"
+    },
+    {
+      "mint": "4RA6qtU7qLF6G5ghXdRoFrxVokABf8sPAruM8d7fhixU",
+      "name": "Burger Queen",
+      "symbol": "BLACKED",
       "score": 83,
-      "age_hours": 7.92,
-      "liquidity_usd": 92654.15,
-      "volume_1h_usd": 196556.34,
-      "volume_24h_usd": 2345044.99,
-      "price_change_1h_pct": 16.29,
-      "buys_1h": 12001,
-      "sells_1h": 5782,
-      "url": "https://dexscreener.com/solana/6bnptaekgetqfgqgdwidhfqagamhusyqxqjnllw74exw"
+      "age_hours": 0.03,
+      "liquidity_usd": 19747.05,
+      "volume_1h_usd": 90135.26,
+      "volume_24h_usd": 90135.26,
+      "price_change_1h_pct": 31.54,
+      "buys_1h": 459,
+      "sells_1h": 157,
+      "url": "https://dexscreener.com/solana/cjbj6duqwctf6jheftkryvsr9jxg5p3xykncihlyaehx"
+    },
+    {
+      "mint": "CPoGSmcjprCvzA2MFYLJMpQkGjmgVzKg4RVwMdrzpump",
+      "name": "BLUE COIN",
+      "symbol": "BLUE",
+      "score": 76,
+      "age_hours": 8.03,
+      "liquidity_usd": 60285.89,
+      "volume_1h_usd": 79918.98,
+      "volume_24h_usd": 2829247.06,
+      "price_change_1h_pct": 18.86,
+      "buys_1h": 776,
+      "sells_1h": 639,
+      "url": "https://dexscreener.com/solana/bzomhwb33rgwuywdm8sqfi3zdnauwnpmhraiqalqnzia"
     }
   ]
 }
