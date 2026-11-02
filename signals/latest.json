@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-01T23:58:25.655451+00:00",
+  "generated_at": "2026-11-02T05:54:27.699996+00:00",
   "source": "narrative-radar",
   "chain": "solana",
   "trends": [
     {
       "term": "binance",
-      "score": 24,
-      "source": "Google News"
-    },
-    {
-      "term": "korea",
-      "score": 12,
+      "score": 27,
       "source": "Google News"
     },
     {
       "term": "north",
-      "score": 12,
+      "score": 11,
       "source": "Google News"
     },
     {
-      "term": "aave",
-      "score": 8,
-      "source": "CoinGecko Trending"
+      "term": "korea",
+      "score": 9,
+      "source": "Google News"
     },
     {
-      "term": "beam",
-      "score": 8,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "bnb",
-      "score": 8,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "pearl",
+      "term": "aztec",
       "score": 8,
       "source": "CoinGecko Trending"
     },
@@ -45,17 +30,12 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "billion",
-      "score": 6,
+      "term": "prediction",
+      "score": 7,
       "source": "Google News"
     },
     {
-      "term": "hack",
-      "score": 6,
-      "source": "Google News"
-    },
-    {
-      "term": "zcash",
+      "term": "near",
       "score": 5,
       "source": "CoinGecko Trending"
     },
@@ -70,27 +50,27 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "audacity",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "chainlink",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "dacitycoin",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "heist",
+      "term": "billion",
       "score": 4,
       "source": "Google News"
     },
     {
-      "term": "here",
+      "term": "canton",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "cards",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "collectorcrypt",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "dollar",
       "score": 4,
       "source": "Google News"
     },
@@ -115,19 +95,9 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "kinetiq",
+      "term": "korean",
       "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "kntq",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "layerzero",
-      "score": 4,
-      "source": "CoinGecko Trending"
+      "source": "Google News"
     },
     {
       "term": "lighter",
@@ -135,7 +105,7 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "link",
+      "term": "lisk",
       "score": 4,
       "source": "CoinGecko Trending"
     },
@@ -145,12 +115,42 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "october",
+      "term": "lsk",
       "score": 4,
-      "source": "Google News"
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "nearprotocol",
+      "score": 4,
+      "source": "CoinGecko Trending"
     },
     {
       "term": "pengu",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "pudgypenguins",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "qtc",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "quantus",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "ray",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "raydium",
       "score": 4,
       "source": "CoinGecko Trending"
     }
@@ -161,99 +161,99 @@
       "address": "8s4bNqEztH1JP7mkU747uMr7AckCQdiV47FDqYnDpump",
       "name": "Anakin Coin",
       "symbol": "ANAKIN",
-      "age": 1.4985152912055122,
-      "liquidity": 121035.64,
-      "volume": 2077522.26,
+      "age": 7.432416584743923,
+      "liquidity": 156020.18,
+      "volume": 4661957.52,
       "url": "https://dexscreener.com/solana/hcgpz2exv8sfcmvq9fjpbd71brljvzutd2avvv86gwbk",
       "pair": "HcGPz2eXV8SFcMVQ9fJPBd71bRLJVzUtd2avvv86GwbK"
     },
     {
-      "address": "2pKpMwUQXNZeAf93LoomnZSworH3ezFzweCiuvrppump",
-      "name": "Anakinius Maximus",
-      "symbol": "Anakinius",
-      "age": 1.069070825873481,
-      "liquidity": 43984.98,
-      "volume": 486208.13,
-      "url": "https://dexscreener.com/solana/9fca7k7ovcmfddajxtodn4nnnuymskuodsv33lmelu5p",
-      "pair": "9FCA7K7oVCmFDdAjxtoDN4nNnuymskuodSV33LMELu5P"
+      "address": "BngAfLZxaWN2QvpFhRbUHydYGr8zA7YTSA178G8Epump",
+      "name": "Peace Coin",
+      "symbol": "PEACE",
+      "age": 1.940194330851237,
+      "liquidity": 38574.17,
+      "volume": 1404737.12,
+      "url": "https://dexscreener.com/solana/b9kecyvzxsvvy56ussxfiyt6gd7a4w7wepkb9tnyq7sz",
+      "pair": "B9kecYVZxSVvy56uSSxfiyt6GD7A4w7WEPkB9tNYq7sZ"
+    },
+    {
+      "address": "En5icDhYYCuGXTtCLmfWiGR4C9nMiYMKojLdBRfVpump",
+      "name": "The Peace President",
+      "symbol": "TRUMP",
+      "age": 0.7060276233588325,
+      "liquidity": 28175.37,
+      "volume": 475522.2,
+      "url": "https://dexscreener.com/solana/8xxbdn1gssxkc4uzsxuqqjlx8qreuf5d2cxrky56x4nj",
+      "pair": "8XxBDn1gSsxKc4uzsxUqQJLX8QreuF5D2CxrkY56x4Nj"
     },
     {
       "address": "DVDni8iUAkYwdeDtWTBDuZK43nKakSB3z5MQ6q5Kpump",
       "name": "she goin ",
       "symbol": "shegoin",
-      "age": 10.766293108995226,
-      "liquidity": 13143.45,
-      "volume": 380812.65,
+      "age": 16.700194382052953,
+      "liquidity": 14719.66,
+      "volume": 401031.72,
       "url": "https://dexscreener.com/solana/9p2imdrwkxwtgg5vq9do7n3uslyathaficlhzjyd6m8n",
       "pair": "9P2imdRwkxwtgg5vq9Do7N3UsLyaTHAFiCLHzjYd6M8N"
     },
     {
-      "address": "6g16UK4wHoFhC7PCmw8LYYCdt9q8m99fyoAwxeCrpump",
-      "name": "VetoTrump",
-      "symbol": "VETOTRUMP",
-      "age": 2.5162930867513023,
-      "liquidity": 29610.84,
-      "volume": 336072.68,
-      "url": "https://dexscreener.com/solana/93mouqs3udofxme6thgfecskjq6ajbiu5bklp5rf1lpa",
-      "pair": "93mouQs3udoFXMe6thgfecSKjQ6ajBiU5BKLP5rF1LPA"
+      "address": "31HzUsjzTt7FBCGnDy68cBnELayVsnd3zYEBtsXXpump",
+      "name": "Trump Wars",
+      "symbol": "TrumpWars",
+      "age": 3.5704721171739364,
+      "liquidity": 15930.19,
+      "volume": 331920.17,
+      "url": "https://dexscreener.com/solana/7ppuyh3b5f61zc6jcfjaftwthkwne1jgwhpddanlh8eo",
+      "pair": "7PpUyh3b5f61zc6JCFJaftwthkwNE1JGWhPdDANLH8Eo"
     },
     {
-      "address": "Dm7uQVngPSs82eWfVnx3rb7hbqoDb6f2E455R783pump",
-      "name": "SCARECROW",
-      "symbol": "SCARECROW",
-      "age": 8.969348685302734,
-      "liquidity": 9624.91,
-      "volume": 231817.47,
-      "url": "https://dexscreener.com/solana/2lfxmsrbehw1vi8trnayejh9nurjpzrhbbpb1sarposs",
-      "pair": "2LFXmSRbEHw1Vi8trNAYeJH9nuRJPZrhBBPB1SArPoSS"
+      "address": "DKSBXMtJaJQYsi8rFegxzZJZDXvK3JDai56YZ7CRpump",
+      "name": "Unseen.exe",
+      "symbol": "Unseen",
+      "age": 0.8254720961507162,
+      "liquidity": 8403.81,
+      "volume": 212521.33,
+      "url": "https://dexscreener.com/solana/dfbp7eukthdbgcmjbvcf5mkwhjj6lhnjshgwzayjsl5p",
+      "pair": "Dfbp7eukThDBGCMJBVCF5MkWHjJ6LHNjsHGwZaYjsL5p"
     },
     {
-      "address": "74Np8Ga5DomwZVx5bZBGFcHgFavPhgkvkJ2LPdWdpump",
-      "name": "US MIDTERMS",
-      "symbol": "MIDTERMS",
-      "age": 0.5007374759250217,
-      "liquidity": 17264.0,
-      "volume": 175375.42,
-      "url": "https://dexscreener.com/solana/g5kxpokilgtsfztlixyak1o6hbyef4a2zc4ug7kc5su8",
-      "pair": "G5KxPoKiLGtSfZTLiXyAk1o6HByEf4a2zC4ug7Kc5sU8"
+      "address": "5GNDhmKmNks2ELBCmLHPZYBeYu2NCDqnrhKnBBr99xmr",
+      "name": "XMRise",
+      "symbol": "XMRISE",
+      "age": 0.6460276293267144,
+      "liquidity": 27400.61,
+      "volume": 159309.62,
+      "url": "https://dexscreener.com/solana/5jprkn7krmgjx9nfgnkoaoyhbu7ezrgjhom3jwkewns7",
+      "pair": "5JprKn7KrMgjX9nfGNKoaoYHBu7EzrGjhoM3JWkewNs7"
     },
     {
-      "address": "3VFYPXy1JGNoy3qnFomB4aNPE59YVfwsNcPoP8DMdw8j",
-      "name": "VIAGRACOIN",
-      "symbol": "VIAGRACOIN",
-      "age": 0.0576818463812934,
-      "liquidity": 26670.89,
-      "volume": 118505.18,
-      "url": "https://dexscreener.com/solana/5qodfadt74owwxwhgjerwppesmpamhtktrduxahrpuxm",
-      "pair": "5QodFaDt74owWxWHgjERwPPeSMpaMhtktrDUXaHrpUxm"
+      "address": "7Ypg1rKLu8q32E1AQEDjaPCg8dfGeCSsMkFnK98zcash",
+      "name": "1993 forum",
+      "symbol": "1993",
+      "age": 32.23019435289171,
+      "liquidity": 35929.95,
+      "volume": 149830.35,
+      "url": "https://dexscreener.com/solana/anhkaunhr84zhkgbfhalsrvgtzev5udcn4jiu82w5gap",
+      "pair": "AnHkAUnHR84zHkgbfHaLsRvGtzev5uDcN4jiU82w5GAP"
     },
     {
-      "address": "EqzpgXr3CZLiX2fKwkiXfmMgagsmGUAyBHM3TTeHW5N8",
-      "name": "VIAGRACOIN",
-      "symbol": "VIAGRACOIN",
-      "age": 0.057403999769422745,
-      "liquidity": 19205.54,
-      "volume": 111161.52,
-      "url": "https://dexscreener.com/solana/2dsy7qmunfuyqh9kypb5dyheeqwcrtynhdqwtdqzbrad",
-      "pair": "2dsY7qmunFuYqh9kYpb5DYhEeQwcRTYnhdQWTdQZBrAD"
-    },
-    {
-      "address": "GCM6bnuh6KiN696Wk8tu7QTfrpLmXUEWEW7rDwcEpump",
-      "name": "No Nut November",
-      "symbol": "NNN",
-      "age": 1.1193486135525175,
-      "liquidity": 22229.43,
-      "volume": 41047.99,
-      "url": "https://dexscreener.com/solana/3tie8tjjwuhpjpn4hfvjhx1kycphw6kwo3tg6sl6yraz",
-      "pair": "3tiE8tJjWUHpjPn4HfvJhX1KyCpHw6Kwo3TG6SL6yRaZ"
+      "address": "4pJSYbGofUBsrKmB2a5eB7YK1zqvGAaDELbQk8ScFiQj",
+      "name": "Ok Cat",
+      "symbol": "OKCAT",
+      "age": 0.042138648410373264,
+      "liquidity": 20531.8,
+      "volume": 48104.55,
+      "url": "https://dexscreener.com/solana/fd6zjc1upcveyat3ktzjdu9enati9zwwxym1huo4r1o6",
+      "pair": "Fd6zJC1upcVeYat3ktZjdu9eNAti9ZwWxyM1HUo4r1o6"
     },
     {
       "address": "7sgu7H7zP2xt1AXqRzjcWMrZYvip3ML1fH7vhixDpump",
       "name": "TIND GEAR",
       "symbol": "TIND",
-      "age": 41.216570870022245,
-      "liquidity": 19184.54,
-      "volume": 37198.0,
+      "age": 47.15047213494195,
+      "liquidity": 15734.7,
+      "volume": 29842.76,
       "url": "https://dexscreener.com/solana/3y95czypggsziknmc2m5ixejavcbcmul4y79kzjqjjx4",
       "pair": "3y95CzYpGGszikNMC2m5ixEjAVCBcMUL4y79KzjQjjX4"
     },
@@ -261,9 +261,9 @@
       "address": "CjQ494q5yYfbHMoEpXdbi6mrS5sd3Norx8VEDUwgkXZR",
       "name": "GTA 6 VICE CITY",
       "symbol": "VICE",
-      "age": 18.04379311469184,
-      "liquidity": 14385.57,
-      "volume": 17825.52,
+      "age": 23.9776943870714,
+      "liquidity": 16529.46,
+      "volume": 22611.8,
       "url": "https://dexscreener.com/solana/9vgtxavb3pnzictnneb47uat2tsyynrrtrimnukjoch4",
       "pair": "9vGtXAVB3pNzictnNEb47UAT2tsYyNrrTriMNUkJocH4"
     },
@@ -271,69 +271,55 @@
       "address": "7hjmNRSPGoawymsMnrzSwECJu9bxbkPwpmf85P8Upump",
       "name": "DogBoy Bebop",
       "symbol": "DogBoy",
-      "age": 11.27073758585612,
-      "liquidity": 15339.85,
-      "volume": 6873.56,
+      "age": 17.204638837890624,
+      "liquidity": 16027.56,
+      "volume": 7329.31,
       "url": "https://dexscreener.com/solana/8awo1tpl1kxbezvsyajqbzjvtcxt8wtwuwepw1ahvc1m",
       "pair": "8Awo1tpL1KxbeZVsYaJQBzJvtCxt8wtwuWEpW1aHVc1M"
     }
   ],
   "momentum": [
     {
-      "mint": "2pKpMwUQXNZeAf93LoomnZSworH3ezFzweCiuvrppump",
-      "name": "Anakinius Maximus",
-      "symbol": "Anakinius",
-      "score": 99,
-      "age_hours": 1.07,
-      "liquidity_usd": 43984.98,
-      "volume_1h_usd": 378221.52,
-      "volume_24h_usd": 486208.13,
-      "price_change_1h_pct": 63.38,
-      "buys_1h": 11837,
-      "sells_1h": 3198,
-      "url": "https://dexscreener.com/solana/9fca7k7ovcmfddajxtodn4nnnuymskuodsv33lmelu5p"
+      "mint": "5GNDhmKmNks2ELBCmLHPZYBeYu2NCDqnrhKnBBr99xmr",
+      "name": "XMRise",
+      "symbol": "XMRISE",
+      "score": 86,
+      "age_hours": 0.65,
+      "liquidity_usd": 27400.61,
+      "volume_1h_usd": 159309.62,
+      "volume_24h_usd": 159309.62,
+      "price_change_1h_pct": 119.0,
+      "buys_1h": 2214,
+      "sells_1h": 1351,
+      "url": "https://dexscreener.com/solana/5jprkn7krmgjx9nfgnkoaoyhbu7ezrgjhom3jwkewns7"
+    },
+    {
+      "mint": "4pJSYbGofUBsrKmB2a5eB7YK1zqvGAaDELbQk8ScFiQj",
+      "name": "Ok Cat",
+      "symbol": "OKCAT",
+      "score": 82,
+      "age_hours": 0.04,
+      "liquidity_usd": 20531.8,
+      "volume_1h_usd": 48104.55,
+      "volume_24h_usd": 48104.55,
+      "price_change_1h_pct": 48.9,
+      "buys_1h": 259,
+      "sells_1h": 155,
+      "url": "https://dexscreener.com/solana/fd6zjc1upcveyat3ktzjdu9enati9zwwxym1huo4r1o6"
     },
     {
       "mint": "8s4bNqEztH1JP7mkU747uMr7AckCQdiV47FDqYnDpump",
       "name": "Anakin Coin",
       "symbol": "ANAKIN",
-      "score": 90,
-      "age_hours": 1.5,
-      "liquidity_usd": 121035.64,
-      "volume_1h_usd": 871093.43,
-      "volume_24h_usd": 2077522.26,
-      "price_change_1h_pct": 18.21,
-      "buys_1h": 11432,
-      "sells_1h": 4278,
+      "score": 82,
+      "age_hours": 7.43,
+      "liquidity_usd": 156020.18,
+      "volume_1h_usd": 138894.74,
+      "volume_24h_usd": 4661957.52,
+      "price_change_1h_pct": 9.89,
+      "buys_1h": 8034,
+      "sells_1h": 3846,
       "url": "https://dexscreener.com/solana/hcgpz2exv8sfcmvq9fjpbd71brljvzutd2avvv86gwbk"
-    },
-    {
-      "mint": "EqzpgXr3CZLiX2fKwkiXfmMgagsmGUAyBHM3TTeHW5N8",
-      "name": "VIAGRACOIN",
-      "symbol": "VIAGRACOIN",
-      "score": 85,
-      "age_hours": 0.06,
-      "liquidity_usd": 19205.54,
-      "volume_1h_usd": 111161.52,
-      "volume_24h_usd": 111161.52,
-      "price_change_1h_pct": 41.01,
-      "buys_1h": 589,
-      "sells_1h": 251,
-      "url": "https://dexscreener.com/solana/2dsy7qmunfuyqh9kypb5dyheeqwcrtynhdqwtdqzbrad"
-    },
-    {
-      "mint": "74Np8Ga5DomwZVx5bZBGFcHgFavPhgkvkJ2LPdWdpump",
-      "name": "US MIDTERMS",
-      "symbol": "MIDTERMS",
-      "score": 76,
-      "age_hours": 0.5,
-      "liquidity_usd": 17264.0,
-      "volume_1h_usd": 175375.42,
-      "volume_24h_usd": 175375.42,
-      "price_change_1h_pct": 39.22,
-      "buys_1h": 2778,
-      "sells_1h": 2020,
-      "url": "https://dexscreener.com/solana/g5kxpokilgtsfztlixyak1o6hbyef4a2zc4ug7kc5su8"
     }
   ]
 }
