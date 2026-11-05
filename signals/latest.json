@@ -1,21 +1,16 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-05T15:50:02.592398+00:00",
+  "generated_at": "2026-11-05T21:42:50.466327+00:00",
   "source": "narrative-radar",
   "chain": "solana",
   "trends": [
     {
-      "term": "trump",
-      "score": 13,
+      "term": "pearl",
+      "score": 8,
       "source": "CoinGecko Trending"
     },
     {
-      "term": "binance",
-      "score": 8,
-      "source": "Google News"
-    },
-    {
-      "term": "pearl",
+      "term": "sei",
       "score": 8,
       "source": "CoinGecko Trending"
     },
@@ -25,72 +20,42 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "clarity",
+      "term": "binance",
       "score": 7,
       "source": "Google News"
     },
     {
-      "term": "hack",
+      "term": "million",
+      "score": 7,
+      "source": "Google News"
+    },
+    {
+      "term": "zcash",
+      "score": 6,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "stocks",
       "score": 5,
+      "source": "Google News"
+    },
+    {
+      "term": "canton",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "coinbase",
+      "score": 4,
       "source": "Google News"
     },
     {
       "term": "hype",
-      "score": 5,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "prediction",
-      "score": 5,
-      "source": "Google News"
-    },
-    {
-      "term": "billion",
-      "score": 4,
-      "source": "Google News"
-    },
-    {
-      "term": "bittensor",
       "score": 4,
       "source": "CoinGecko Trending"
-    },
-    {
-      "term": "cards",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "collectorcrypt",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "ena",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "ethena",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "global",
-      "score": 4,
-      "source": "Google News"
     },
     {
       "term": "hyperliquid",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "inj",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "injective",
       "score": 4,
       "source": "CoinGecko Trending"
     },
@@ -105,6 +70,11 @@
       "source": "CoinGecko Trending"
     },
     {
+      "term": "layerzero",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
       "term": "lighter",
       "score": 4,
       "source": "CoinGecko Trending"
@@ -115,243 +85,213 @@
       "source": "CoinGecko Trending"
     },
     {
-      "term": "media",
+      "term": "live",
       "score": 4,
-      "source": "Google News"
+      "source": "Reddit"
+    },
+    {
+      "term": "near",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "nearprotocol",
+      "score": 4,
+      "source": "CoinGecko Trending"
     },
     {
       "term": "november",
       "score": 4,
-      "source": "Google News"
+      "source": "Reddit"
     },
     {
-      "term": "officialtrump",
+      "term": "pengu",
       "score": 4,
       "source": "CoinGecko Trending"
     },
     {
-      "term": "qnt",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "quant",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "tao",
-      "score": 4,
-      "source": "CoinGecko Trending"
-    },
-    {
-      "term": "ukraine",
+      "term": "prediction",
       "score": 4,
       "source": "Google News"
     },
     {
-      "term": "venicetoken",
+      "term": "pudgypenguins",
       "score": 4,
       "source": "CoinGecko Trending"
-    }
-  ],
-  "matches": [
+    },
     {
-      "mint": "Eq8UZ5oadKvLtiDnPrb41dwDwU4BuB2tFXRT8rw8pump",
-      "name": "A Meme Democrats",
-      "symbol": "AMD",
+      "term": "tokenized",
+      "score": 4,
+      "source": "Google News"
+    },
+    {
+      "term": "uni",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "uniswap",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "zec",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "zro",
+      "score": 4,
+      "source": "CoinGecko Trending"
+    },
+    {
+      "term": "billion",
       "score": 3,
-      "trend_terms": [
-        "democrats"
-      ],
-      "sources": [
-        "Google News"
-      ],
-      "liquidity_usd": 43498.88,
-      "volume_24h_usd": 757960.66,
-      "url": "https://dexscreener.com/solana/erq7k7g7matn5vosndq1cxp9kupvrs3r1p23akawmnyt"
+      "source": "Google News"
+    },
+    {
+      "term": "broker",
+      "score": 3,
+      "source": "Google News"
     }
   ],
+  "matches": [],
   "watchlist": [
-    {
-      "address": "7F8BkfhPaDGMeNkaYeVa99WAqo86LpXDKsLQXpM7pump",
-      "name": "Grab That Ass",
-      "symbol": "GTA",
-      "age": 19.42960890048557,
-      "liquidity": 118052.3,
-      "volume": 4661607.86,
-      "url": "https://dexscreener.com/solana/dmcn25okj7zciws9ss1bxeo6qbzgb8r9ta6csfr6lg3k",
-      "pair": "DMCn25oKj7zCiWS9SS1bxEo6QbzGb8r9tA6CSfR6LG3k"
-    },
     {
       "address": "9mWrj77gDZ7w4rwHF6STYXDZmYRMyf39L4go1mXepump",
       "name": "Gavel Drop",
       "symbol": "GAVELDROP",
-      "age": 17.08488665710449,
-      "liquidity": 87368.35,
-      "volume": 4176996.06,
+      "age": 22.96485168056912,
+      "liquidity": 38202.56,
+      "volume": 4810409.84,
       "url": "https://dexscreener.com/solana/gggoctynusmgdfpqmrc9pv8jx6jpg4mkm4rkenzkakto",
       "pair": "GgGoctYNusmGdFpqmrC9pv8JX6JPG4mkm4RkeNzkakTo"
-    },
-    {
-      "address": "AjZ8JFAvMAdrRFG4yfuozGBnpEM4DKPg1JV5nuNqpump",
-      "name": "Anti Inu",
-      "symbol": "AI",
-      "age": 20.88488670735677,
-      "liquidity": 48377.18,
-      "volume": 3701598.12,
-      "url": "https://dexscreener.com/solana/4ed23rzhnjrx13fh8mn5o8udzwkbykjjunw36mdiwfai",
-      "pair": "4ED23rzhNjRx13fh8mN5o8UdZwKByKjjUNw36MDiWFai"
-    },
-    {
-      "address": "F2xQeTCTqnczXxXQaBWAfDpUnpxn4wQHRPSqvUYJpump",
-      "name": "Impeach",
-      "symbol": "Impeach",
-      "age": 42.53183116848416,
-      "liquidity": 52955.0,
-      "volume": 2394854.22,
-      "url": "https://dexscreener.com/solana/12y1mrkwewewoyqhswybesjzm8gagnig1xqgqlc5uw3v",
-      "pair": "12Y1mRKWEWEwoYqhSwybEsJzM8gAGnig1XqGQLC5uW3V"
     },
     {
       "address": "9Y1F6dZ6HpjZDYZdYuUGwMbkUiPsyU7WPTqTQU4Tpump",
       "name": "The Democrat Cat",
       "symbol": "Democat",
-      "age": 17.993219995795357,
-      "liquidity": 62139.71,
-      "volume": 2244879.41,
+      "age": 23.873185018988714,
+      "liquidity": 28669.1,
+      "volume": 2544893.13,
       "url": "https://dexscreener.com/solana/et3nwniyfoisp8wrpiccf5at4dzx6qwxu8do4btp8jwb",
       "pair": "ET3NWniYfoisP8WRpicCF5AT4dzX6Qwxu8do4bTP8Jwb"
     },
     {
-      "address": "ECNQSQA7Y5bnXzbotgv6XcG15c6jpJ6V2BFbYzJrpump",
-      "name": "Pocket Money for your AI Agent",
-      "symbol": "PAWKET",
-      "age": 0.6815532218424479,
-      "liquidity": 67080.51,
-      "volume": 1599701.38,
-      "url": "https://dexscreener.com/solana/9icjrrzevflonfyc5xj9cjekdyirt2kvlszq9gmtahfd",
-      "pair": "9icJRrZeVFLonFyC5XJ9CJekdyirt2KvLSzQ9GMtahFD"
+      "address": "AjZ8JFAvMAdrRFG4yfuozGBnpEM4DKPg1JV5nuNqpump",
+      "name": "Anti Inu",
+      "symbol": "AI",
+      "age": 26.764851701660156,
+      "liquidity": 46933.84,
+      "volume": 1264651.38,
+      "url": "https://dexscreener.com/solana/4ed23rzhnjrx13fh8mn5o8udzwkbykjjunw36mdiwfai",
+      "pair": "4ED23rzhNjRx13fh8mN5o8UdZwKByKjjUNw36MDiWFai"
     },
     {
-      "address": "Eq8UZ5oadKvLtiDnPrb41dwDwU4BuB2tFXRT8rw8pump",
-      "name": "A Meme Democrats",
-      "symbol": "AMD",
-      "age": 1.1623865747070312,
-      "liquidity": 43498.88,
-      "volume": 757960.66,
-      "url": "https://dexscreener.com/solana/erq7k7g7matn5vosndq1cxp9kupvrs3r1p23akawmnyt",
-      "pair": "ErQ7k7g7MAtN5VosnDQ1Cxp9kuPvRs3R1P23AKAWmNyT"
+      "address": "8UQdy5sHMVWUWSHeA5B3ZuuAVNumjSLPXdf19MXcpump",
+      "name": "COGE COIN",
+      "symbol": "COGE",
+      "age": 1.8995738385009766,
+      "liquidity": 95665.09,
+      "volume": 992674.55,
+      "url": "https://dexscreener.com/solana/8gjmy6ipysxfmwwrpu9c7atssorjg6al88d9xttzslqe",
+      "pair": "8GjMy6ipYsXfMWwRPu9C7ATssorjg6AL88d9xtTZsLqe"
     },
     {
-      "address": "8Mi9E1V2bdPeAaRkR5yxUsAvpzP6UBUEEUrYmgKNpump",
-      "name": "Wealth Coin",
-      "symbol": "WEALTH",
-      "age": 0.7582199007161459,
-      "liquidity": 30184.32,
-      "volume": 601417.61,
-      "url": "https://dexscreener.com/solana/5n8v68fcantrqvaxzrmbryde5jflrgm65pffsmia6nro",
-      "pair": "5n8V68fCaNTRQvaXzrmBryDe5jFLrgm65pFfsmia6Nro"
+      "address": "16nwYKMNG56HrFTuPKKMVapBhoAGvHUpEH2UzMYnxTE",
+      "name": "The Penguin",
+      "symbol": "PENGUIN",
+      "age": 1.4254071620008681,
+      "liquidity": 10472.47,
+      "volume": 934381.29,
+      "url": "https://dexscreener.com/solana/21hfaxj22nd5wyedwctzzwffqm2yqjq4rrkciwxx7btr",
+      "pair": "21hFaxj22ND5wYedWCtzzWfFqm2YQjq4RRkCiWxx7btR"
     },
     {
-      "address": "27AYXq96kjPgsy2qMsLXTPAf47CJHZPHa5P2fQZ38Z77",
-      "name": "Grand Theft Auto VI",
-      "symbol": "GTAVI",
-      "age": 0.42960876288519967,
-      "liquidity": 20628.55,
-      "volume": 510696.67,
-      "url": "https://dexscreener.com/solana/7m44bf1ekzq1e4vgbdprlg7qgkz3q5ywts9ysgdehjs4",
-      "pair": "7M44Bf1ekzq1e4VgbDpRLg7QGkZ3Q5yWTS9YsGDeHJS4"
+      "address": "Bi59TGKZgLa7zVRz1BX3yPg6Cj8wWfZwfNc5FaCApump",
+      "name": "aaaaaaaaaaaaaaaa",
+      "symbol": "AAAAAAAAAAAAA",
+      "age": 0.3820737473551432,
+      "liquidity": 27075.75,
+      "volume": 466172.27,
+      "url": "https://dexscreener.com/solana/5a3vwdjmr8amdgmvw2viswfwtrfcffqpgf1ujh6qgc1z",
+      "pair": "5A3VwDjMR8amdGmvW2VisWfwTrfCFfqPgf1ujh6QgC1Z"
     },
     {
-      "address": "7tKA8ghhfzz27XMSRWHBTYkpyf7oPzziwZgsgyNZpump",
-      "name": "RATELLO",
-      "symbol": "RATELLO",
-      "age": 0.8290532292344835,
-      "liquidity": 10182.75,
-      "volume": 379942.32,
-      "url": "https://dexscreener.com/solana/h4gsgezx2qjy3hte8ubhsyd7scjzuujxwcv4rpqn7bhd",
-      "pair": "H4GSgeZX2QjY3hTE8uBhSYd7sCJZuuJxWcV4rpQn7Bhd"
+      "address": "9vrEeQSTctTPSCdzbiHWLrb4xcjSn91YcoJFLDyopump",
+      "name": "Giga Titty Ass",
+      "symbol": "GTA",
+      "age": 1.2012404783799913,
+      "liquidity": 26957.96,
+      "volume": 286840.87,
+      "url": "https://dexscreener.com/solana/4xbsv7yftzzeaxdjk77sgteas1mehwbb73ghuwhvj8sg",
+      "pair": "4XBsV7YFtzzEaXdjK77SGTeAS1MEhWBb73gHuWhvJ8Sg"
     },
     {
-      "address": "8crRRo8zpxJaUhnV81hzyqh4JU5RpuvVaP7iCfV2aXVV",
-      "name": "Minted Hub",
-      "symbol": "MINTED",
-      "age": 13.159053317328558,
-      "liquidity": 33890.07,
-      "volume": 345059.24,
-      "url": "https://dexscreener.com/solana/9u7xftzncujq2nlexe4lz93z8dbuzwarjvpaaeezebpk",
-      "pair": "9u7XfTZnCUjQ2NLExE4LZ93Z8dBuzWaRJvPAaeezEbpK"
+      "address": "F2AvkmDtZdXbWXaS1ja8Mjgjy54zsHhDErWzeFCNpump",
+      "name": "Givest",
+      "symbol": "GIVEST",
+      "age": 1.3387405215793187,
+      "liquidity": 9274.4,
+      "volume": 119335.06,
+      "url": "https://dexscreener.com/solana/b85sjh4ekntzjpstaw11nuhgdpbltgz8fmbbe8nfoxzn",
+      "pair": "B85sjH4ekNtZjpSTAw11NuhGDpBLtGz8FmBbe8NFoXZn"
     },
     {
-      "address": "42qKoGmEPTRJsa5jWrYwpydL8RkBwMvg2ykYVoerpump",
-      "name": "GHOST RIDER",
-      "symbol": "GHOST",
-      "age": 21.74266447068956,
-      "liquidity": 36294.56,
-      "volume": 332223.4,
-      "url": "https://dexscreener.com/solana/9sprpcpexeosec37remxg5s1asa1ovcqs8kganwjcuxt",
-      "pair": "9SPrPCpeXEoSeC37REmxg5S1Asa1oVCQS8KgANwjCuXt"
+      "address": "HQstiRVdp2cB6s6p3v6WWe23r8K4EP9wnx9gS3yLpump",
+      "name": "VETO",
+      "symbol": "VETO",
+      "age": 41.040129356418184,
+      "liquidity": 13285.24,
+      "volume": 70780.88,
+      "url": "https://dexscreener.com/solana/hmd4bfvnwgadi32jt5hmfkuuguq79hnskkem3cl4urp9",
+      "pair": "Hmd4BFVNWgaDi32JT5hmFKuUGUQ79HNSKkem3cL4URP9"
     },
     {
-      "address": "FK5tP4Zw7ujWzaz3TgeJ5NcqGe5LFufo7m6zH6YQpump",
-      "name": "5 STARS",
-      "symbol": "5STAR",
-      "age": 47.162942243245446,
-      "liquidity": 134506.95,
-      "volume": 277617.27,
-      "url": "https://dexscreener.com/solana/68pp3xccwhxg5qijgjcyuwsv764ttbevlm23ck85e85a",
-      "pair": "68Pp3xCcwHXg5QijgjcyUwsV764TtbEvLM23Ck85e85A"
+      "address": "Eyo1o3QYKQwdvP6UtK9dQLTZj2BBtoJdN4tMWB2Dpump",
+      "name": "GOODTIME - LEONIDA",
+      "symbol": "GOODTIME",
+      "age": 5.302629430338541,
+      "liquidity": 15075.55,
+      "volume": 32954.69,
+      "url": "https://dexscreener.com/solana/dtdvayztencp2qd3kyctnjovxwwvum9s3qnfqlr6hy8y",
+      "pair": "DtDvAyZtenCP2qd3KycTnJoVxWWvum9S3QNfqLR6Hy8Y"
     },
     {
-      "address": "4M5DceVdRSz6Cxjix5uU7PXFL6vuG2hJhQrydbk1pump",
-      "name": "jon assoff",
-      "symbol": "assoff",
-      "age": 35.86627560418023,
-      "liquidity": 26497.93,
-      "volume": 214668.33,
-      "url": "https://dexscreener.com/solana/etvxqmzkv4axrh2t74svmge1bwt4d1plmz7wwksvq4js",
-      "pair": "EtVXQMzKV4axrH2t74SvMge1Bwt4D1PLmZ7wWKSvq4Js"
+      "address": "81KNhgSwaCnWGR6PFS68E58WoYvwFeJ1AtE9KsGipump",
+      "name": "Frutiger Aero Yams",
+      "symbol": "Yams",
+      "age": 0.07790715467664931,
+      "liquidity": 12687.18,
+      "volume": 13544.85,
+      "url": "https://dexscreener.com/solana/ah4ufftm6x9z8flt3mt9fzjqbvggzyqf6dixi6qmhfba",
+      "pair": "Ah4uFFTm6x9Z8FLt3Mt9FzjqBVggZyQf6DiXi6qmhfBa"
     },
     {
-      "address": "ESWuXHiwswpkfhQtA6A1tAtiBJh9A5hUDYj5fEYhigh",
-      "name": "Bobby Fischer",
-      "symbol": "Fischer",
-      "age": 2.279886608751085,
-      "liquidity": 11442.28,
-      "volume": 68329.23,
-      "url": "https://dexscreener.com/solana/brl6teemlrt6hudbd9cifd8d9mkuyfq1nqpkpk62jlvj",
-      "pair": "BrL6teemLrt6hUdbd9cifD8D9MkUyFQ1NQPKPk62JLvj"
+      "address": "2UxjHoidyefQxJrCS8qT23JsbqKFcpPCa8ywBYZupump",
+      "name": "Liberty Games Coin",
+      "symbol": "$LIBCOIN",
+      "age": 32.49512943834093,
+      "liquidity": 21873.85,
+      "volume": 6007.39,
+      "url": "https://dexscreener.com/solana/3qz27w5pp7h8fdnwnvr89jhqsqxpraszdnukkgjkfh9r",
+      "pair": "3qz27W5Pp7h8FDNwNvr89jhQsQxPRASZdnUKKGJKFH9r"
     }
   ],
   "momentum": [
     {
-      "mint": "Eq8UZ5oadKvLtiDnPrb41dwDwU4BuB2tFXRT8rw8pump",
-      "name": "A Meme Democrats",
-      "symbol": "AMD",
-      "score": 90,
-      "age_hours": 1.16,
-      "liquidity_usd": 43498.88,
-      "volume_1h_usd": 580637.48,
-      "volume_24h_usd": 757960.66,
-      "price_change_1h_pct": 36.05,
-      "buys_1h": 10300,
-      "sells_1h": 5400,
-      "url": "https://dexscreener.com/solana/erq7k7g7matn5vosndq1cxp9kupvrs3r1p23akawmnyt"
-    },
-    {
-      "mint": "4CdmXcBr3LWrADSLtotiuGah3yxcUv7AZch2EMraqcMa",
-      "name": "Great Tits Asset",
-      "symbol": "GTA",
-      "score": 72,
-      "age_hours": 0.03,
-      "liquidity_usd": 16913.8,
-      "volume_1h_usd": 30822.12,
-      "volume_24h_usd": 30822.12,
-      "price_change_1h_pct": 17.58,
-      "buys_1h": 180,
-      "sells_1h": 56,
-      "url": "https://dexscreener.com/solana/xebkxx1usg5jjg895g2heovqpzesvfk2rsqfknqxbj5"
+      "mint": "8UQdy5sHMVWUWSHeA5B3ZuuAVNumjSLPXdf19MXcpump",
+      "name": "COGE COIN",
+      "symbol": "COGE",
+      "score": 86,
+      "age_hours": 1.9,
+      "liquidity_usd": 95665.09,
+      "volume_1h_usd": 83066.77,
+      "volume_24h_usd": 992674.55,
+      "price_change_1h_pct": 37.26,
+      "buys_1h": 4202,
+      "sells_1h": 3079,
+      "url": "https://dexscreener.com/solana/8gjmy6ipysxfmwwrpu9c7atssorjg6al88d9xttzslqe"
     }
   ]
 }
